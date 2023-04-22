@@ -2,9 +2,15 @@
   <div class="test-form">
     <parser :form-conf="formConf" @submit="sumbitForm1" />
     <parser :key="key2" :form-conf="formConf" @submit="sumbitForm2" />
-    <el-button @click="change">
-      change
-    </el-button>
+
+    <el-form ref="myForm">
+      <el-form-item prop="domain" :rules="[{ required: true, message: '域名不能为空', trigger: 'blur' }]">
+        <el-input />
+      </el-form-item>
+      <el-button type="primary" @click="submitForm('myForm')"> 提交 </el-button>
+    </el-form>
+
+    <el-button @click="change"> change </el-button>
   </div>
 </template>
 
@@ -16,7 +22,7 @@ import Parser from '../Parser'
 
 export default {
   components: {
-    Parser
+    Parser,
   },
   props: {},
   data() {
@@ -26,7 +32,7 @@ export default {
         fields: [
           {
             __config__: {
-              label: '单行文本',
+              label: '单行文本m',
               labelWidth: null,
               showLabel: true,
               changeTag: true,
@@ -39,18 +45,19 @@ export default {
               regList: [
                 {
                   pattern: '/^1(3|4|5|7|8|9)\\d{9}$/',
-                  message: '手机号格式错误'
-                }
-              ]
+                  message: '手机号格式错误',
+                },
+              ],
             },
+            defaultValue: 'sfasdfa',
             __slot__: {
               prepend: '',
-              append: ''
+              append: '',
             },
             __vModel__: 'mobile',
             placeholder: '请输入手机号',
             style: {
-              width: '100%'
+              width: '100%',
             },
             clearable: true,
             'prefix-icon': 'el-icon-mobile',
@@ -58,7 +65,7 @@ export default {
             maxlength: 11,
             'show-word-limit': true,
             readonly: false,
-            disabled: false
+            disabled: false,
           },
           {
             __config__: {
@@ -73,13 +80,12 @@ export default {
               layout: 'colFormItem',
               regList: [],
               changeTag: true,
-              document:
-                'https://element.eleme.cn/#/zh-CN/component/date-picker',
+              document: 'https://element.eleme.cn/#/zh-CN/component/date-picker',
               formId: 101,
-              renderKey: 1585980082729
+              renderKey: 1585980082729,
             },
             style: {
-              width: '100%'
+              width: '100%',
             },
             type: 'daterange',
             'range-separator': '至',
@@ -90,7 +96,7 @@ export default {
             format: 'yyyy-MM-dd',
             'value-format': 'yyyy-MM-dd',
             readonly: false,
-            __vModel__: 'field101'
+            __vModel__: 'field101',
           },
           {
             __config__: {
@@ -114,7 +120,7 @@ export default {
                     changeTag: true,
                     document: 'https://element.eleme.cn/#/zh-CN/component/rate',
                     formId: 102,
-                    renderKey: 1586839671259
+                    renderKey: 1586839671259,
                   },
                   style: {},
                   max: 5,
@@ -122,19 +128,19 @@ export default {
                   'show-text': false,
                   'show-score': false,
                   disabled: false,
-                  __vModel__: 'field102'
-                }
+                  __vModel__: 'field102',
+                },
               ],
               document: 'https://element.eleme.cn/#/zh-CN/component/layout',
               formId: 101,
               span: 24,
               renderKey: 1586839668999,
               componentName: 'row101',
-              gutter: 15
+              gutter: 15,
             },
             type: 'default',
             justify: 'start',
-            align: 'top'
+            align: 'top',
           },
           {
             __config__: {
@@ -147,10 +153,10 @@ export default {
               span: 24,
               layout: 'colFormItem',
               document: 'https://element.eleme.cn/#/zh-CN/component/button',
-              renderKey: 1594288459289
+              renderKey: 1594288459289,
             },
             __slot__: {
-              default: '测试按钮1'
+              default: '测试按钮1',
             },
             type: 'primary',
             icon: 'el-icon-search',
@@ -160,9 +166,9 @@ export default {
             circle: false,
             disabled: false,
             on: {
-              click: 'clickTestButton1'
-            }
-          }
+              click: 'clickTestButton1',
+            },
+          },
         ],
         __methods__: {
           clickTestButton1() {
@@ -175,7 +181,7 @@ export default {
             )
             console.log('表单的Model：', this.formData)
             console.log('表单的ref：', this.$refs.elForm)
-          }
+          },
         },
         formRef: 'elForm',
         formModel: 'formData',
@@ -187,7 +193,7 @@ export default {
         disabled: false,
         span: 24,
         formBtns: true,
-        unFocusedComponentBorder: false
+        unFocusedComponentBorder: false,
       },
       formConf2: {
         fields: [
@@ -206,18 +212,18 @@ export default {
               regList: [
                 {
                   pattern: '/^1(3|4|5|7|8|9)\\d{9}$/',
-                  message: '手机号格式错误'
-                }
-              ]
+                  message: '手机号格式错误',
+                },
+              ],
             },
             __slot__: {
               prepend: '',
-              append: ''
+              append: '',
             },
             __vModel__: 'mobile',
             placeholder: '请输入手机号',
             style: {
-              width: '100%'
+              width: '100%',
             },
             clearable: true,
             'prefix-icon': 'el-icon-mobile',
@@ -225,7 +231,7 @@ export default {
             maxlength: 11,
             'show-word-limit': true,
             readonly: false,
-            disabled: false
+            disabled: false,
           },
           {
             __config__: {
@@ -240,13 +246,12 @@ export default {
               layout: 'colFormItem',
               regList: [],
               changeTag: true,
-              document:
-                'https://element.eleme.cn/#/zh-CN/component/date-picker',
+              document: 'https://element.eleme.cn/#/zh-CN/component/date-picker',
               formId: 101,
-              renderKey: 1585980082729
+              renderKey: 1585980082729,
             },
             style: {
-              width: '100%'
+              width: '100%',
             },
             type: 'daterange',
             'range-separator': '至',
@@ -257,8 +262,8 @@ export default {
             format: 'yyyy-MM-dd',
             'value-format': 'yyyy-MM-dd',
             readonly: false,
-            __vModel__: 'field101'
-          }
+            __vModel__: 'field101',
+          },
         ],
         formRef: 'elForm',
         formModel: 'formData',
@@ -270,8 +275,8 @@ export default {
         disabled: false,
         span: 24,
         formBtns: true,
-        unFocusedComponentBorder: false
-      }
+        unFocusedComponentBorder: false,
+      },
     }
   },
   computed: {},
@@ -282,7 +287,7 @@ export default {
     setTimeout(() => {
       // 请求回来的表单数据
       const data = {
-        mobile: '18836662555'
+        mobile: '18836662555',
       }
       // 回填数据
       this.fillFormData(this.formConf, data)
@@ -292,7 +297,7 @@ export default {
   },
   methods: {
     fillFormData(form, data) {
-      form.fields.forEach(item => {
+      form.fields.forEach((item) => {
         const val = data[item.__vModel__]
         if (val) {
           item.__config__.defaultValue = val
@@ -305,13 +310,24 @@ export default {
       this.formConf = this.formConf2
       this.formConf2 = t
     },
+    submitForm(formName) {
+      // eslint-disable-next-line consistent-return
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          // alert('submit!')
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    },
     sumbitForm1(data) {
       console.log('sumbitForm1提交数据：', data)
     },
     sumbitForm2(data) {
       console.log('sumbitForm2提交数据：', data)
-    }
-  }
+    },
+  },
 }
 </script>
 

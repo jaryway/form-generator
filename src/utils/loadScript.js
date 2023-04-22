@@ -24,7 +24,7 @@ function loadScript(src, callback) {
   function stdOnEnd(script) {
     script.onload = () => {
       this.onerror = this.onload = null
-      callbacks[src].forEach(item => {
+      callbacks[src].forEach((item) => {
         item(null, script)
       })
       delete callbacks[src]
@@ -39,7 +39,7 @@ function loadScript(src, callback) {
     script.onreadystatechange = () => {
       if (this.readyState !== 'complete' && this.readyState !== 'loaded') return
       this.onreadystatechange = null
-      callbacks[src].forEach(item => {
+      callbacks[src].forEach((item) => {
         item(null, script)
       })
       delete callbacks[src]

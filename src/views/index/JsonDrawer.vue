@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-drawer v-bind="$attrs" v-on="$listeners" @opened="onOpen" @close="onClose">
-      <div class="action-bar" :style="{'text-align': 'left'}">
+      <div class="action-bar" :style="{ 'text-align': 'left' }">
         <span class="bar-btn" @click="refresh">
           <i class="el-icon-refresh" />
           刷新
@@ -39,8 +39,8 @@ export default {
   props: {
     jsonStr: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {}
@@ -51,16 +51,16 @@ export default {
   mounted() {
     window.addEventListener('keydown', this.preventDefaultSave)
     const clipboard = new ClipboardJS('.copy-json-btn', {
-      text: trigger => {
+      text: (trigger) => {
         this.$notify({
           title: '成功',
           message: '代码已复制到剪切板，可粘贴。',
-          type: 'success'
+          type: 'success',
         })
         return this.beautifierJson
-      }
+      },
     })
-    clipboard.on('error', e => {
+    clipboard.on('error', (e) => {
       this.$message.error('代码复制失败')
     })
   },
@@ -74,11 +74,11 @@ export default {
       }
     },
     onOpen() {
-      loadBeautifier(btf => {
+      loadBeautifier((btf) => {
         beautifier = btf
         this.beautifierJson = beautifier.js(this.jsonStr, beautifierConf.js)
 
-        loadMonaco(val => {
+        loadMonaco((val) => {
           monaco = val
           this.setEditorValue('editorJson', this.beautifierJson)
         })
@@ -93,10 +93,10 @@ export default {
           value: codeStr,
           theme: 'vs-dark',
           language: 'json',
-          automaticLayout: true
+          automaticLayout: true,
         })
         // ctrl + s 刷新
-        this.jsonEditor.onKeyDown(e => {
+        this.jsonEditor.onKeyDown((e) => {
           if (e.keyCode === 49 && (e.metaKey || e.ctrlKey)) {
             this.refresh()
           }
@@ -107,7 +107,7 @@ export default {
       this.$prompt('文件名:', '导出文件', {
         inputValue: `${+new Date()}.json`,
         closeOnClickModal: false,
-        inputPlaceholder: '请输入文件名'
+        inputPlaceholder: '请输入文件名',
       }).then(({ value }) => {
         if (!value) value = `${+new Date()}.json`
         const codeStr = this.jsonEditor.getValue()
@@ -122,11 +122,11 @@ export default {
         this.$notify({
           title: '错误',
           message: 'JSON格式错误，请检查',
-          type: 'error'
+          type: 'error',
         })
       }
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -138,7 +138,7 @@ export default {
 }
 @include action-bar;
 
-.json-editor{
+.json-editor {
   height: calc(100vh - 33px);
 }
 </style>

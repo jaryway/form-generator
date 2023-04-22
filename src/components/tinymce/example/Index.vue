@@ -9,30 +9,18 @@ import Tinymce from '../index.vue'
 
 export default {
   components: {
-    Tinymce
+    Tinymce,
   },
-  props: {
-
-  },
+  props: {},
   data() {
     return {
-      defaultValue: '<p>配置文档参阅：http://tinymce.ax-z.cn</p>'
+      defaultValue: '<p>配置文档参阅：http://tinymce.ax-z.cn</p>',
     }
   },
-  computed: {
-
-  },
-  watch: {
-
-  },
-  created() {
-
-  },
-  mounted() {
-
-  },
-  methods: {
-
-  }
+  computed: {},
+  watch: {},
+  created() {},
+  mounted() {},
+  methods: {},
 }
 </script>

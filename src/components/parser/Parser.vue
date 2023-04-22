@@ -11,7 +11,7 @@ const ruleTrigger = {
   'el-cascader': 'change',
   'el-time-picker': 'change',
   'el-date-picker': 'change',
-  'el-rate': 'change'
+  'el-rate': 'change',
 }
 
 const layouts = {
@@ -23,8 +23,7 @@ const layouts = {
     if (config.showLabel === false) labelWidth = '0'
     return (
       <el-col span={config.span}>
-        <el-form-item label-width={labelWidth} prop={scheme.__vModel__}
-          label={config.showLabel ? config.label : ''}>
+        <el-form-item label-width={labelWidth} prop={scheme.__vModel__} label={config.showLabel ? config.label : ''}>
           <render conf={scheme} on={listeners} />
         </el-form-item>
       </el-col>
@@ -33,18 +32,18 @@ const layouts = {
   rowFormItem(h, scheme) {
     let child = renderChildren.apply(this, arguments)
     if (scheme.type === 'flex') {
-      child = <el-row type={scheme.type} justify={scheme.justify} align={scheme.align}>
-              {child}
-            </el-row>
+      child = (
+        <el-row type={scheme.type} justify={scheme.justify} align={scheme.align}>
+          {child}
+        </el-row>
+      )
     }
     return (
       <el-col span={scheme.span}>
-        <el-row gutter={scheme.gutter}>
-          {child}
-        </el-row>
+        <el-row gutter={scheme.gutter}>{child}</el-row>
       </el-col>
     )
-  }
+  },
 }
 
 function renderFrom(h) {
@@ -70,16 +69,20 @@ function renderFrom(h) {
 }
 
 function formBtns(h) {
-  return <el-col>
-    <el-form-item size="large">
-      <el-button type="primary" onClick={this.submitForm}>提交</el-button>
-      <el-button onClick={this.resetForm}>重置</el-button>
-    </el-form-item>
-  </el-col>
+  return (
+    <el-col>
+      <el-form-item size='large'>
+        <el-button type='primary' onClick={this.submitForm}>
+          提交
+        </el-button>
+        <el-button onClick={this.resetForm}>重置</el-button>
+      </el-form-item>
+    </el-col>
+  )
 }
 
 function renderFormItem(h, elementList) {
-  return elementList.map(scheme => {
+  return elementList.map((scheme) => {
     const config = scheme.__config__
     const layout = layouts[config.layout]
 
@@ -107,30 +110,30 @@ function buildListeners(scheme) {
   const listeners = {}
 
   // 给__methods__中的方法绑定this和event
-  Object.keys(methods).forEach(key => {
-    listeners[key] = event => methods[key].call(this, event)
+  Object.keys(methods).forEach((key) => {
+    listeners[key] = (event) => methods[key].call(this, event)
   })
   // 响应 render.js 中的 vModel $emit('input', val)
-  listeners.input = event => setValue.call(this, event, config, scheme)
+  listeners.input = (event) => setValue.call(this, event, config, scheme)
 
   return listeners
 }
 
 export default {
   components: {
-    render
+    render,
   },
   props: {
     formConf: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     const data = {
       formConfCopy: deepClone(this.formConf),
       [this.formConf.formModel]: {},
-      [this.formConf.formRules]: {}
+      [this.formConf.formRules]: {},
     }
     this.initFormData(data.formConfCopy.fields, data[this.formConf.formModel])
     this.buildRules(data.formConfCopy.fields, data[this.formConf.formRules])
@@ -138,14 +141,14 @@ export default {
   },
   methods: {
     initFormData(componentList, formData) {
-      componentList.forEach(cur => {
+      componentList.forEach((cur) => {
         const config = cur.__config__
         if (cur.__vModel__) formData[cur.__vModel__] = config.defaultValue
         if (config.children) this.initFormData(config.children, formData)
       })
     },
     buildRules(componentList, rules) {
-      componentList.forEach(cur => {
+      componentList.forEach((cur) => {
         const config = cur.__config__
         if (Array.isArray(config.regList)) {
           if (config.required) {
@@ -157,7 +160,7 @@ export default {
             required.message === undefined && (required.message = `${config.label}不能为空`)
             config.regList.push(required)
           }
-          rules[cur.__vModel__] = config.regList.map(item => {
+          rules[cur.__vModel__] = config.regList.map((item) => {
             item.pattern && (item.pattern = eval(item.pattern))
             item.trigger = ruleTrigger && ruleTrigger[config.tag]
             return item
@@ -171,16 +174,16 @@ export default {
       this.$refs[this.formConf.formRef].resetFields()
     },
     submitForm() {
-      this.$refs[this.formConf.formRef].validate(valid => {
+      this.$refs[this.formConf.formRef].validate((valid) => {
         if (!valid) return false
         // 触发sumit事件
         this.$emit('submit', this[this.formConf.formModel])
         return true
       })
-    }
+    },
   },
   render(h) {
     return renderFrom.call(this, h)
-  }
+  },
 }
 </script>

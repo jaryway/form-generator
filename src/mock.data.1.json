@@ -1,0 +1,344 @@
+{
+  "formConf": {
+    "formId": "a1fd37066464958873f41fcd66cfbbe7",
+    "formRef": "elForm",
+    "formModel": "formData",
+    "size": "mini",
+    "labelPosition": "top",
+    "labelWidth": 100,
+    "formRules": "rules",
+    "disabled": false,
+    "numberOfColumns": 12,
+    "description": "",
+    "submitButtonState": 0,
+    "submitButtonText": "提交",
+    "frontEndEvents": [],
+    "formSubmissionValidation": [],
+    "fieldDisplayRules": [],
+    "dataFilterSetting": {
+      "rel": 0,
+      "cond": []
+    },
+    "submitAssociationOperation": [],
+    "span": null,
+    "gutter": null,
+    "medium": null,
+    "menuId": null,
+    "multiLabel": null,
+    "pcFormLayout": null,
+    "saveDraftText": null,
+    "assignmentRule": null,
+    "saveDraftState": null,
+    "mobileFormLayout": null
+  },
+  "fields": [
+    {
+      "style": {
+        "width": "254px",
+        "maxWidth": "100%"
+      },
+      "config": {
+        "tag": "el-input",
+        "span": 12,
+        "label": "单行文本",
+        "format": "text",
+        "layout": "colFormItem",
+        "tagIcon": "input",
+        "required": true,
+        "changeTag": true,
+        "renderKey": "zVMDBLB1680594220150",
+        "showLabel": true,
+        "labelWidth": null,
+        "typeOption": [
+          {
+            "label": "无",
+            "value": "text"
+          },
+          {
+            "label": "手机号码",
+            "value": "phoneNumber"
+          },
+          {
+            "label": "电话号码",
+            "value": "tel"
+          },
+          {
+            "label": "邮政编码",
+            "value": "zipCode"
+          },
+          {
+            "label": "身份证号码",
+            "value": "idNumber"
+          },
+          {
+            "label": "邮箱",
+            "value": "email"
+          }
+        ],
+        "displayType": true,
+        "defaultValue": "",
+        "defaultValueType": 0,
+        "defaultValueSource": {
+          "id": "",
+          "type": 0
+        }
+      },
+      "typeId": "INPUT",
+      "vModel": "fieldzVMDBLB1680594220150",
+      "editable": true,
+      "readonly": false,
+      "typeName": "单行文本",
+      "visibility": true,
+      "description": "",
+      "limitRepeat": false,
+      "placeholder": "请输入",
+      "repeatReminderText": "此项内容已存在，不允许重复提交"
+    },
+    {
+      "type": 2,
+      "config": {
+        "tag": "province-city",
+        "span": 12,
+        "label": "地址",
+        "layout": "colFormItem",
+        "tagIcon": "input",
+        "required": true,
+        "changeTag": false,
+        "renderKey": "uWzGXOB1681896637281",
+        "showLabel": true,
+        "labelWidth": null,
+        "displayType": true,
+        "showDefaultValue": true
+      },
+      "typeId": "PROVINCE_CITY",
+      "vModel": "fielduWzGXOB1681896637281",
+      "__slot__": {
+        "options": [
+          {
+            "label": "省-市-区",
+            "value": 1
+          },
+          {
+            "label": "省-市-区-详细地址",
+            "value": 2
+          }
+        ]
+      },
+      "editable": true,
+      "readonly": false,
+      "typeName": "地址",
+      "visibility": true,
+      "description": "",
+      "conditionType": 7
+    },
+    {
+      "style": {
+        "width": "254px",
+        "maxWidth": "100%"
+      },
+      "value": [
+        {
+          "fieldpFirCPB1682128031249": "",
+          "fieldkorrCPB1682128057527": ""
+        },
+        {
+          "fieldkorrCPB1682128057527": "",
+          "fieldpFirCPB1682128031249": ""
+        },
+        {
+          "fieldkorrCPB1682128057527": "",
+          "fieldpFirCPB1682128031249": ""
+        }
+      ],
+      "config": {
+        "tag": "my-table",
+        "span": 12,
+        "label": "子表单",
+        "layout": "rowFormItem",
+        "tagIcon": "input",
+        "changeTag": true,
+        "renderKey": "OagrCPB1682128026646",
+        "showLabel": true,
+        "labelWidth": null,
+        "displayType": true,
+        "showRequired": false,
+        "defaultValueType": 0,
+        "showDefaultValue": true,
+        "defaultValueSource": {
+          "id": "",
+          "type": 0
+        }
+      },
+      "typeId": "CHILD_FORM",
+      "vModel": "fieldOagrCPB1682128026646",
+      "__slot__": {
+        "dataList": []
+      },
+      "children": [
+        {
+          "style": {
+            "width": "254px",
+            "maxWidth": "100%"
+          },
+          "config": {
+            "tag": "el-input",
+            "span": 12,
+            "label": "姓名",
+            "format": "text",
+            "layout": "colFormItem",
+            "tagIcon": "input",
+            "required": true,
+            "changeTag": true,
+            "renderKey": "pFirCPB1682128031249",
+            "showLabel": true,
+            "labelWidth": null,
+            "typeOption": [
+              {
+                "label": "无",
+                "value": "text"
+              },
+              {
+                "label": "手机号码",
+                "value": "phoneNumber"
+              },
+              {
+                "label": "电话号码",
+                "value": "tel"
+              },
+              {
+                "label": "邮政编码",
+                "value": "zipCode"
+              },
+              {
+                "label": "身份证号码",
+                "value": "idNumber"
+              },
+              {
+                "label": "邮箱",
+                "value": "email"
+              }
+            ],
+            "displayType": true,
+            "defaultValue": "",
+            "defaultValueType": 0,
+            "defaultValueSource": {
+              "id": "",
+              "type": 0
+            }
+          },
+          "typeId": "INPUT",
+          "vModel": "fieldpFirCPB1682128031249",
+          "editable": true,
+          "readonly": false,
+          "typeName": "单行文本",
+          "parentKey": "fieldOagrCPB1682128026646",
+          "visibility": true,
+          "description": "",
+          "limitRepeat": false,
+          "placeholder": "请输入姓名",
+          "repeatReminderText": "此项内容已存在，不允许重复提交"
+        },
+        {
+          "style": {
+            "width": "254px",
+            "maxWidth": "100%"
+          },
+          "config": {
+            "tag": "el-input",
+            "span": 24,
+            "label": "班级",
+            "format": "text",
+            "layout": "colFormItem",
+            "tagIcon": "input",
+            "required": true,
+            "changeTag": true,
+            "renderKey": "korrCPB1682128057527",
+            "showLabel": true,
+            "labelWidth": null,
+            "typeOption": [
+              {
+                "label": "无",
+                "value": "text"
+              },
+              {
+                "label": "手机号码",
+                "value": "phoneNumber"
+              },
+              {
+                "label": "电话号码",
+                "value": "tel"
+              },
+              {
+                "label": "邮政编码",
+                "value": "zipCode"
+              },
+              {
+                "label": "身份证号码",
+                "value": "idNumber"
+              },
+              {
+                "label": "邮箱",
+                "value": "email"
+              }
+            ],
+            "displayType": true,
+            "defaultValue": "",
+            "defaultValueType": 0,
+            "defaultValueSource": {
+              "id": "",
+              "type": 0
+            }
+          },
+          "typeId": "INPUT",
+          "vModel": "fieldkorrCPB1682128057527",
+          "editable": true,
+          "readonly": false,
+          "typeName": "单行文本",
+          "parentKey": "fieldOagrCPB1682128026646",
+          "visibility": true,
+          "description": "",
+          "limitRepeat": false,
+          "placeholder": "请输入班级",
+          "repeatReminderText": "此项内容已存在，不允许重复提交"
+        }
+      ],
+      "editable": true,
+      "notChild": true,
+      "readonly": false,
+      "typeName": "子表单",
+      "tableList": [],
+      "visibility": true,
+      "description": "",
+      "fieldDisplayRules": []
+    },
+    {
+      "typeId": "QUERY_CHECK",
+      "typeName": "关联查询",
+      "config": {
+        "layout": "colFormItem",
+        "label": "关联查询",
+        "labelWidth": null,
+        "showLabel": true,
+        "changeTag": true,
+        "tag": "my-form",
+        "tagIcon": "input",
+        "showDefaultValue": false,
+        "displayType": true,
+        "span": 12,
+        "dbTable": "",
+        "renderKey": "DIDHDPB1682130197075"
+      },
+      "style": {
+        "maxWidth": "100%"
+      },
+      "linkList": [],
+      "filterCond": [],
+      "linkedShowField": [],
+      "dataNum": 1,
+      "canAdd": true,
+      "visibility": true,
+      "description": "",
+      "vModel": "fieldDIDHDPB1682130197075"
+    }
+  ]
+}

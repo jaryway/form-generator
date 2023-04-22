@@ -8,6 +8,7 @@
     "build:render": "vue-cli-service build --target lib --name form-gen-render --dest ./src/components/render/lib/ ./src/components/render/render.js",
     "build:parser": "vue-cli-service build --target lib --name form-gen-parser --dest ./src/components/parser/lib/ ./src/components/parser/index.js",
     "build:tinymce": "vue-cli-service build --target lib --name form-gen-tinymce --dest ./src/components/tinymce/lib/ ./src/components/tinymce/index.js",
+    "prettier": "prettier --print-width 120 --write \"**/*.@(js|ts|json|md|vue)\"",
     "lint": "vue-cli-service lint",
     "dev": "vue-cli-service serve"
   },
@@ -15,25 +16,26 @@
     "@babel/parser": "^7.7.4",
     "axios": "^0.19.2",
     "clipboard": "^2.0.4",
-    "core-js": "^3.6.5",
+    "core-js": "^3.8.3",
+    "element-ui": "2",
     "file-saver": "^2.0.2",
+    "prettier": "^2.8.7",
     "throttle-debounce": "^2.1.0",
-    "vue": "^2.6.11",
+    "vue": "^2.6.14",
     "vuedraggable": "^2.23.2"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "~4.4.0",
-    "@vue/cli-plugin-eslint": "~4.4.0",
-    "@vue/cli-service": "~4.4.0",
-    "babel-eslint": "^10.1.0",
-    "eslint": "^6.8.0",
-    "eslint-config-airbnb-base": "^14.0.0",
-    "eslint-plugin-import": "^2.20.0",
-    "eslint-plugin-vue": "^6.2.2",
+    "@babel/core": "^7.12.16",
+    "@babel/eslint-parser": "^7.12.16",
+    "@vue/cli-plugin-babel": "~5.0.0",
+    "@vue/cli-plugin-eslint": "~5.0.0",
+    "@vue/cli-service": "~5.0.0",
+    "eslint": "^7.32.0",
+    "eslint-plugin-vue": "^8.0.3",
     "sass": "^1.23.7",
     "sass-loader": "^8.0.0",
-    "svg-sprite-loader": "^4.1.6",
-    "vue-template-compiler": "^2.6.11"
+    "svg-sprite-loader": "^6.0.11",
+    "vue-template-compiler": "^2.6.14"
   },
   "homepage": "https://jakhuang.github.io/form-generator"
 }

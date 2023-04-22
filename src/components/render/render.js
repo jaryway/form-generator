@@ -8,7 +8,7 @@ const componentChild = {}
  */
 const slotsFiles = require.context('./slots', false, /\.js$/)
 const keys = slotsFiles.keys() || []
-keys.forEach(key => {
+keys.forEach((key) => {
   const tag = key.replace(/^\.\/(.*)\.\w+$/, '$1')
   const value = slotsFiles(key).default
   componentChild[tag] = value
@@ -17,7 +17,7 @@ keys.forEach(key => {
 function vModel(dataObject, defaultValue) {
   dataObject.props.value = defaultValue
 
-  dataObject.on.input = val => {
+  dataObject.on.input = (val) => {
     this.$emit('input', val)
   }
 }
@@ -25,7 +25,7 @@ function vModel(dataObject, defaultValue) {
 function mountSlotFiles(h, confClone, children) {
   const childObjs = componentChild[confClone.__config__.tag]
   if (childObjs) {
-    Object.keys(childObjs).forEach(key => {
+    Object.keys(childObjs).forEach((key) => {
       const childFunc = childObjs[key]
       if (confClone.__slot__ && confClone.__slot__[key]) {
         children.push(childFunc(h, confClone, key))
@@ -35,26 +35,28 @@ function mountSlotFiles(h, confClone, children) {
 }
 
 function emitEvents(confClone) {
-  ['on', 'nativeOn'].forEach(attr => {
+  ['on', 'nativeOn'].forEach((attr) => {
     const eventKeyList = Object.keys(confClone[attr] || {})
-    eventKeyList.forEach(key => {
+    eventKeyList.forEach((key) => {
       const val = confClone[attr][key]
       if (typeof val === 'string') {
-        confClone[attr][key] = event => this.$emit(val, event)
+        confClone[attr][key] = (event) => this.$emit(val, event)
       }
     })
   })
 }
 
 function buildDataObject(confClone, dataObject) {
-  Object.keys(confClone).forEach(key => {
+  Object.keys(confClone).forEach((key) => {
     const val = confClone[key]
     if (key === '__vModel__') {
       vModel.call(this, dataObject, confClone.__config__.defaultValue)
     } else if (dataObject[key] !== undefined) {
-      if (dataObject[key] === null
-        || dataObject[key] instanceof RegExp
-        || ['boolean', 'string', 'number', 'function'].includes(typeof dataObject[key])) {
+      if (
+        dataObject[key] === null ||
+        dataObject[key] instanceof RegExp ||
+        ['boolean', 'string', 'number', 'function'].includes(typeof dataObject[key])
+      ) {
         dataObject[key] = val
       } else if (Array.isArray(dataObject[key])) {
         dataObject[key] = [...dataObject[key], ...val]
@@ -92,7 +94,7 @@ function makeDataObject() {
     slot: null,
     key: null,
     ref: null,
-    refInFor: true
+    refInFor: true,
   }
 }
 
@@ -100,8 +102,8 @@ export default {
   props: {
     conf: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   render(h) {
     const dataObject = makeDataObject()
@@ -118,5 +120,5 @@ export default {
     buildDataObject.call(this, confClone, dataObject)
 
     return h(this.conf.__config__.tag, dataObject, children)
-  }
+  },
 }

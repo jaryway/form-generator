@@ -18,43 +18,16 @@
         prefix-icon="el-icon-link"
         clearable
       >
-        <el-button
-          slot="append"
-          icon="el-icon-delete"
-          @click="deleteOne(index)"
-        />
+        <el-button slot="append" icon="el-icon-delete" @click="deleteOne(index)" />
       </el-input>
       <el-button-group class="add-item">
-        <el-button
-          plain
-          @click="addOne('https://lib.baomitu.com/jquery/1.8.3/jquery.min.js')"
-        >
-          jQuery1.8.3
-        </el-button>
-        <el-button
-          plain
-          @click="addOne('https://unpkg.com/http-vue-loader')"
-        >
-          http-vue-loader
-        </el-button>
-        <el-button
-          icon="el-icon-circle-plus-outline"
-          plain
-          @click="addOne('')"
-        >
-          添加其他
-        </el-button>
+        <el-button plain @click="addOne('https://lib.baomitu.com/jquery/1.8.3/jquery.min.js')"> jQuery1.8.3 </el-button>
+        <el-button plain @click="addOne('https://unpkg.com/http-vue-loader')"> http-vue-loader </el-button>
+        <el-button icon="el-icon-circle-plus-outline" plain @click="addOne('')"> 添加其他 </el-button>
       </el-button-group>
       <div slot="footer">
-        <el-button @click="close">
-          取消
-        </el-button>
-        <el-button
-          type="primary"
-          @click="handelConfirm"
-        >
-          确定
-        </el-button>
+        <el-button @click="close"> 取消 </el-button>
+        <el-button type="primary" @click="handelConfirm"> 确定 </el-button>
       </div>
     </el-dialog>
   </div>
@@ -68,7 +41,7 @@ export default {
   props: ['originResource'],
   data() {
     return {
-      resources: null
+      resources: null,
     }
   },
   computed: {},
@@ -79,13 +52,12 @@ export default {
     onOpen() {
       this.resources = this.originResource.length ? deepClone(this.originResource) : ['']
     },
-    onClose() {
-    },
+    onClose() {},
     close() {
       this.$emit('update:visible', false)
     },
     handelConfirm() {
-      const results = this.resources.filter(item => !!item) || []
+      const results = this.resources.filter((item) => !!item) || []
       this.$emit('save', results)
       this.close()
       if (results.length) {
@@ -101,16 +73,15 @@ export default {
       } else {
         this.resources.push(url)
       }
-    }
-  }
+    },
+  },
 }
-
 </script>
 <style lang="scss" scoped>
-.add-item{
+.add-item {
   margin-top: 8px;
 }
-.url-item{
+.url-item {
   margin-bottom: 12px;
 }
 </style>

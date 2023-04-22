@@ -23,7 +23,7 @@ export default function loadMonaco(cb) {
     lock: true,
     text: '编辑器资源初始化中...',
     spinner: 'el-icon-loading',
-    background: 'rgba(255, 255, 255, 0.5)'
+    background: 'rgba(255, 255, 255, 0.5)',
   })
 
   !window.require && (window.require = {})

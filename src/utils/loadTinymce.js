@@ -17,7 +17,7 @@ export default function loadTinymce(cb) {
     lock: true,
     text: '富文本资源加载中...',
     spinner: 'el-icon-loading',
-    background: 'rgba(255, 255, 255, 0.5)'
+    background: 'rgba(255, 255, 255, 0.5)',
   })
 
   loadScript(tinymceUrl, () => {

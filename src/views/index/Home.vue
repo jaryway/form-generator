@@ -3,9 +3,9 @@
     <div class="left-board">
       <div class="logo-wrapper">
         <div class="logo">
-          <img :src="logo" alt="logo"> Form Generator
+          <img :src="logo" alt="logo" /> Form Generator
           <a class="github" href="https://github.com/JakHuang/form-generator" target="_blank">
-            <img src="https://github.githubassets.com/pinned-octocat.svg" alt>
+            <img src="https://github.githubassets.com/pinned-octocat.svg" alt />
           </a>
         </div>
       </div>
@@ -44,21 +44,11 @@
 
     <div class="center-board">
       <div class="action-bar">
-        <el-button icon="el-icon-video-play" type="text" @click="run">
-          运行
-        </el-button>
-        <el-button icon="el-icon-view" type="text" @click="showJson">
-          查看json
-        </el-button>
-        <el-button icon="el-icon-download" type="text" @click="download">
-          导出vue文件
-        </el-button>
-        <el-button class="copy-btn-main" icon="el-icon-document-copy" type="text" @click="copy">
-          复制代码
-        </el-button>
-        <el-button class="delete-btn" icon="el-icon-delete" type="text" @click="empty">
-          清空
-        </el-button>
+        <el-button icon="el-icon-video-play" type="text" @click="run"> 运行 </el-button>
+        <el-button icon="el-icon-view" type="text" @click="showJson"> 查看json </el-button>
+        <el-button icon="el-icon-download" type="text" @click="download"> 导出vue文件 </el-button>
+        <el-button class="copy-btn-main" icon="el-icon-document-copy" type="text" @click="copy"> 复制代码 </el-button>
+        <el-button class="delete-btn" icon="el-icon-delete" type="text" @click="empty"> 清空 </el-button>
       </div>
       <el-scrollbar class="center-scrollbar">
         <el-row class="center-board-row" :gutter="formConf.gutter">
@@ -82,9 +72,7 @@
                 @deleteItem="drawingItemDelete"
               />
             </draggable>
-            <div v-show="!drawingList.length" class="empty-info">
-              从左侧拖入或点选组件进行表单设计
-            </div>
+            <div v-show="!drawingList.length" class="empty-info">从左侧拖入或点选组件进行表单设计</div>
           </el-form>
         </el-row>
       </el-scrollbar>
@@ -98,12 +86,7 @@
       @fetch-data="fetchData"
     />
 
-    <form-drawer
-      :visible.sync="drawerVisible"
-      :form-data="formData"
-      size="100%"
-      :generate-conf="generateConf"
-    />
+    <form-drawer :visible.sync="drawerVisible" :form-data="formData" size="100%" :generate-conf="generateConf" />
     <json-drawer
       size="60%"
       :visible.sync="jsonDrawerVisible"
@@ -116,7 +99,7 @@
       :show-file-name="showFileName"
       @confirm="generate"
     />
-    <input id="copyNode" type="hidden">
+    <input id="copyNode" type="hidden" />
   </div>
 </template>
 
@@ -129,24 +112,16 @@ import render from '@/components/render/render'
 import FormDrawer from './FormDrawer'
 import JsonDrawer from './JsonDrawer'
 import RightPanel from './RightPanel'
-import {
-  inputComponents, selectComponents, layoutComponents, formConf
-} from '@/components/generator/config'
-import {
-  exportDefault, beautifierConf, isNumberStr, titleCase, deepClone, isObjectObject
-} from '@/utils/index'
-import {
-  makeUpHtml, vueTemplate, vueScript, cssStyle
-} from '@/components/generator/html'
+import { inputComponents, selectComponents, layoutComponents, formConf } from '@/components/generator/config'
+import { exportDefault, beautifierConf, isNumberStr, titleCase, deepClone, isObjectObject } from '@/utils/index'
+import { makeUpHtml, vueTemplate, vueScript, cssStyle } from '@/components/generator/html'
 import { makeUpJs } from '@/components/generator/js'
 import { makeUpCss } from '@/components/generator/css'
 import drawingDefalut from '@/components/generator/drawingDefalut'
 import logo from '@/assets/logo.png'
 import CodeTypeDialog from './CodeTypeDialog'
 import DraggableItem from './DraggableItem'
-import {
-  getDrawingList, saveDrawingList, getIdGlobal, saveIdGlobal, getFormConf
-} from '@/utils/db'
+import { getDrawingList, saveDrawingList, getIdGlobal, saveIdGlobal, getFormConf } from '@/utils/db'
 import loadBeautifier from '@/utils/loadBeautifier'
 
 let beautifier
@@ -165,7 +140,7 @@ export default {
     JsonDrawer,
     RightPanel,
     CodeTypeDialog,
-    DraggableItem
+    DraggableItem,
   },
   data() {
     return {
@@ -191,28 +166,27 @@ export default {
       leftComponents: [
         {
           title: '输入型组件',
-          list: inputComponents
+          list: inputComponents,
         },
         {
           title: '选择型组件',
-          list: selectComponents
+          list: selectComponents,
         },
         {
           title: '布局型组件',
-          list: layoutComponents
-        }
-      ]
+          list: layoutComponents,
+        },
+      ],
     }
   },
-  computed: {
-  },
+  computed: {},
   watch: {
     // eslint-disable-next-line func-names
     'activeData.__config__.label': function (val, oldVal) {
       if (
-        this.activeData.placeholder === undefined
-        || !this.activeData.__config__.tag
-        || oldActiveId !== this.activeId
+        this.activeData.placeholder === undefined ||
+        !this.activeData.__config__.tag ||
+        oldActiveId !== this.activeId
       ) {
         return
       }
@@ -222,21 +196,21 @@ export default {
       handler(val) {
         oldActiveId = val
       },
-      immediate: true
+      immediate: true,
     },
     drawingList: {
       handler(val) {
         this.saveDrawingListDebounce(val)
         if (val.length === 0) this.idGlobal = 100
       },
-      deep: true
+      deep: true,
     },
     idGlobal: {
       handler(val) {
         this.saveIdGlobalDebounce(val)
       },
-      immediate: true
-    }
+      immediate: true,
+    },
   },
   mounted() {
     if (Array.isArray(drawingListInDB) && drawingListInDB.length > 0) {
@@ -248,21 +222,21 @@ export default {
     if (formConfInDB) {
       this.formConf = formConfInDB
     }
-    loadBeautifier(btf => {
+    loadBeautifier((btf) => {
       beautifier = btf
     })
     const clipboard = new ClipboardJS('#copyNode', {
-      text: trigger => {
+      text: (trigger) => {
         const codeStr = this.generateCode()
         this.$notify({
           title: '成功',
           message: '代码已复制到剪切板，可粘贴。',
-          type: 'success'
+          type: 'success',
         })
         return codeStr
-      }
+      },
     })
-    clipboard.on('error', e => {
+    clipboard.on('error', (e) => {
       this.$message.error('代码复制失败')
     })
   },
@@ -288,7 +262,7 @@ export default {
       // 此时赋值代码可写成 component[dataConsumer] = respData；
       // 但为支持更深层级的赋值（如：dataConsumer的值为'options.data'）,使用setObjectValueReduce
       this.setObjectValueReduce(component, dataConsumer, respData)
-      const i = this.drawingList.findIndex(item => item.__config__.renderKey === renderKey)
+      const i = this.drawingList.findIndex((item) => item.__config__.renderKey === renderKey)
       if (i > -1) this.$set(this.drawingList, i, component)
     },
     fetchData(component) {
@@ -297,8 +271,8 @@ export default {
         this.setLoading(component, true)
         this.$axios({
           method,
-          url
-        }).then(resp => {
+          url,
+        }).then((resp) => {
           this.setLoading(component, false)
           this.setRespData(component, resp.data)
         })
@@ -307,7 +281,7 @@ export default {
     setLoading(component, val) {
       const { directives } = component
       if (Array.isArray(directives)) {
-        const t = directives.find(d => d.name === 'loading')
+        const t = directives.find((d) => d.name === 'loading')
         if (t) t.value = val
       }
     },
@@ -349,14 +323,14 @@ export default {
         delete config.label // rowFormItem无需配置label属性
       }
       if (Array.isArray(config.children)) {
-        config.children = config.children.map(childItem => this.createIdAndKey(childItem))
+        config.children = config.children.map((childItem) => this.createIdAndKey(childItem))
       }
       return item
     },
     AssembleFormData() {
       this.formData = {
         fields: deepClone(this.drawingList),
-        ...this.formConf
+        ...this.formConf,
       }
     },
     generate(data) {
@@ -377,12 +351,10 @@ export default {
       document.getElementById('copyNode').click()
     },
     empty() {
-      this.$confirm('确定要清空所有组件吗？', '提示', { type: 'warning' }).then(
-        () => {
-          this.drawingList = []
-          this.idGlobal = 100
-        }
-      )
+      this.$confirm('确定要清空所有组件吗？', '提示', { type: 'warning' }).then(() => {
+        this.drawingList = []
+        this.idGlobal = 100
+      })
     },
     drawingItemCopy(item, list) {
       let clone = deepClone(item)
@@ -438,7 +410,7 @@ export default {
       if (typeof this.activeData.__config__.defaultValue === typeof config.defaultValue) {
         config.defaultValue = this.activeData.__config__.defaultValue
       }
-      Object.keys(newTag).forEach(key => {
+      Object.keys(newTag).forEach((key) => {
         if (this.activeData[key] !== undefined) {
           newTag[key] = this.activeData[key]
         }
@@ -447,11 +419,11 @@ export default {
       this.updateDrawingList(newTag, this.drawingList)
     },
     updateDrawingList(newTag, list) {
-      const index = list.findIndex(item => item.__config__.formId === this.activeId)
+      const index = list.findIndex((item) => item.__config__.formId === this.activeId)
       if (index > -1) {
         list.splice(index, 1, newTag)
       } else {
-        list.forEach(item => {
+        list.forEach((item) => {
           if (Array.isArray(item.__config__.children)) this.updateDrawingList(newTag, item.__config__.children)
         })
       }
@@ -460,11 +432,11 @@ export default {
       this.drawingList = deepClone(data.fields)
       delete data.fields
       this.formConf = data
-    }
-  }
+    },
+  },
 }
 </script>
 
-<style lang='scss'>
+<style lang="scss">
 @import '@/styles/home';
 </style>
