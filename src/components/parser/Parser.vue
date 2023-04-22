@@ -31,6 +31,12 @@ const layouts = {
   },
   rowFormItem(h, scheme) {
     let child = renderChildren.apply(this, arguments)
+    console.log('xxxxxxx', child, scheme)
+
+    if (scheme.typeId === 'CHILD_FORM') {
+      return renderChildForm.call(this, h, scheme)
+    }
+
     if (scheme.type === 'flex') {
       child = (
         <el-row type={scheme.type} justify={scheme.justify} align={scheme.align}>
@@ -99,12 +105,100 @@ function renderChildren(h, scheme) {
   return renderFormItem.call(this, h, config.children)
 }
 
-function setValue(event, config, scheme) {
-  this.$set(config, 'defaultValue', event)
-  this.$set(this[this.formConf.formModel], scheme.__vModel__, event)
+function renderChildForm(h, scheme) {
+  const scopedSlots = (field, editable) => {
+    // 区分是展示模式还是编辑模式
+
+    return {
+      default: (scope) => {
+        // 编辑模式
+        if (this.isEdit && editable !== false) {
+          const fieldCopy = deepClone(field)
+          const listeners = buildListeners.call(this, fieldCopy, scheme, scope.$index)
+          // console.log('scopedSlots', field, scope)
+          return (
+            <el-form-item label-width='0'>
+              <render conf={fieldCopy} on={listeners} key={scope.$index} use-value={true} value={scope.row[field.__vModel__]} />
+            </el-form-item>
+          )
+        }
+        if (['MEMBER_RADIO', 'MEMBER_CHECK', 'DEPT_RADIO', 'DEPT_CHECK'].includes(field.typeId)) {
+          return scope.row[field.__vModel__]?.map((m) => m.name).join(',')
+        }
+
+        // console.log('scope', scope, field, scope.row[field.__vModel__])
+
+        return scope.row[field.__vModel__]
+      },
+    }
+  }
+  const buildColumns = (children) => {
+    return (children || []).map((item, idx) => {
+      const childProp = item.typeId === 'QUERY_CHECK' ? 'linkList' : 'children'
+      const hasChild = item[childProp] && item[childProp].length
+
+      // console.log('item', item)
+
+      if (item.typeId === 'QUERY_CHECK') {
+        return (
+          <el-table-column props={{ label: item.__config__.label }} key={idx}>
+            {(item.linkList || []).map((child, index) => {
+              return <el-table-column key={index} props={{ label: child.label, prop: child.__vModel__ }} scopedSlots={scopedSlots(child, false)}></el-table-column>
+            })}
+          </el-table-column>
+        )
+      }
+
+      return (
+        <el-table-column props={{ label: item.__config__.label, prop: hasChild ? undefined : item.__vModel__ }} scopedSlots={scopedSlots(item)}>
+          {hasChild && buildColumns(item[childProp])}
+        </el-table-column>
+      )
+    })
+  }
+  const props = {
+    data: this[this.formConf.formModel][scheme.__vModel__] || scheme.value,
+    size: scheme.__config__.size,
+    stripe: scheme.__config__.stripe,
+    border: scheme.__config__.border,
+    fit: scheme.__config__.fit,
+    'show-header': scheme.showHeader,
+    'header-cell-style': scheme.headerCellStyle,
+    'cell-style': scheme.cellStyle,
+  }
+
+  // console.log('scheme.children', scheme.children)
+
+  return (
+    <div>
+      <el-form-item>
+        <el-table style='width: 100%' size='small' props={props}>
+          {buildColumns(scheme.children)}
+        </el-table>
+      </el-form-item>
+    </div>
+  )
 }
 
-function buildListeners(scheme) {
+function setValue(event, config, scheme, parentScheme, index) {
+  if (parentScheme) {
+    this.$set(config, 'defaultValue', event)
+
+    const formData = this[this.formConf.formModel][parentScheme.__vModel__]
+    // console.log('setValue.o', parentScheme, scheme, config)
+
+    if (!formData) {
+      this.$set(this[this.formConf.formModel], parentScheme.__vModel__, [{ [scheme.__vModel__]: event }])
+    } else {
+      this.$set(this[this.formConf.formModel][parentScheme.__vModel__][index], scheme.__vModel__, event)
+    }
+  } else {
+    this.$set(config, 'defaultValue', event)
+    this.$set(this[this.formConf.formModel], scheme.__vModel__, event)
+  }
+}
+
+function buildListeners(scheme, parentScheme, index) {
   const config = scheme.__config__
   const methods = this.formConf.__methods__ || {}
   const listeners = {}
@@ -114,7 +208,7 @@ function buildListeners(scheme) {
     listeners[key] = (event) => methods[key].call(this, event)
   })
   // 响应 render.js 中的 vModel $emit('input', val)
-  listeners.input = (event) => setValue.call(this, event, config, scheme)
+  listeners.input = (event) => setValue.call(this, event, config, scheme, parentScheme, index)
 
   return listeners
 }
@@ -131,6 +225,7 @@ export default {
   },
   data() {
     const data = {
+      isEdit: true,
       formConfCopy: deepClone(this.formConf),
       [this.formConf.formModel]: {},
       [this.formConf.formRules]: {},
@@ -143,7 +238,7 @@ export default {
     initFormData(componentList, formData) {
       componentList.forEach((cur) => {
         const config = cur.__config__
-        if (cur.__vModel__) formData[cur.__vModel__] = config.defaultValue
+        if (cur.__vModel__) formData[cur.__vModel__] = cur.typeId === 'CHILD_FORM' ? cur.value : config.defaultValue
         if (config.children) this.initFormData(config.children, formData)
       })
     },

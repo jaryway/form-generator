@@ -259,5 +259,6 @@ module.exports = {
     'no-eval': [0],
 
     'vue/no-unused-components': [1],
+    'no-extra-semi': 0,
   },
 }

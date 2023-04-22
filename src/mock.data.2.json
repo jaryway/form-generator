@@ -1,0 +1,285 @@
+[
+  {
+    "style": {
+      "width": "254px",
+      "maxWidth": "100%"
+    },
+    "__config__": {
+      "tag": "el-input",
+      "span": 24,
+      "label": "单行文本",
+      "format": "text",
+      "layout": "colFormItem",
+      "tagIcon": "input",
+      "required": true,
+      "changeTag": true,
+      "renderKey": "ckNYMOB1681818216184",
+      "showLabel": true,
+      "typeOption": [
+        {
+          "label": "无",
+          "value": "text"
+        },
+        {
+          "label": "手机号码",
+          "value": "phoneNumber"
+        },
+        {
+          "label": "电话号码",
+          "value": "tel"
+        },
+        {
+          "label": "邮政编码",
+          "value": "zipCode"
+        },
+        {
+          "label": "身份证号码",
+          "value": "idNumber"
+        },
+        {
+          "label": "邮箱",
+          "value": "email"
+        }
+      ],
+      "displayType": true,
+      "defaultValue": "",
+      "defaultValueType": 0,
+      "defaultValueSource": {
+        "id": "",
+        "type": 0
+      }
+    },
+    "typeId": "INPUT",
+    "__vModel__": "fieldckNYMOB1681818216184",
+    "editable": true,
+    "readonly": false,
+    "typeName": "单行文本",
+    "visibility": true,
+    "description": "",
+    "limitRepeat": false,
+    "placeholder": "请输入",
+    "repeatReminderText": "此项内容已存在，不允许重复提交"
+  },
+  {
+    "type": 2,
+    "__config__": {
+      "tag": "province-city",
+      "span": 24,
+      "label": "地址",
+      "layout": "colFormItem",
+      "tagIcon": "input",
+      "required": true,
+      "changeTag": false,
+      "renderKey": "VxILXOB1681896803169",
+      "showLabel": true,
+      "labelWidth": null,
+      "displayType": true,
+      "showDefaultValue": true
+    },
+    "typeId": "PROVINCE_CITY",
+    "__vModel__": "fieldVxILXOB1681896803169",
+    "__slot__": {
+      "options": [
+        {
+          "label": "省-市-区",
+          "value": 1
+        },
+        {
+          "label": "省-市-区-详细地址",
+          "value": 2
+        }
+      ]
+    },
+    "editable": true,
+    "readonly": false,
+    "typeName": "地址",
+    "visibility": true,
+    "description": "",
+    "conditionType": 7
+  },
+  {
+    "style": {
+      "width": "254px",
+      "maxWidth": "100%"
+    },
+    "value": [
+      {
+        "fieldfgcsCPB1682128157163": "",
+        "fieldHLMoGPB1682156796273": ""
+      },
+      {
+        "fieldfgcsCPB1682128157163": "2"
+      }
+    ],
+    "__config__": {
+      "tag": "my-table",
+      "span": 24,
+      "label": "子表单",
+      "layout": "rowFormItem",
+      "tagIcon": "input",
+      "changeTag": true,
+      "renderKey": "gkbsCPB1682128154200",
+      "showLabel": true,
+      "labelWidth": null,
+      "displayType": true,
+      "showRequired": false,
+      "defaultValueType": 0,
+      "showDefaultValue": true,
+      "defaultValueSource": {
+        "id": "",
+        "type": 0
+      }
+    },
+    "typeId": "CHILD_FORM",
+    "__vModel__": "fieldgkbsCPB1682128154200",
+    "__slot__": {
+      "dataList": []
+    },
+    "children": [
+      {
+        "style": {
+          "width": "254px",
+          "maxWidth": "100%"
+        },
+        "__config__": {
+          "tag": "el-input",
+          "span": 24,
+          "label": "单行文本",
+          "format": "text",
+          "layout": "colFormItem",
+          "tagIcon": "input",
+          "required": true,
+          "changeTag": true,
+          "renderKey": "fgcsCPB1682128157163",
+          "showLabel": true,
+          "labelWidth": null,
+          "typeOption": [
+            {
+              "label": "无",
+              "value": "text"
+            },
+            {
+              "label": "手机号码",
+              "value": "phoneNumber"
+            },
+            {
+              "label": "电话号码",
+              "value": "tel"
+            },
+            {
+              "label": "邮政编码",
+              "value": "zipCode"
+            },
+            {
+              "label": "身份证号码",
+              "value": "idNumber"
+            },
+            {
+              "label": "邮箱",
+              "value": "email"
+            }
+          ],
+          "displayType": true,
+          "defaultValue": "",
+          "defaultValueType": 0,
+          "defaultValueSource": {
+            "id": "",
+            "type": 0
+          }
+        },
+        "typeId": "INPUT",
+        "__vModel__": "fieldfgcsCPB1682128157163",
+        "editable": true,
+        "readonly": false,
+        "typeName": "单行文本",
+        "parentKey": "fieldgkbsCPB1682128154200",
+        "visibility": true,
+        "description": "",
+        "limitRepeat": false,
+        "placeholder": "请输入",
+        "repeatReminderText": "此项内容已存在，不允许重复提交"
+      },
+      {
+        "style": {
+          "maxWidth": "100%"
+        },
+        "canAdd": true,
+        "__config__": {
+          "tag": "my-form",
+          "span": 24,
+          "label": "关联查询",
+          "layout": "colFormItem",
+          "dbTable": "1640899270301220865",
+          "tagIcon": "input",
+          "changeTag": true,
+          "renderKey": "HLMoGPB1682156796273",
+          "showLabel": true,
+          "labelWidth": null,
+          "dbFieldList": ["1649711137891065858", "1649711251044999169"],
+          "displayType": true,
+          "showDefaultValue": false
+        },
+        "typeId": "QUERY_CHECK",
+        "__vModel__": "fieldHLMoGPB1682156796273",
+        "dataNum": 1,
+        "linkList": [
+          {
+            "id": "1649711137891065858",
+            "name": "fieldibpnGPB1682156734859",
+            "type": 0,
+            "label": "单行01",
+            "typeId": "INPUT",
+            "__vModel__": "fieldibpnGPB1682156734859",
+            "visible": 1,
+            "__slot__": null,
+            "children": null,
+            "disabled": false,
+            "parentId": 1,
+            "foreignId": 0,
+            "childrenFlag": 0,
+            "childrenFromDesignerId": null
+          },
+          {
+            "id": "1649711251044999169",
+            "name": "fieldPhAoGPB1682156765021",
+            "type": 0,
+            "label": "单行02",
+            "typeId": "INPUT",
+            "__vModel__": "fieldPhAoGPB1682156765021",
+            "visible": 1,
+            "__slot__": null,
+            "children": null,
+            "disabled": false,
+            "parentId": 1,
+            "foreignId": 0,
+            "childrenFlag": 0,
+            "childrenFromDesignerId": null
+          }
+        ],
+        "typeName": "关联查询",
+        "parentKey": "fieldgkbsCPB1682128154200",
+        "filterCond": [
+          {
+            "type": 0,
+            "value": "1649711137891065858",
+            "typeId": "INPUT",
+            "value2": "fieldckNYMOB1681818216184",
+            "condition": 2,
+            "typeDisabled": false
+          }
+        ],
+        "visibility": true,
+        "description": "",
+        "linkedShowField": []
+      }
+    ],
+    "editable": true,
+    "notChild": true,
+    "readonly": false,
+    "typeName": "子表单",
+    "tableList": [],
+    "visibility": true,
+    "description": "",
+    "fieldDisplayRules": []
+  }
+]

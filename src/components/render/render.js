@@ -1,3 +1,4 @@
+/* eslint-disable no-extra-semi */
 import { deepClone } from '@/utils/index'
 
 const componentChild = {}
@@ -35,7 +36,7 @@ function mountSlotFiles(h, confClone, children) {
 }
 
 function emitEvents(confClone) {
-  ['on', 'nativeOn'].forEach((attr) => {
+  ;['on', 'nativeOn'].forEach((attr) => {
     const eventKeyList = Object.keys(confClone[attr] || {})
     eventKeyList.forEach((key) => {
       const val = confClone[attr][key]
@@ -48,15 +49,13 @@ function emitEvents(confClone) {
 
 function buildDataObject(confClone, dataObject) {
   Object.keys(confClone).forEach((key) => {
+    // console.log('buildDataObject', dataObject, confClone)
     const val = confClone[key]
     if (key === '__vModel__') {
-      vModel.call(this, dataObject, confClone.__config__.defaultValue)
+      const value = this.useValue ? this.value : confClone.__config__.defaultValue
+      vModel.call(this, dataObject, value)
     } else if (dataObject[key] !== undefined) {
-      if (
-        dataObject[key] === null ||
-        dataObject[key] instanceof RegExp ||
-        ['boolean', 'string', 'number', 'function'].includes(typeof dataObject[key])
-      ) {
+      if (dataObject[key] === null || dataObject[key] instanceof RegExp || ['boolean', 'string', 'number', 'function'].includes(typeof dataObject[key])) {
         dataObject[key] = val
       } else if (Array.isArray(dataObject[key])) {
         dataObject[key] = [...dataObject[key], ...val]
@@ -78,7 +77,7 @@ function clearAttrs(dataObject) {
   delete dataObject.attrs.__methods__
 }
 
-function makeDataObject() {
+function makeDataObject(key) {
   // 深入数据对象：
   // https://cn.vuejs.org/v2/guide/render-function.html#%E6%B7%B1%E5%85%A5%E6%95%B0%E6%8D%AE%E5%AF%B9%E8%B1%A1
   return {
@@ -92,7 +91,7 @@ function makeDataObject() {
     directives: [],
     scopedSlots: {},
     slot: null,
-    key: null,
+    key,
     ref: null,
     refInFor: true,
   }
@@ -104,9 +103,15 @@ export default {
       type: Object,
       required: true,
     },
+    useValue: {
+      type: Boolean,
+    },
+    value: {
+      type: [String, Number, null, undefined, Object],
+    },
   },
   render(h) {
-    const dataObject = makeDataObject()
+    const dataObject = makeDataObject(this.key)
     const confClone = deepClone(this.conf)
     const children = this.$slots.default || []
 

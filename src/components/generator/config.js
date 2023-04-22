@@ -561,6 +561,45 @@ export const layoutComponents = [
     // disabled: false
   },
   {
+    // 组件的自定义配置
+    typeId: 'CHILD_FORM',
+    typeName: '子表单',
+    __config__: {
+      label: '子表单',
+      labelWidth: null,
+      showLabel: true,
+      changeTag: true,
+      tag: 'my-table',
+      tagIcon: 'input',
+      showDefaultValue: true,
+      defaultValue: undefined,
+      defaultValueType: 0,
+      defaultValueSource: {
+        type: 0,
+        id: ''
+      },
+      displayType: true,
+      required: undefined,
+      showRequired: false,
+      layout: 'rowFormItem',
+    },
+    children: [],
+    tableList: [],
+    __slot__: {
+      dataList: []
+    },
+    style: {
+      width: '254px',
+      maxWidth: '100%'
+    },
+    fieldDisplayRules: [],
+    readonly: false,
+    editable: true,
+    visibility: true,
+    notChild: true,
+    // conditionType: 9
+  },
+  {
     __config__: {
       label: '按钮',
       showLabel: true,
