@@ -32,7 +32,7 @@ const components = {
 const layouts = {
   colFormItem(h, currentItem, index, list) {
     const { activeItem } = this.$listeners
-    const config = currentItem.__config__
+    const config = currentItem.config
     const child = renderChildren.apply(this, arguments)
     let className = this.activeId === config.formId ? 'drawing-item active-from-item' : 'drawing-item'
     if (this.formConf.unFocusedComponentBorder) className += ' unfocus-bordered'
@@ -64,7 +64,7 @@ const layouts = {
   },
   rowFormItem(h, currentItem, index, list) {
     const { activeItem } = this.$listeners
-    const config = currentItem.__config__
+    const config = currentItem.config
     const className = this.activeId === config.formId ? 'drawing-row-item active-from-item' : 'drawing-row-item'
     let child = renderChildren.apply(this, arguments)
     if (currentItem.type === 'flex') {
@@ -94,7 +94,7 @@ const layouts = {
     )
   },
   raw(h, currentItem, index, list) {
-    const config = currentItem.__config__
+    const config = currentItem.config
     const child = renderChildren.apply(this, arguments)
     return (
       <render
@@ -111,10 +111,10 @@ const layouts = {
 }
 
 function renderChildren(h, currentItem, index, list) {
-  const config = currentItem.__config__
+  const config = currentItem.config
   if (!Array.isArray(config.children)) return null
   return config.children.map((el, i) => {
-    const layout = layouts[el.__config__.layout]
+    const layout = layouts[el.config.layout]
     if (layout) {
       return layout.call(this, h, el, i, config.children)
     }
@@ -123,7 +123,7 @@ function renderChildren(h, currentItem, index, list) {
 }
 
 function layoutIsNotFound() {
-  throw new Error(`没有与${this.currentItem.__config__.layout}匹配的layout`)
+  throw new Error(`没有与${this.currentItem.config.layout}匹配的layout`)
 }
 
 export default {
@@ -133,7 +133,7 @@ export default {
   },
   props: ['currentItem', 'index', 'drawingList', 'activeId', 'formConf'],
   render(h) {
-    const layout = layouts[this.currentItem.__config__.layout]
+    const layout = layouts[this.currentItem.config.layout]
 
     if (layout) {
       return layout.call(this, h, this.currentItem, this.index, this.drawingList)

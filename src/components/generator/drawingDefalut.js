@@ -1,6 +1,6 @@
 export default [
   {
-    __config__: {
+    config: {
       label: '单行文本',
       labelWidth: null,
       showLabel: true,
@@ -25,7 +25,7 @@ export default [
       prepend: '',
       append: '',
     },
-    __vModel__: 'mobile',
+    vModel: 'mobile',
     placeholder: '请输入手机号',
     style: { width: '100%' },
     clearable: true,

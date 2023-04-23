@@ -48,7 +48,7 @@ export function makeUpJs(formConfig, type) {
 
 // 构建组件属性
 function buildAttributes(scheme, dataList, ruleList, optionsList, methodList, propsList, uploadVarList, created) {
-  const config = scheme.__config__
+  const config = scheme.config
   const slot = scheme.__slot__
   buildData(scheme, dataList)
   buildRules(scheme, ruleList)
@@ -57,7 +57,7 @@ function buildAttributes(scheme, dataList, ruleList, optionsList, methodList, pr
   if (scheme.options || (slot && slot.options && slot.options.length)) {
     buildOptions(scheme, optionsList)
     if (config.dataType === 'dynamic') {
-      const model = `${scheme.__vModel__}Options`
+      const model = `${scheme.vModel}Options`
       const options = titleCase(model)
       const methodName = `get${options}`
       buildOptionMethod(methodName, model, methodList, scheme)
@@ -73,8 +73,8 @@ function buildAttributes(scheme, dataList, ruleList, optionsList, methodList, pr
   // 处理el-upload的action
   if (scheme.action && config.tag === 'el-upload') {
     uploadVarList.push(
-      `${scheme.__vModel__}Action: '${scheme.action}',
-      ${scheme.__vModel__}fileList: [],`
+      `${scheme.vModel}Action: '${scheme.action}',
+      ${scheme.vModel}fileList: [],`
     )
     methodList.push(buildBeforeUpload(scheme))
     // 非自动上传时，生成手动上传的函数
@@ -142,16 +142,16 @@ function mixinMethod(type) {
 
 // 构建data
 function buildData(scheme, dataList) {
-  const config = scheme.__config__
-  if (scheme.__vModel__ === undefined) return
+  const config = scheme.config
+  if (scheme.vModel === undefined) return
   const defaultValue = JSON.stringify(config.defaultValue)
-  dataList.push(`${scheme.__vModel__}: ${defaultValue},`)
+  dataList.push(`${scheme.vModel}: ${defaultValue},`)
 }
 
 // 构建校验规则
 function buildRules(scheme, ruleList) {
-  const config = scheme.__config__
-  if (scheme.__vModel__ === undefined) return
+  const config = scheme.config
+  if (scheme.vModel === undefined) return
   const rules = []
   if (ruleTrigger[config.tag]) {
     if (config.required) {
@@ -169,31 +169,31 @@ function buildRules(scheme, ruleList) {
         }
       })
     }
-    ruleList.push(`${scheme.__vModel__}: [${rules.join(',')}],`)
+    ruleList.push(`${scheme.vModel}: [${rules.join(',')}],`)
   }
 }
 
 // 构建options
 function buildOptions(scheme, optionsList) {
-  if (scheme.__vModel__ === undefined) return
+  if (scheme.vModel === undefined) return
   // el-cascader直接有options属性，其他组件都是定义在slot中，所以有两处判断
   let { options } = scheme
   if (!options) options = scheme.__slot__.options
-  if (scheme.__config__.dataType === 'dynamic') {
+  if (scheme.config.dataType === 'dynamic') {
     options = []
   }
-  const str = `${scheme.__vModel__}Options: ${JSON.stringify(options)},`
+  const str = `${scheme.vModel}Options: ${JSON.stringify(options)},`
   optionsList.push(str)
 }
 
 function buildProps(scheme, propsList) {
-  const str = `${scheme.__vModel__}Props: ${JSON.stringify(scheme.props.props)},`
+  const str = `${scheme.vModel}Props: ${JSON.stringify(scheme.props.props)},`
   propsList.push(str)
 }
 
 // el-upload的BeforeUpload
 function buildBeforeUpload(scheme) {
-  const config = scheme.__config__
+  const config = scheme.config
   const unitNum = units[config.sizeUnit]
   let rightSizeCode = ''
   let acceptCode = ''
@@ -212,7 +212,7 @@ function buildBeforeUpload(scheme) {
     }`
     returnList.push('isAccept')
   }
-  const str = `${scheme.__vModel__}BeforeUpload(file) {
+  const str = `${scheme.vModel}BeforeUpload(file) {
     ${rightSizeCode}
     ${acceptCode}
     return ${returnList.join('&&')}
@@ -223,13 +223,13 @@ function buildBeforeUpload(scheme) {
 // el-upload的submit
 function buildSubmitUpload(scheme) {
   const str = `submitUpload() {
-    this.$refs['${scheme.__vModel__}'].submit()
+    this.$refs['${scheme.vModel}'].submit()
   },`
   return str
 }
 
 function buildOptionMethod(methodName, model, methodList, scheme) {
-  const config = scheme.__config__
+  const config = scheme.config
   const str = `${methodName}() {
     // 注意：this.$axios是通过Vue.prototype.$axios = axios挂载产生的
     this.$axios({

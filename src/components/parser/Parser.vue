@@ -16,14 +16,14 @@ const ruleTrigger = {
 
 const layouts = {
   colFormItem(h, scheme) {
-    const config = scheme.__config__
+    const config = scheme.config
     const listeners = buildListeners.call(this, scheme)
 
     let labelWidth = config.labelWidth ? `${config.labelWidth}px` : null
     if (config.showLabel === false) labelWidth = '0'
     return (
       <el-col span={config.span}>
-        <el-form-item label-width={labelWidth} prop={scheme.__vModel__} label={config.showLabel ? config.label : ''}>
+        <el-form-item label-width={labelWidth} prop={scheme.vModel} label={config.showLabel ? config.label : ''}>
           <render conf={scheme} on={listeners} />
         </el-form-item>
       </el-col>
@@ -89,7 +89,7 @@ function formBtns(h) {
 
 function renderFormItem(h, elementList) {
   return elementList.map((scheme) => {
-    const config = scheme.__config__
+    const config = scheme.config
     const layout = layouts[config.layout]
 
     if (layout) {
@@ -100,7 +100,7 @@ function renderFormItem(h, elementList) {
 }
 
 function renderChildren(h, scheme) {
-  const config = scheme.__config__
+  const config = scheme.config
   if (!Array.isArray(config.children)) return null
   return renderFormItem.call(this, h, config.children)
 }
@@ -118,17 +118,17 @@ function renderChildForm(h, scheme) {
           // console.log('scopedSlots', field, scope)
           return (
             <el-form-item label-width='0'>
-              <render conf={fieldCopy} on={listeners} key={scope.$index} use-value={true} value={scope.row[field.__vModel__]} />
+              <render conf={fieldCopy} on={listeners} key={scope.$index} use-value={true} value={scope.row[field.vModel]} />
             </el-form-item>
           )
         }
         if (['MEMBER_RADIO', 'MEMBER_CHECK', 'DEPT_RADIO', 'DEPT_CHECK'].includes(field.typeId)) {
-          return scope.row[field.__vModel__]?.map((m) => m.name).join(',')
+          return scope.row[field.vModel]?.map((m) => m.name).join(',')
         }
 
-        // console.log('scope', scope, field, scope.row[field.__vModel__])
+        // console.log('scope', scope, field, scope.row[field.vModel])
 
-        return scope.row[field.__vModel__]
+        return scope.row[field.vModel]
       },
     }
   }
@@ -141,27 +141,27 @@ function renderChildForm(h, scheme) {
 
       if (item.typeId === 'QUERY_CHECK') {
         return (
-          <el-table-column props={{ label: item.__config__.label }} key={idx}>
+          <el-table-column props={{ label: item.config.label }} key={idx}>
             {(item.linkList || []).map((child, index) => {
-              return <el-table-column key={index} props={{ label: child.label, prop: child.__vModel__ }} scopedSlots={scopedSlots(child, false)}></el-table-column>
+              return <el-table-column key={index} props={{ label: child.label, prop: child.vModel }} scopedSlots={scopedSlots(child, false)}></el-table-column>
             })}
           </el-table-column>
         )
       }
 
       return (
-        <el-table-column props={{ label: item.__config__.label, prop: hasChild ? undefined : item.__vModel__ }} scopedSlots={scopedSlots(item)}>
+        <el-table-column props={{ label: item.config.label, prop: hasChild ? undefined : item.vModel }} scopedSlots={scopedSlots(item)}>
           {hasChild && buildColumns(item[childProp])}
         </el-table-column>
       )
     })
   }
   const props = {
-    data: this[this.formConf.formModel][scheme.__vModel__] || scheme.value,
-    size: scheme.__config__.size,
-    stripe: scheme.__config__.stripe,
-    border: scheme.__config__.border,
-    fit: scheme.__config__.fit,
+    data: this[this.formConf.formModel][scheme.vModel] || scheme.value,
+    size: scheme.config.size,
+    stripe: scheme.config.stripe,
+    border: scheme.config.border,
+    fit: scheme.config.fit,
     'show-header': scheme.showHeader,
     'header-cell-style': scheme.headerCellStyle,
     'cell-style': scheme.cellStyle,
@@ -184,22 +184,22 @@ function setValue(event, config, scheme, parentScheme, index) {
   if (parentScheme) {
     this.$set(config, 'defaultValue', event)
 
-    const formData = this[this.formConf.formModel][parentScheme.__vModel__]
+    const formData = this[this.formConf.formModel][parentScheme.vModel]
     // console.log('setValue.o', parentScheme, scheme, config)
 
     if (!formData) {
-      this.$set(this[this.formConf.formModel], parentScheme.__vModel__, [{ [scheme.__vModel__]: event }])
+      this.$set(this[this.formConf.formModel], parentScheme.vModel, [{ [scheme.vModel]: event }])
     } else {
-      this.$set(this[this.formConf.formModel][parentScheme.__vModel__][index], scheme.__vModel__, event)
+      this.$set(this[this.formConf.formModel][parentScheme.vModel][index], scheme.vModel, event)
     }
   } else {
     this.$set(config, 'defaultValue', event)
-    this.$set(this[this.formConf.formModel], scheme.__vModel__, event)
+    this.$set(this[this.formConf.formModel], scheme.vModel, event)
   }
 }
 
 function buildListeners(scheme, parentScheme, index) {
-  const config = scheme.__config__
+  const config = scheme.config
   const methods = this.formConf.__methods__ || {}
   const listeners = {}
 
@@ -237,14 +237,14 @@ export default {
   methods: {
     initFormData(componentList, formData) {
       componentList.forEach((cur) => {
-        const config = cur.__config__
-        if (cur.__vModel__) formData[cur.__vModel__] = cur.typeId === 'CHILD_FORM' ? cur.value : config.defaultValue
+        const config = cur.config
+        if (cur.vModel) formData[cur.vModel] = cur.typeId === 'CHILD_FORM' ? cur.value : config.defaultValue
         if (config.children) this.initFormData(config.children, formData)
       })
     },
     buildRules(componentList, rules) {
       componentList.forEach((cur) => {
-        const config = cur.__config__
+        const config = cur.config
         if (Array.isArray(config.regList)) {
           if (config.required) {
             const required = { required: config.required, message: cur.placeholder }
@@ -255,7 +255,7 @@ export default {
             required.message === undefined && (required.message = `${config.label}不能为空`)
             config.regList.push(required)
           }
-          rules[cur.__vModel__] = config.regList.map((item) => {
+          rules[cur.vModel] = config.regList.map((item) => {
             item.pattern && (item.pattern = eval(item.pattern))
             item.trigger = ruleTrigger && ruleTrigger[config.tag]
             return item

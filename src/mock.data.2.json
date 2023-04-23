@@ -4,7 +4,7 @@
       "width": "254px",
       "maxWidth": "100%"
     },
-    "__config__": {
+    "config": {
       "tag": "el-input",
       "span": 24,
       "label": "单行文本",
@@ -50,7 +50,7 @@
       }
     },
     "typeId": "INPUT",
-    "__vModel__": "fieldckNYMOB1681818216184",
+    "vModel": "fieldckNYMOB1681818216184",
     "editable": true,
     "readonly": false,
     "typeName": "单行文本",
@@ -62,7 +62,7 @@
   },
   {
     "type": 2,
-    "__config__": {
+    "config": {
       "tag": "province-city",
       "span": 24,
       "label": "地址",
@@ -77,7 +77,7 @@
       "showDefaultValue": true
     },
     "typeId": "PROVINCE_CITY",
-    "__vModel__": "fieldVxILXOB1681896803169",
+    "vModel": "fieldVxILXOB1681896803169",
     "__slot__": {
       "options": [
         {
@@ -111,7 +111,7 @@
         "fieldfgcsCPB1682128157163": "2"
       }
     ],
-    "__config__": {
+    "config": {
       "tag": "my-table",
       "span": 24,
       "label": "子表单",
@@ -131,7 +131,7 @@
       }
     },
     "typeId": "CHILD_FORM",
-    "__vModel__": "fieldgkbsCPB1682128154200",
+    "vModel": "fieldgkbsCPB1682128154200",
     "__slot__": {
       "dataList": []
     },
@@ -141,7 +141,7 @@
           "width": "254px",
           "maxWidth": "100%"
         },
-        "__config__": {
+        "config": {
           "tag": "el-input",
           "span": 24,
           "label": "单行文本",
@@ -188,7 +188,7 @@
           }
         },
         "typeId": "INPUT",
-        "__vModel__": "fieldfgcsCPB1682128157163",
+        "vModel": "fieldfgcsCPB1682128157163",
         "editable": true,
         "readonly": false,
         "typeName": "单行文本",
@@ -204,7 +204,7 @@
           "maxWidth": "100%"
         },
         "canAdd": true,
-        "__config__": {
+        "config": {
           "tag": "my-form",
           "span": 24,
           "label": "关联查询",
@@ -220,7 +220,7 @@
           "showDefaultValue": false
         },
         "typeId": "QUERY_CHECK",
-        "__vModel__": "fieldHLMoGPB1682156796273",
+        "vModel": "fieldHLMoGPB1682156796273",
         "dataNum": 1,
         "linkList": [
           {
@@ -229,7 +229,7 @@
             "type": 0,
             "label": "单行01",
             "typeId": "INPUT",
-            "__vModel__": "fieldibpnGPB1682156734859",
+            "vModel": "fieldibpnGPB1682156734859",
             "visible": 1,
             "__slot__": null,
             "children": null,
@@ -245,7 +245,7 @@
             "type": 0,
             "label": "单行02",
             "typeId": "INPUT",
-            "__vModel__": "fieldPhAoGPB1682156765021",
+            "vModel": "fieldPhAoGPB1682156765021",
             "visible": 1,
             "__slot__": null,
             "children": null,

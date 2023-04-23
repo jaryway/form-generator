@@ -2,7 +2,7 @@ export default {
   options(h, conf, key) {
     const list = []
     conf.__slot__.options.forEach((item) => {
-      if (conf.__config__.optionType === 'button') {
+      if (conf.config.optionType === 'button') {
         list.push(<el-checkbox-button label={item.value}>{item.label}</el-checkbox-button>)
       } else {
         list.push(

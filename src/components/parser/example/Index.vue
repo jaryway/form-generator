@@ -31,7 +31,7 @@ export default {
       formConf: {
         fields: [
           {
-            __config__: {
+            config: {
               label: '单行文本m',
               labelWidth: null,
               showLabel: true,
@@ -54,7 +54,7 @@ export default {
               prepend: '',
               append: '',
             },
-            __vModel__: 'mobile',
+            vModel: 'mobile',
             placeholder: '请输入手机号',
             style: {
               width: '100%',
@@ -68,7 +68,7 @@ export default {
             disabled: false,
           },
           {
-            __config__: {
+            config: {
               label: '日期范围',
               tag: 'el-date-picker',
               tagIcon: 'date-range',
@@ -96,17 +96,17 @@ export default {
             format: 'yyyy-MM-dd',
             'value-format': 'yyyy-MM-dd',
             readonly: false,
-            __vModel__: 'field101',
+            vModel: 'field101',
           },
           {
-            __config__: {
+            config: {
               layout: 'rowFormItem',
               tagIcon: 'row',
               label: '行容器',
               layoutTree: true,
               children: [
                 {
-                  __config__: {
+                  config: {
                     label: '评分',
                     tag: 'el-rate',
                     tagIcon: 'rate',
@@ -128,7 +128,7 @@ export default {
                   'show-text': false,
                   'show-score': false,
                   disabled: false,
-                  __vModel__: 'field102',
+                  vModel: 'field102',
                 },
               ],
               document: 'https://element.eleme.cn/#/zh-CN/component/layout',
@@ -143,7 +143,7 @@ export default {
             align: 'top',
           },
           {
-            __config__: {
+            config: {
               label: '按钮',
               showLabel: true,
               changeTag: true,
@@ -198,7 +198,7 @@ export default {
       formConf2: {
         fields: [
           {
-            __config__: {
+            config: {
               label: '单行文本',
               labelWidth: null,
               showLabel: true,
@@ -220,7 +220,7 @@ export default {
               prepend: '',
               append: '',
             },
-            __vModel__: 'mobile',
+            vModel: 'mobile',
             placeholder: '请输入手机号',
             style: {
               width: '100%',
@@ -234,7 +234,7 @@ export default {
             disabled: false,
           },
           {
-            __config__: {
+            config: {
               label: '日期范围',
               tag: 'el-date-picker',
               tagIcon: 'date-range',
@@ -262,7 +262,7 @@ export default {
             format: 'yyyy-MM-dd',
             'value-format': 'yyyy-MM-dd',
             readonly: false,
-            __vModel__: 'field101',
+            vModel: 'field101',
           },
         ],
         formRef: 'elForm',
@@ -298,9 +298,9 @@ export default {
   methods: {
     fillFormData(form, data) {
       form.fields.forEach((item) => {
-        const val = data[item.__vModel__]
+        const val = data[item.vModel]
         if (val) {
-          item.__config__.defaultValue = val
+          item.config.defaultValue = val
         }
       })
     },

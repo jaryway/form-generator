@@ -45,7 +45,7 @@ export default {
                 fieldpFirCPB1682128031249: '',
               },
             ],
-            __config__: {
+            config: {
               tag: 'el-table',
               span: 12,
               label: '子表单',
@@ -65,7 +65,7 @@ export default {
               },
             },
             typeId: 'CHILD_FORM',
-            __vModel__: 'fieldOagrCPB1682128026646',
+            vModel: 'fieldOagrCPB1682128026646',
             __slot__: {
               dataList: [],
             },
@@ -75,7 +75,7 @@ export default {
                   width: '254px',
                   maxWidth: '100%',
                 },
-                __config__: {
+                config: {
                   tag: 'el-input',
                   span: 12,
                   label: '姓名',
@@ -122,7 +122,7 @@ export default {
                   },
                 },
                 typeId: 'INPUT',
-                __vModel__: 'fieldpFirCPB1682128031249',
+                vModel: 'fieldpFirCPB1682128031249',
                 editable: true,
                 readonly: false,
                 typeName: '单行文本',
@@ -138,7 +138,7 @@ export default {
                   width: '254px',
                   maxWidth: '100%',
                 },
-                __config__: {
+                config: {
                   tag: 'el-input',
                   span: 24,
                   label: '班级',
@@ -185,7 +185,7 @@ export default {
                   },
                 },
                 typeId: 'INPUT',
-                __vModel__: 'fieldkorrCPB1682128057527',
+                vModel: 'fieldkorrCPB1682128057527',
                 editable: true,
                 readonly: false,
                 typeName: '单行文本',
@@ -210,7 +210,7 @@ export default {
                     fieldfgcsCPB1682128157163: '2',
                   },
                 ],
-                __config__: {
+                config: {
                   tag: 'my-table',
                   span: 24,
                   label: '子表单',
@@ -230,7 +230,7 @@ export default {
                   },
                 },
                 typeId: 'CHILD_FORM',
-                __vModel__: 'fieldgkbsCPB1682128154200',
+                vModel: 'fieldgkbsCPB1682128154200',
                 __slot__: {
                   dataList: [],
                 },
@@ -240,7 +240,7 @@ export default {
                       width: '254px',
                       maxWidth: '100%',
                     },
-                    __config__: {
+                    config: {
                       tag: 'el-input',
                       span: 24,
                       label: '单行文本',
@@ -287,7 +287,7 @@ export default {
                       },
                     },
                     typeId: 'INPUT',
-                    __vModel__: 'fieldfgcsCPB1682128157163',
+                    vModel: 'fieldfgcsCPB1682128157163',
                     editable: true,
                     readonly: false,
                     typeName: '单行文本',
@@ -303,7 +303,7 @@ export default {
                       maxWidth: '100%',
                     },
                     canAdd: true,
-                    __config__: {
+                    config: {
                       tag: 'my-form',
                       span: 24,
                       label: '关联查询',
@@ -319,7 +319,7 @@ export default {
                       showDefaultValue: false,
                     },
                     typeId: 'QUERY_CHECK',
-                    __vModel__: 'fieldHLMoGPB1682156796273',
+                    vModel: 'fieldHLMoGPB1682156796273',
                     dataNum: 1,
                     linkList: [
                       {
@@ -328,7 +328,7 @@ export default {
                         type: 0,
                         label: '单行01',
                         typeId: 'INPUT',
-                        __vModel__: 'fieldibpnGPB1682156734859',
+                        vModel: 'fieldibpnGPB1682156734859',
                         visible: 1,
                         __slot__: null,
                         children: null,
@@ -344,7 +344,7 @@ export default {
                         type: 0,
                         label: '单行02',
                         typeId: 'INPUT',
-                        __vModel__: 'fieldPhAoGPB1682156765021',
+                        vModel: 'fieldPhAoGPB1682156765021',
                         visible: 1,
                         __slot__: null,
                         children: null,
@@ -392,7 +392,7 @@ export default {
             fieldDisplayRules: [],
           },
           {
-            __config__: {
+            config: {
               label: '单行文本999',
               labelWidth: null,
               showLabel: true,
@@ -415,7 +415,7 @@ export default {
               prepend: '',
               append: '',
             },
-            __vModel__: 'mobile',
+            vModel: 'mobile',
             placeholder: '请输入手机号',
             style: {
               width: '100%',
@@ -429,7 +429,7 @@ export default {
             disabled: false,
           },
           {
-            __config__: {
+            config: {
               label: '日期范围',
               tag: 'el-date-picker',
               tagIcon: 'date-range',
@@ -457,17 +457,17 @@ export default {
             format: 'yyyy-MM-dd',
             'value-format': 'yyyy-MM-dd',
             readonly: false,
-            __vModel__: 'field101',
+            vModel: 'field101',
           },
           {
-            __config__: {
+            config: {
               layout: 'rowFormItem',
               tagIcon: 'row',
               label: '行容器',
               layoutTree: true,
               children: [
                 {
-                  __config__: {
+                  config: {
                     label: '评分',
                     tag: 'el-rate',
                     tagIcon: 'rate',
@@ -489,7 +489,7 @@ export default {
                   'show-text': false,
                   'show-score': false,
                   disabled: false,
-                  __vModel__: 'field102',
+                  vModel: 'field102',
                 },
               ],
               document: 'https://element.eleme.cn/#/zh-CN/component/layout',
@@ -504,7 +504,7 @@ export default {
             align: 'top',
           },
           //   {
-          //     __config__: {
+          //     config: {
           //       label: '按钮',
           //       showLabel: true,
           //       changeTag: true,
@@ -577,9 +577,9 @@ export default {
   methods: {
     fillFormData(form, data) {
       form.fields.forEach((item) => {
-        const val = data[item.__vModel__]
+        const val = data[item.vModel]
         if (val) {
-          item.__config__.defaultValue = val
+          item.config.defaultValue = val
         }
       })
     },

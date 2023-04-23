@@ -24,7 +24,7 @@ function vModel(dataObject, defaultValue) {
 }
 
 function mountSlotFiles(h, confClone, children) {
-  const childObjs = componentChild[confClone.__config__.tag]
+  const childObjs = componentChild[confClone.config.tag]
   if (childObjs) {
     Object.keys(childObjs).forEach((key) => {
       const childFunc = childObjs[key]
@@ -51,8 +51,8 @@ function buildDataObject(confClone, dataObject) {
   Object.keys(confClone).forEach((key) => {
     // console.log('buildDataObject', dataObject, confClone)
     const val = confClone[key]
-    if (key === '__vModel__') {
-      const value = this.useValue ? this.value : confClone.__config__.defaultValue
+    if (key === 'vModel') {
+      const value = this.useValue ? this.value : confClone.config.defaultValue
       vModel.call(this, dataObject, value)
     } else if (dataObject[key] !== undefined) {
       if (dataObject[key] === null || dataObject[key] instanceof RegExp || ['boolean', 'string', 'number', 'function'].includes(typeof dataObject[key])) {
@@ -72,7 +72,7 @@ function buildDataObject(confClone, dataObject) {
 }
 
 function clearAttrs(dataObject) {
-  delete dataObject.attrs.__config__
+  delete dataObject.attrs.config
   delete dataObject.attrs.__slot__
   delete dataObject.attrs.__methods__
 }
@@ -124,6 +124,6 @@ export default {
     // 将json表单配置转化为vue render可以识别的 “数据对象（dataObject）”
     buildDataObject.call(this, confClone, dataObject)
 
-    return h(this.conf.__config__.tag, dataObject, children)
+    return h(this.conf.config.tag, dataObject, children)
   },
 }

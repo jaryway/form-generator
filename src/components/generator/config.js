@@ -16,7 +16,7 @@ export const formConf = {
 export const inputComponents = [
   {
     // 组件的自定义配置
-    __config__: {
+    config: {
       label: '单行文本',
       labelWidth: null,
       showLabel: true,
@@ -48,7 +48,7 @@ export const inputComponents = [
     disabled: false,
   },
   {
-    __config__: {
+    config: {
       label: '多行文本',
       labelWidth: null,
       showLabel: true,
@@ -75,7 +75,7 @@ export const inputComponents = [
     disabled: false,
   },
   {
-    __config__: {
+    config: {
       label: '密码',
       showLabel: true,
       labelWidth: null,
@@ -105,7 +105,7 @@ export const inputComponents = [
     disabled: false,
   },
   {
-    __config__: {
+    config: {
       label: '计数器',
       showLabel: true,
       changeTag: true,
@@ -129,7 +129,7 @@ export const inputComponents = [
     disabled: false,
   },
   {
-    __config__: {
+    config: {
       label: '编辑器',
       showLabel: true,
       changeTag: true,
@@ -152,7 +152,7 @@ export const inputComponents = [
 // 选择型组件 【左面板】
 export const selectComponents = [
   {
-    __config__: {
+    config: {
       label: '下拉选择',
       showLabel: true,
       labelWidth: null,
@@ -185,7 +185,7 @@ export const selectComponents = [
     multiple: false,
   },
   {
-    __config__: {
+    config: {
       label: '级联选择',
       url: 'https://www.fastmock.site/mock/f8d7a54fb1e60561e2f720d5a810009d/fg/cascaderList',
       method: 'get',
@@ -235,7 +235,7 @@ export const selectComponents = [
     separator: '/',
   },
   {
-    __config__: {
+    config: {
       label: '单选框组',
       labelWidth: null,
       showLabel: true,
@@ -268,7 +268,7 @@ export const selectComponents = [
     disabled: false,
   },
   {
-    __config__: {
+    config: {
       label: '多选框组',
       tag: 'el-checkbox-group',
       tagIcon: 'checkbox',
@@ -303,7 +303,7 @@ export const selectComponents = [
     disabled: false,
   },
   {
-    __config__: {
+    config: {
       label: '开关',
       tag: 'el-switch',
       tagIcon: 'switch',
@@ -327,7 +327,7 @@ export const selectComponents = [
     'inactive-value': false,
   },
   {
-    __config__: {
+    config: {
       label: '滑块',
       tag: 'el-slider',
       tagIcon: 'slider',
@@ -349,7 +349,7 @@ export const selectComponents = [
     range: false,
   },
   {
-    __config__: {
+    config: {
       label: '时间选择',
       tag: 'el-time-picker',
       tagIcon: 'time',
@@ -374,7 +374,7 @@ export const selectComponents = [
     'value-format': 'HH:mm:ss',
   },
   {
-    __config__: {
+    config: {
       label: '时间范围',
       tag: 'el-time-picker',
       tagIcon: 'time-range',
@@ -399,7 +399,7 @@ export const selectComponents = [
     'value-format': 'HH:mm:ss',
   },
   {
-    __config__: {
+    config: {
       label: '日期选择',
       tag: 'el-date-picker',
       tagIcon: 'date',
@@ -423,7 +423,7 @@ export const selectComponents = [
     readonly: false,
   },
   {
-    __config__: {
+    config: {
       label: '日期范围',
       tag: 'el-date-picker',
       tagIcon: 'date-range',
@@ -449,7 +449,7 @@ export const selectComponents = [
     readonly: false,
   },
   {
-    __config__: {
+    config: {
       label: '评分',
       tag: 'el-rate',
       tagIcon: 'rate',
@@ -471,7 +471,7 @@ export const selectComponents = [
     disabled: false,
   },
   {
-    __config__: {
+    config: {
       label: '颜色选择',
       tag: 'el-color-picker',
       tagIcon: 'color',
@@ -491,7 +491,7 @@ export const selectComponents = [
     size: 'medium',
   },
   {
-    __config__: {
+    config: {
       label: '上传',
       tag: 'el-upload',
       tagIcon: 'upload',
@@ -525,7 +525,7 @@ export const selectComponents = [
 // 布局型组件 【左面板】
 export const layoutComponents = [
   {
-    __config__: {
+    config: {
       layout: 'rowFormItem',
       tagIcon: 'row',
       label: '行容器',
@@ -537,7 +537,7 @@ export const layoutComponents = [
     align: 'top',
   },
   {
-    __config__: {
+    config: {
       label: '地址',
       showLabel: true,
       changeTag: true,
@@ -564,7 +564,7 @@ export const layoutComponents = [
     // 组件的自定义配置
     typeId: 'CHILD_FORM',
     typeName: '子表单',
-    __config__: {
+    config: {
       label: '子表单',
       labelWidth: null,
       showLabel: true,
@@ -600,7 +600,7 @@ export const layoutComponents = [
     // conditionType: 9
   },
   {
-    __config__: {
+    config: {
       label: '按钮',
       showLabel: true,
       changeTag: true,
@@ -621,7 +621,7 @@ export const layoutComponents = [
     disabled: false,
   },
   {
-    __config__: {
+    config: {
       layout: 'colFormItem',
       tagIcon: 'table',
       tag: 'el-table',
@@ -641,7 +641,7 @@ export const layoutComponents = [
       url: 'https://www.fastmock.site/mock/f8d7a54fb1e60561e2f720d5a810009d/fg/tableData',
       children: [
         {
-          __config__: {
+          config: {
             layout: 'raw',
             tag: 'el-table-column',
             renderKey: 15957617660153,
@@ -650,7 +650,7 @@ export const layoutComponents = [
           label: '日期',
         },
         {
-          __config__: {
+          config: {
             layout: 'raw',
             tag: 'el-table-column',
             renderKey: 15957617660152,
@@ -659,7 +659,7 @@ export const layoutComponents = [
           label: '地址',
         },
         {
-          __config__: {
+          config: {
             layout: 'raw',
             tag: 'el-table-column',
             renderKey: 15957617660151,
@@ -668,13 +668,13 @@ export const layoutComponents = [
           label: '名称',
         },
         {
-          __config__: {
+          config: {
             layout: 'raw',
             tag: 'el-table-column',
             renderKey: 1595774496335,
             children: [
               {
-                __config__: {
+                config: {
                   label: '按钮',
                   tag: 'el-button',
                   tagIcon: 'button',

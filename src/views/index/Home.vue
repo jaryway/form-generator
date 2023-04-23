@@ -32,8 +32,8 @@
                 @click="addComponent(element)"
               >
                 <div class="components-body">
-                  <svg-icon :icon-class="element.__config__.tagIcon" />
-                  {{ element.__config__.label }}
+                  <svg-icon :icon-class="element.config.tagIcon" />
+                  {{ element.config.label }}
                 </div>
               </div>
             </draggable>
@@ -182,10 +182,10 @@ export default {
   computed: {},
   watch: {
     // eslint-disable-next-line func-names
-    'activeData.__config__.label': function (val, oldVal) {
+    'activeData.config.label': function (val, oldVal) {
       if (
         this.activeData.placeholder === undefined ||
-        !this.activeData.__config__.tag ||
+        !this.activeData.config.tag ||
         oldActiveId !== this.activeId
       ) {
         return
@@ -253,7 +253,7 @@ export default {
       }, obj)
     },
     setRespData(component, resp) {
-      const { dataPath, renderKey, dataConsumer } = component.__config__
+      const { dataPath, renderKey, dataConsumer } = component.config
       if (!dataPath || !dataConsumer) return
       const respData = dataPath.split('.').reduce((pre, item) => pre[item], resp)
 
@@ -262,11 +262,11 @@ export default {
       // 此时赋值代码可写成 component[dataConsumer] = respData；
       // 但为支持更深层级的赋值（如：dataConsumer的值为'options.data'）,使用setObjectValueReduce
       this.setObjectValueReduce(component, dataConsumer, respData)
-      const i = this.drawingList.findIndex((item) => item.__config__.renderKey === renderKey)
+      const i = this.drawingList.findIndex((item) => item.config.renderKey === renderKey)
       if (i > -1) this.$set(this.drawingList, i, component)
     },
     fetchData(component) {
-      const { dataType, method, url } = component.__config__
+      const { dataType, method, url } = component.config
       if (dataType === 'dynamic' && method && url) {
         this.setLoading(component, true)
         this.$axios({
@@ -287,7 +287,7 @@ export default {
     },
     activeFormItem(currentItem) {
       this.activeData = currentItem
-      this.activeId = currentItem.__config__.formId
+      this.activeId = currentItem.config.formId
     },
     onEnd(obj) {
       if (obj.from !== obj.to) {
@@ -304,7 +304,7 @@ export default {
     },
     cloneComponent(origin) {
       const clone = deepClone(origin)
-      const config = clone.__config__
+      const config = clone.config
       config.span = this.formConf.span // 生成代码时，会根据span做精简判断
       this.createIdAndKey(clone)
       clone.placeholder !== undefined && (clone.placeholder += config.label)
@@ -312,11 +312,11 @@ export default {
       return tempActiveData
     },
     createIdAndKey(item) {
-      const config = item.__config__
+      const config = item.config
       config.formId = ++this.idGlobal
       config.renderKey = `${config.formId}${+new Date()}` // 改变renderKey后可以实现强制更新组件
       if (config.layout === 'colFormItem') {
-        item.__vModel__ = `field${this.idGlobal}`
+        item.vModel = `field${this.idGlobal}`
       } else if (config.layout === 'rowFormItem') {
         config.componentName = `row${this.idGlobal}`
         !Array.isArray(config.children) && (config.children = [])
@@ -400,15 +400,15 @@ export default {
     },
     tagChange(newTag) {
       newTag = this.cloneComponent(newTag)
-      const config = newTag.__config__
-      newTag.__vModel__ = this.activeData.__vModel__
+      const config = newTag.config
+      newTag.vModel = this.activeData.vModel
       config.formId = this.activeId
-      config.span = this.activeData.__config__.span
-      this.activeData.__config__.tag = config.tag
-      this.activeData.__config__.tagIcon = config.tagIcon
-      this.activeData.__config__.document = config.document
-      if (typeof this.activeData.__config__.defaultValue === typeof config.defaultValue) {
-        config.defaultValue = this.activeData.__config__.defaultValue
+      config.span = this.activeData.config.span
+      this.activeData.config.tag = config.tag
+      this.activeData.config.tagIcon = config.tagIcon
+      this.activeData.config.document = config.document
+      if (typeof this.activeData.config.defaultValue === typeof config.defaultValue) {
+        config.defaultValue = this.activeData.config.defaultValue
       }
       Object.keys(newTag).forEach((key) => {
         if (this.activeData[key] !== undefined) {
@@ -419,12 +419,12 @@ export default {
       this.updateDrawingList(newTag, this.drawingList)
     },
     updateDrawingList(newTag, list) {
-      const index = list.findIndex((item) => item.__config__.formId === this.activeId)
+      const index = list.findIndex((item) => item.config.formId === this.activeId)
       if (index > -1) {
         list.splice(index, 1, newTag)
       } else {
         list.forEach((item) => {
-          if (Array.isArray(item.__config__.children)) this.updateDrawingList(newTag, item.__config__.children)
+          if (Array.isArray(item.config.children)) this.updateDrawingList(newTag, item.config.children)
         })
       }
     },

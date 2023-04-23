@@ -20,7 +20,7 @@ const field = {
       fieldpFirCPB1682128031249: '',
     },
   ],
-  __config__: {
+  config: {
     tag: 'el-table',
     span: 12,
     label: '子表单',
@@ -40,7 +40,7 @@ const field = {
     },
   },
   typeId: 'CHILD_FORM',
-  __vModel__: 'fieldOagrCPB1682128026646',
+  vModel: 'fieldOagrCPB1682128026646',
   __slot__: {
     dataList: [],
   },
@@ -50,7 +50,7 @@ const field = {
         width: '254px',
         maxWidth: '100%',
       },
-      __config__: {
+      config: {
         tag: 'el-input',
         span: 12,
         label: '姓名',
@@ -97,7 +97,7 @@ const field = {
         },
       },
       typeId: 'INPUT',
-      __vModel__: 'fieldpFirCPB1682128031249',
+      vModel: 'fieldpFirCPB1682128031249',
       editable: true,
       readonly: false,
       typeName: '单行文本',
@@ -113,7 +113,7 @@ const field = {
         width: '254px',
         maxWidth: '100%',
       },
-      __config__: {
+      config: {
         tag: 'el-input',
         span: 24,
         label: '班级',
@@ -160,7 +160,7 @@ const field = {
         },
       },
       typeId: 'INPUT',
-      __vModel__: 'fieldkorrCPB1682128057527',
+      vModel: 'fieldkorrCPB1682128057527',
       editable: true,
       readonly: false,
       typeName: '单行文本',
@@ -176,7 +176,7 @@ const field = {
         maxWidth: '100%',
       },
       canAdd: true,
-      __config__: {
+      config: {
         tag: 'my-form',
         span: 24,
         label: '关联查询',
@@ -192,7 +192,7 @@ const field = {
         showDefaultValue: false,
       },
       typeId: 'QUERY_CHECK',
-      __vModel__: 'fieldHLMoGPB1682156796273',
+      vModel: 'fieldHLMoGPB1682156796273',
       dataNum: 1,
       linkList: [
         {
@@ -201,7 +201,7 @@ const field = {
           type: 0,
           label: '单行01',
           typeId: 'INPUT',
-          __vModel__: 'fieldibpnGPB1682156734859',
+          vModel: 'fieldibpnGPB1682156734859',
           visible: 1,
           __slot__: null,
           children: null,
@@ -217,7 +217,7 @@ const field = {
           type: 0,
           label: '单行02',
           typeId: 'INPUT',
-          __vModel__: 'fieldPhAoGPB1682156765021',
+          vModel: 'fieldPhAoGPB1682156765021',
           visible: 1,
           __slot__: null,
           children: null,
@@ -280,7 +280,7 @@ export default {
             return <render conf={field} />
           }
           if (['MEMBER_RADIO', 'MEMBER_CHECK', 'DEPT_RADIO', 'DEPT_CHECK'].includes(field.typeId)) {
-            return scope.row[field.__vModel__]?.map((m) => m.name).join(',')
+            return scope.row[field.vModel]?.map((m) => m.name).join(',')
           }
         },
       }
@@ -290,20 +290,20 @@ export default {
         const childProp = item.typeId === 'QUERY_CHECK' ? 'linkList' : 'children'
         const hasChild = item[childProp] && item[childProp].length
 
-        console.log('item', item.__config__.label, item.children)
+        console.log('item', item.config.label, item.children)
 
         if (item.typeId === 'QUERY_CHECK') {
           return (
-            <el-table-column props={{ label: item.__config__.label }}>
+            <el-table-column props={{ label: item.config.label }}>
               {(item.linkList || []).map((child) => {
-                return <el-table-column props={{ label: child.label, prop: child.__vModel__ }} scopedSlots={scopedSlots(child)}></el-table-column>
+                return <el-table-column props={{ label: child.label, prop: child.vModel }} scopedSlots={scopedSlots(child)}></el-table-column>
               })}
             </el-table-column>
           )
         }
 
         return (
-          <el-table-column props={{ label: item.__config__.label, prop: hasChild ? undefined : item.__vModel__ }} scopedSlots={scopedSlots(item)}>
+          <el-table-column props={{ label: item.config.label, prop: hasChild ? undefined : item.vModel }} scopedSlots={scopedSlots(item)}>
             {hasChild && buildColumns(item[childProp])}
           </el-table-column>
         )

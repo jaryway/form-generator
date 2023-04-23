@@ -70,8 +70,8 @@ function buildFromBtns(scheme, type) {
 
 // span不为24的用el-col包裹
 function colWrapper(scheme, str) {
-  if (someSpanIsNot24 || scheme.__config__.span !== 24) {
-    return `<el-col :span="${scheme.__config__.span}">
+  if (someSpanIsNot24 || scheme.config.span !== 24) {
+    return `<el-col :span="${scheme.config.span}">
       ${str}
     </el-col>`
   }
@@ -80,7 +80,7 @@ function colWrapper(scheme, str) {
 
 const layouts = {
   colFormItem(scheme) {
-    const config = scheme.__config__
+    const config = scheme.config
     let labelWidth = ''
     let label = `label="${config.label}"`
     if (config.labelWidth && config.labelWidth !== confGlobal.labelWidth) {
@@ -92,19 +92,19 @@ const layouts = {
     }
     const required = !ruleTrigger[config.tag] && config.required ? 'required' : ''
     const tagDom = tags[config.tag] ? tags[config.tag](scheme) : null
-    let str = `<el-form-item ${labelWidth} ${label} prop="${scheme.__vModel__}" ${required}>
+    let str = `<el-form-item ${labelWidth} ${label} prop="${scheme.vModel}" ${required}>
         ${tagDom}
       </el-form-item>`
     str = colWrapper(scheme, str)
     return str
   },
   rowFormItem(scheme) {
-    const config = scheme.__config__
+    const config = scheme.config
     const type = scheme.type === 'default' ? '' : `type="${scheme.type}"`
     const justify = scheme.type === 'default' ? '' : `justify="${scheme.justify}"`
     const align = scheme.type === 'default' ? '' : `align="${scheme.align}"`
     const gutter = scheme.gutter ? `:gutter="${scheme.gutter}"` : ''
-    const children = config.children.map((el) => layouts[el.__config__.layout](el))
+    const children = config.children.map((el) => layouts[el.config.layout](el))
     let str = `<el-row ${type} ${justify} ${align} ${gutter}>
       ${children.join('\n')}
     </el-row>`
@@ -193,8 +193,8 @@ const tags = {
   },
   'el-cascader': (el) => {
     const { tag, disabled, vModel, clearable, placeholder, width } = attrBuilder(el)
-    const options = el.options ? `:options="${el.__vModel__}Options"` : ''
-    const props = el.props ? `:props="${el.__vModel__}Props"` : ''
+    const options = el.options ? `:options="${el.vModel}Options"` : ''
+    const props = el.props ? `:props="${el.vModel}Props"` : ''
     const showAllLevels = el['show-all-levels'] ? '' : ':show-all-levels="false"'
     const filterable = el.filterable ? 'filterable' : ''
     const separator = el.separator === '/' ? '' : `separator="${el.separator}"`
@@ -253,17 +253,17 @@ const tags = {
     return `<${tag} ${vModel} ${size} ${showAlpha} ${colorFormat} ${disabled}></${tag}>`
   },
   'el-upload': (el) => {
-    const { tag } = el.__config__
+    const { tag } = el.config
     const disabled = el.disabled ? ":disabled='true'" : ''
-    const action = el.action ? `:action="${el.__vModel__}Action"` : ''
+    const action = el.action ? `:action="${el.vModel}Action"` : ''
     const multiple = el.multiple ? 'multiple' : ''
     const listType = el['list-type'] !== 'text' ? `list-type="${el['list-type']}"` : ''
     const accept = el.accept ? `accept="${el.accept}"` : ''
     const name = el.name !== 'file' ? `name="${el.name}"` : ''
     const autoUpload = el['auto-upload'] === false ? ':auto-upload="false"' : ''
-    const beforeUpload = `:before-upload="${el.__vModel__}BeforeUpload"`
-    const fileList = `:file-list="${el.__vModel__}fileList"`
-    const ref = `ref="${el.__vModel__}"`
+    const beforeUpload = `:before-upload="${el.vModel}BeforeUpload"`
+    const fileList = `:file-list="${el.vModel}fileList"`
+    const ref = `ref="${el.vModel}"`
     let child = buildElUploadChild(el)
 
     if (child) child = `\n${child}\n` // 换行
@@ -279,8 +279,8 @@ const tags = {
 
 function attrBuilder(el) {
   return {
-    tag: el.__config__.tag,
-    vModel: `v-model="${confGlobal.formModel}.${el.__vModel__}"`,
+    tag: el.config.tag,
+    vModel: `v-model="${confGlobal.formModel}.${el.vModel}"`,
     clearable: el.clearable ? 'clearable' : '',
     placeholder: el.placeholder ? `placeholder="${el.placeholder}"` : '',
     width: el.style && el.style.width ? ':style="{width: \'100%\'}"' : '',
@@ -316,7 +316,7 @@ function buildElSelectChild(scheme) {
   const children = []
   const slot = scheme.__slot__
   if (slot && slot.options && slot.options.length) {
-    children.push(`<el-option v-for="(item, index) in ${scheme.__vModel__}Options" :key="index" :label="item.label" :value="item.value" :disabled="item.disabled"></el-option>`)
+    children.push(`<el-option v-for="(item, index) in ${scheme.vModel}Options" :key="index" :label="item.label" :value="item.value" :disabled="item.disabled"></el-option>`)
   }
   return children.join('\n')
 }
@@ -325,11 +325,11 @@ function buildElSelectChild(scheme) {
 function buildElRadioGroupChild(scheme) {
   const children = []
   const slot = scheme.__slot__
-  const config = scheme.__config__
+  const config = scheme.config
   if (slot && slot.options && slot.options.length) {
     const tag = config.optionType === 'button' ? 'el-radio-button' : 'el-radio'
     const border = config.border ? 'border' : ''
-    children.push(`<${tag} v-for="(item, index) in ${scheme.__vModel__}Options" :key="index" :label="item.value" :disabled="item.disabled" ${border}>{{item.label}}</${tag}>`)
+    children.push(`<${tag} v-for="(item, index) in ${scheme.vModel}Options" :key="index" :label="item.value" :disabled="item.disabled" ${border}>{{item.label}}</${tag}>`)
   }
   return children.join('\n')
 }
@@ -338,11 +338,11 @@ function buildElRadioGroupChild(scheme) {
 function buildElCheckboxGroupChild(scheme) {
   const children = []
   const slot = scheme.__slot__
-  const config = scheme.__config__
+  const config = scheme.config
   if (slot && slot.options && slot.options.length) {
     const tag = config.optionType === 'button' ? 'el-checkbox-button' : 'el-checkbox'
     const border = config.border ? 'border' : ''
-    children.push(`<${tag} v-for="(item, index) in ${scheme.__vModel__}Options" :key="index" :label="item.value" :disabled="item.disabled" ${border}>{{item.label}}</${tag}>`)
+    children.push(`<${tag} v-for="(item, index) in ${scheme.vModel}Options" :key="index" :label="item.value" :disabled="item.disabled" ${border}>{{item.label}}</${tag}>`)
   }
   return children.join('\n')
 }
@@ -350,7 +350,7 @@ function buildElCheckboxGroupChild(scheme) {
 // el-upload 子级
 function buildElUploadChild(scheme) {
   const list = []
-  const config = scheme.__config__
+  const config = scheme.config
   if (scheme['list-type'] === 'picture-card') list.push('<i class="el-icon-plus"></i>')
   else list.push(`<el-button size="small" type="primary" icon="el-icon-upload">${config.buttonText}</el-button>`)
   if (config.showTip) list.push(`<div slot="tip" class="el-upload__tip">只能上传不超过 ${config.fileSize}${config.sizeUnit} 的${scheme.accept}文件</div>`)
@@ -366,10 +366,10 @@ export function makeUpHtml(formConfig, type) {
   const htmlList = []
   confGlobal = formConfig
   // 判断布局是否都沾满了24个栅格，以备后续简化代码结构
-  someSpanIsNot24 = formConfig.fields.some((item) => item.__config__.span !== 24)
+  someSpanIsNot24 = formConfig.fields.some((item) => item.config.span !== 24)
   // 遍历渲染每个组件成html
   formConfig.fields.forEach((el) => {
-    htmlList.push(layouts[el.__config__.layout](el))
+    htmlList.push(layouts[el.config.layout](el))
   })
   const htmlStr = htmlList.join('\n')
   // 将组件代码放进form标签
