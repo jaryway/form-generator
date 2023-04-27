@@ -21,6 +21,9 @@ function vModel(dataObject, defaultValue) {
   dataObject.on.input = (val) => {
     this.$emit('input', val)
   }
+  dataObject.on.blur = (val) => {
+    this.$emit('blur', val)
+  }
 }
 
 function mountSlotFiles(h, confClone, children) {
@@ -55,7 +58,11 @@ function buildDataObject(confClone, dataObject) {
       const value = this.useValue ? this.value : confClone.config.defaultValue
       vModel.call(this, dataObject, value)
     } else if (dataObject[key] !== undefined) {
-      if (dataObject[key] === null || dataObject[key] instanceof RegExp || ['boolean', 'string', 'number', 'function'].includes(typeof dataObject[key])) {
+      if (
+        dataObject[key] === null ||
+        dataObject[key] instanceof RegExp ||
+        ['boolean', 'string', 'number', 'function'].includes(typeof dataObject[key])
+      ) {
         dataObject[key] = val
       } else if (Array.isArray(dataObject[key])) {
         dataObject[key] = [...dataObject[key], ...val]
@@ -93,7 +100,7 @@ function makeDataObject(key) {
     slot: null,
     key,
     ref: null,
-    refInFor: true,
+    refInFor: true
   }
 }
 
@@ -101,14 +108,14 @@ export default {
   props: {
     conf: {
       type: Object,
-      required: true,
+      required: true
     },
     useValue: {
-      type: Boolean,
+      type: Boolean
     },
     value: {
-      type: [String, Number, null, undefined, Object],
-    },
+      type: [String, Number, null, undefined, Object]
+    }
   },
   render(h) {
     const dataObject = makeDataObject(this.key)
@@ -123,7 +130,8 @@ export default {
 
     // 将json表单配置转化为vue render可以识别的 “数据对象（dataObject）”
     buildDataObject.call(this, confClone, dataObject)
+    console.log('dataObject', dataObject)
 
     return h(this.conf.config.tag, dataObject, children)
-  },
+  }
 }
