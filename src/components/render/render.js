@@ -21,9 +21,9 @@ function vModel(dataObject, defaultValue) {
   dataObject.on.input = (val) => {
     this.$emit('input', val)
   }
-  dataObject.on.blur = (val) => {
-    this.$emit('blur', val)
-  }
+  // dataObject.on.blur = (val) => {
+  //   this.$emit('blur', val)
+  // }
 }
 
 function mountSlotFiles(h, confClone, children) {
@@ -115,13 +115,20 @@ export default {
     },
     value: {
       type: [String, Number, null, undefined, Object]
+    },
+    on: {
+      type: [String, Number, null, undefined, Object]
     }
+  },
+  mounted() {
+    this.$emit('mounted', this.conf)
+    console.log('render.mounted', this.conf)
   },
   render(h) {
     const dataObject = makeDataObject(this.key)
     const confClone = deepClone(this.conf)
     const children = this.$slots.default || []
-
+    dataObject.on = this.$listeners
     // 如果slots文件夹存在与当前tag同名的文件，则执行文件中的代码
     mountSlotFiles.call(this, h, confClone, children)
 
@@ -130,7 +137,7 @@ export default {
 
     // 将json表单配置转化为vue render可以识别的 “数据对象（dataObject）”
     buildDataObject.call(this, confClone, dataObject)
-    console.log('dataObject', dataObject)
+    console.log('render', this.conf, dataObject)
 
     return h(this.conf.config.tag, dataObject, children)
   }

@@ -376,21 +376,21 @@ export default {
                     childrenFlag: 0,
                     childrenFromDesignerId: null
                   },
-                  {
-                    id: '1647885908288122881',
-                    name: 'fieldVguLzNB1681721426505',
-                    type: 0,
-                    label: '成员单选',
-                    typeId: 'MEMBER_RADIO',
-                    vModel: 'fieldVguLzNB1681721426505',
-                    visible: 1,
-                    __slot__: '{"default":"选择成员"}',
-                    children: null,
-                    parentId: 1,
-                    foreignId: 0,
-                    childrenFlag: 0,
-                    childrenFromDesignerId: null
-                  }
+                  // {
+                  //   id: '1647885908288122881',
+                  //   name: 'fieldVguLzNB1681721426505',
+                  //   type: 0,
+                  //   label: '成员单选',
+                  //   typeId: 'MEMBER_RADIO',
+                  //   vModel: 'fieldVguLzNB1681721426505',
+                  //   visible: 1,
+                  //   __slot__: '{"default":"选择成员"}',
+                  //   children: null,
+                  //   parentId: 1,
+                  //   foreignId: 0,
+                  //   childrenFlag: 0,
+                  //   childrenFromDesignerId: null
+                  // }
                 ],
                 typeName: '关联查询',
                 parentKey: 'fieldOagrCPB1682128026646',
@@ -402,7 +402,15 @@ export default {
                     value2: 'fieldOagrCPB1682128026646.fieldpFirCPB1682128031249',
                     condition: 2,
                     typeDisabled: false
-                  }
+                  },
+                  // {
+                  //   type: 0,
+                  //   value: '1647940544961359874',
+                  //   typeId: 'INPUT',
+                  //   value2: 'fieldzVMDBLB1680594220150',
+                  //   condition: 2,
+                  //   typeDisabled: false
+                  // }
                 ],
                 visibility: true,
                 description: '',

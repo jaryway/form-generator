@@ -1,4 +1,5 @@
 <script>
+import getIn from 'lodash/get'
 import { deepClone } from '@/utils/index'
 import render from '@/components/render/render.js'
 import {
@@ -6,7 +7,7 @@ import {
   getFieldDisplayRulesMap,
   getVisibilityMap
 } from './utils/field-display-rule-helper'
-import { getLinkFields, getFieldLinksMap, calcFieldLinks } from './utils/field-link-helper'
+import { getLinkFields, getFieldLinksMap, calcFieldLinks, calcFieldLinkConditions } from './utils/field-link-helper'
 
 const ruleTrigger = {
   'el-input': 'change',
@@ -58,6 +59,134 @@ const layouts = {
       </el-col>
     )
   }
+}
+
+function setValue(event, config, scheme, parentScheme, index) {
+  if (parentScheme) {
+    this.$set(config, 'defaultValue', event)
+
+    const formData = this[this.formConf.formModel][parentScheme.vModel]
+
+    if (!formData) {
+      this.$set(this[this.formConf.formModel], parentScheme.vModel, [{ [scheme.vModel]: event }])
+    } else {
+      this.$set(this[this.formConf.formModel][parentScheme.vModel][index], scheme.vModel, event)
+    }
+  } else {
+    this.$set(config, 'defaultValue', event)
+    this.$set(this[this.formConf.formModel], scheme.vModel, event)
+  }
+
+  // 处理显隐规则
+  calcFieldDisplayRules(this.fieldDisplayRulesMap, scheme, this.formConfCopy.fields).forEach((m) => {
+    this.$set(this.visibilityMap, m.id, m.visible)
+  })
+  // const cond = calcFieldLinks(this.fieldLinksMap, scheme, this[this.formConf.formModel], index)
+
+  // console.log('linkFields.calcFieldLinks', cond)
+  // 处理数据联动
+  // 关联查询
+}
+
+function onBlur(event, config, scheme, parentScheme, index) {
+  // 处理关联查询
+  const cond = calcFieldLinks(this.fieldLinksMap, scheme, this[this.formConf.formModel], parentScheme, index)
+  // 如果
+  console.log('linkFields.calcFieldLinks', scheme, this.fieldLinksMap, parentScheme, cond)
+  // 处理数据联动
+  // 关联查询
+}
+function onMounted(event, config, scheme, parentScheme) {
+  console.log('linkFields.onMounted', scheme.typeId, this.fieldLinksMap, scheme.vModel)
+  const formData = this[this.formConf.formModel]
+  if (scheme.typeId === 'QUERY_CHECK') {
+    // 关联查询初始化时
+    doLinkQuery.call(this, scheme, formData)
+  } else if (scheme.typeId === 'CHILD_FORM' && scheme.children.some(m => m.typeId === 'QUERY_CHECK')) {
+    // console.log('linkFields.onMounted......', scheme)
+    const linkScheme = scheme.children.find(m => m.typeId === 'QUERY_CHECK')
+    // 此时的关联查询条件字段只能是子表单本身的字段及其他非子表单字段
+    // 如果是子表单，有多条记录则要发起多个请求
+    const values = formData[scheme.vModel] || []
+    values.forEach((_, i) => doLinkQuery.call(this, linkScheme, formData, i))
+  }
+}
+
+function doLinkQuery(scheme, formData, index) {
+  // 检查关联查询字段的所有过滤条件的值都不为空
+  const conditions = calcFieldLinkConditions(scheme, formData, index)
+  const fieldList = scheme.linkList.map((m) => m.vModel)
+  const formDesignerId = scheme.config.dbTable
+  const params = {
+    fieldList,
+    formDesignerId,
+    filter: { cond: conditions, rel: 0, },
+    multi: scheme.dataNum > 1 ? 1 : 0,
+    pageNum: 1,
+    pageSize: scheme.dataNum,
+  }
+  const key = [scheme.vModel, index || 0].join('_')
+  // console.log('doLinkQuery', this.linkQueryMap, conditions, params)
+  // 没有条件，不发起请求
+  if (!conditions) return
+  // this.$get(this.linkQueryMap, `${key}.conditions`)
+  const prevConditions = this.linkQueryMap[`${key}.conditions`] || []
+  const hasChanged = conditions.some((m, i) => {
+    if (!prevConditions[i]) return true
+    if (prevConditions[i].value.length !== m.value.length) return true
+    // console.log('doLinkQuery.run.hasChanged', prevConditions[i].value, m.value, prevConditions[i].value.some(n => !m.value.includes(n)))
+    return prevConditions[i].value.some(n => !m.value.includes(n))
+  })
+
+  // 条件发生了变化，不发起请求
+  if (!hasChanged) return
+
+  // 条件发生了变化，此时才发起请求
+  this.$set(this.linkQueryMap, `${key}.conditions`, conditions)
+  const onSuccess = (resp) => {
+    this.$set(this.linkQueryMap, `${key}.response`, resp)
+    const row = getIn(formData, [scheme.parentKey, index])
+    // const newRow = { ...row, ...resp[0] }
+
+    this.$set(formData[scheme.parentKey], index, row)
+    // console.log('doLinkQuery.run.onSuccess', formData, newRow)
+    // 数据加载成功后
+    // scheme.response = resp
+  }
+
+  // 此时才发起请求
+  new Promise(resolve => {
+    setTimeout(() => {
+      const resp = []
+      for (let index = 0; index < params.pageSize; index++) {
+        const item = scheme.linkList.reduce((prev, cur) => {
+          return { ...prev, [cur.vModel]: Math.random().toString(16).slice(2) }
+        }, {})
+        resp.push(item)
+      }
+
+      resolve(resp)
+    }, 1000)
+  }).then(onSuccess)
+  console.log('doLinkQuery.run', this.linkQueryMap, conditions, params)
+  // console.log('doLinkQuery', scheme, parentScheme, formData, conditions)
+}
+
+function buildListeners(scheme, parentScheme, index) {
+  const config = scheme.config
+  const methods = this.formConf.__methods__ || {}
+  const listeners = {}
+
+  // 给__methods__中的方法绑定this和event
+  Object.keys(methods).forEach((key) => {
+    listeners[key] = (event) => methods[key].call(this, event)
+  })
+  // 响应 render.js 中的 vModel $emit('input', val)
+  listeners.input = (event) => setValue.call(this, event, config, scheme, parentScheme, index)
+  listeners.blur = (event) => onBlur.call(this, event, config, scheme, parentScheme, index)
+  listeners.mounted = (event) => onMounted.call(this, event, config, scheme, parentScheme, index)
+
+  return listeners
 }
 
 function renderFrom(h) {
@@ -114,7 +243,7 @@ function renderChildren(h, scheme) {
 }
 
 function renderChildForm(h, scheme) {
-  const scopedSlots = (field, editable) => {
+  const scopedSlots = (field, editable, parent) => {
     // 区分是展示模式还是编辑模式
 
     return {
@@ -123,7 +252,7 @@ function renderChildForm(h, scheme) {
         if (this.isEdit && editable !== false) {
           const fieldCopy = deepClone(field)
           const listeners = buildListeners.call(this, fieldCopy, scheme, scope.$index)
-          // console.log('scopedSlots', field, scope)
+          console.log('scopedSlots', field.typeId)
           return (
             <el-form-item label-width='0'>
               <render
@@ -140,7 +269,12 @@ function renderChildForm(h, scheme) {
           return scope.row[field.vModel]?.map((m) => m.name).join(',')
         }
 
-        // console.log('scope', scope, field, scope.row[field.vModel])
+        if (parent && parent.typeId === 'QUERY_CHECK') {
+          const resp = this.linkQueryMap[`${parent.vModel}_${scope.$index}.response`]
+          console.log('renderChildForm.scope', this.linkQueryMap, `${parent.vModel}_${scope.$index}.response`, resp)
+          // console.log('renderChildForm.scope', field, resp)
+          return resp?.[0][field.vModel]
+        }
 
         return scope.row[field.vModel]
       }
@@ -151,8 +285,6 @@ function renderChildForm(h, scheme) {
       const childProp = item.typeId === 'QUERY_CHECK' ? 'linkList' : 'children'
       const hasChild = item[childProp] && item[childProp].length
 
-      // console.log('item', item)
-
       if (item.typeId === 'QUERY_CHECK') {
         return (
           <el-table-column props={{ label: item.config.label }} key={idx}>
@@ -161,8 +293,8 @@ function renderChildForm(h, scheme) {
                 <el-table-column
                   key={index}
                   props={{ label: child.label, prop: child.vModel }}
-                  scopedSlots={scopedSlots(child, false)}
-                ></el-table-column>
+                  scopedSlots={scopedSlots(child, false, item)}
+                />
               )
             })}
           </el-table-column>
@@ -179,8 +311,11 @@ function renderChildForm(h, scheme) {
       )
     })
   }
+
+  const dataSource = this[this.formConf.formModel][scheme.vModel]
+
   const props = {
-    'data': this[this.formConf.formModel][scheme.vModel] || scheme.value,
+    'data': dataSource,
     'size': scheme.config.size,
     'stripe': scheme.config.stripe,
     'border': scheme.config.border,
@@ -193,7 +328,10 @@ function renderChildForm(h, scheme) {
   const columns = buildColumns(scheme.children)
   this.initFormData(scheme.children, defValue)
   const removeItem = (i) => {
-    this[this.formConf.formModel][scheme.vModel].splice(i, 1)
+    dataSource.splice(i, 1)
+  }
+  const addItem = () => {
+    dataSource.push(defValue)
   }
 
   const optionCol = (
@@ -223,7 +361,12 @@ function renderChildForm(h, scheme) {
 
   columns.unshift(optionCol)
 
-  // console.log('scheme.children', scheme.children)
+  console.log('doLinkQuery.run.dataSource', dataSource)
+
+  this.$nextTick(function () {
+    // 渲染完后触发 mounted 事件
+    onMounted.call(this, null, scheme.config, scheme)
+  })
 
   return (
     <el-col span={24}>
@@ -235,8 +378,8 @@ function renderChildForm(h, scheme) {
           type='text'
           class='el-icon-plus'
           onClick={(event) => {
-            this[this.formConf.formModel][scheme.vModel].push(defValue)
             event.stopPropagation()
+            addItem()
           }}
         >
           添加
@@ -244,58 +387,6 @@ function renderChildForm(h, scheme) {
       </el-form-item>
     </el-col>
   )
-}
-
-function setValue(event, config, scheme, parentScheme, index) {
-  if (parentScheme) {
-    this.$set(config, 'defaultValue', event)
-
-    const formData = this[this.formConf.formModel][parentScheme.vModel]
-
-    if (!formData) {
-      this.$set(this[this.formConf.formModel], parentScheme.vModel, [{ [scheme.vModel]: event }])
-    } else {
-      this.$set(this[this.formConf.formModel][parentScheme.vModel][index], scheme.vModel, event)
-    }
-  } else {
-    this.$set(config, 'defaultValue', event)
-    this.$set(this[this.formConf.formModel], scheme.vModel, event)
-  }
-
-  // 处理显隐规则
-  calcFieldDisplayRules(this.fieldDisplayRulesMap, scheme, this.formConfCopy.fields).forEach((m) => {
-    this.$set(this.visibilityMap, m.id, m.visible)
-  })
-  // const cond = calcFieldLinks(this.fieldLinksMap, scheme, this[this.formConf.formModel], index)
-
-  // console.log('linkFields.calcFieldLinks', cond)
-  // 处理数据联动
-  // 关联查询
-}
-
-function onBlur(event, config, scheme, parentScheme, index) {
-  // 处理关联查询
-  const cond = calcFieldLinks(this.fieldLinksMap, scheme, this[this.formConf.formModel], parentScheme, index)
-  // 如果
-  console.log('linkFields.calcFieldLinks', scheme, this.fieldLinksMap, parentScheme, cond)
-  // 处理数据联动
-  // 关联查询
-}
-
-function buildListeners(scheme, parentScheme, index) {
-  const config = scheme.config
-  const methods = this.formConf.__methods__ || {}
-  const listeners = {}
-
-  // 给__methods__中的方法绑定this和event
-  Object.keys(methods).forEach((key) => {
-    listeners[key] = (event) => methods[key].call(this, event)
-  })
-  // 响应 render.js 中的 vModel $emit('input', val)
-  listeners.input = (event) => setValue.call(this, event, config, scheme, parentScheme, index)
-  listeners.blur = (event) => onBlur.call(this, event, config, scheme, parentScheme, index)
-
-  return listeners
 }
 
 export default {
@@ -327,11 +418,12 @@ export default {
 
     const linkFields = getLinkFields(fields)
     data.fieldLinksMap = getFieldLinksMap(linkFields)
+    data.linkQueryMap = {}
     // const effects = linkFields.reduce((prev, cur) => {
     //   return [...prev, cur.filterCond.map(m => m.value2)]
     // }, [])
 
-    console.log('linkFields', linkFields, data.fieldLinksMap)
+    console.log('linkFields.fields', data.formConfCopy.fields)
     // Object.keys(data.fieldLinksMap)
 
     // 发起请求，需要获取请求的条件，cond.value 运算符 cond.value2
