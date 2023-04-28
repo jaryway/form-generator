@@ -148,7 +148,7 @@ function doLinkQuery(scheme, formData, index) {
     const row = getIn(formData, [scheme.parentKey, index])
     // const newRow = { ...row, ...resp[0] }
 
-    this.$set(formData[scheme.parentKey], index, row)
+    // this.$set(formData[scheme.parentKey], index, row)
     // console.log('doLinkQuery.run.onSuccess', formData, newRow)
     // 数据加载成功后
     // scheme.response = resp
