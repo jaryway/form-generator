@@ -334,43 +334,18 @@ function renderChildForm(h, scheme) {
     dataSource.push(defValue)
   }
 
-  const optionCol = (
-    <el-table-column
-      props={{ label: '' }}
-      scopedSlots={{
-        default: (props) => {
-          return (
-            <div class='row-head'>
-              <span class='row-num'>{props.$index + 1}</span>
-              <el-popconfirm
-                title='确定删除吗？'
-                on={{
-                  onConfirm: () => {
-                    removeItem(props.$index)
-                  }
-                }}
-              >
-                <span slot:default='reference' class='el-icon-delete icon-trash' />
-              </el-popconfirm>
-            </div>
-          )
-        }
-      }}
-    />
-  )
-
-  columns.unshift(optionCol)
-
-  console.log('doLinkQuery.run.dataSource', dataSource)
-
-  this.$nextTick(function () {
-    // 渲染完后触发 mounted 事件
-    onMounted.call(this, null, scheme.config, scheme)
-  })
+  const events = {
+    onConfirm: () => {
+      console.log('dddddoosdsdoooooooo')
+    },
+  }
 
   return (
-    <el-col span={24}>
-      <el-form-item label=''>
+    <el-col>
+      <el-form-item>
+        <el-popconfirm title='确定删除？' on={events}>
+          <el-button slot='reference'>删除</el-button>
+        </el-popconfirm>
         <el-table style='width: 100%' size='small' props={props}>
           {columns}
         </el-table>
