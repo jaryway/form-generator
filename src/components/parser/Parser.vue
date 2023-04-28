@@ -125,7 +125,7 @@ function doLinkQuery(scheme, formData, index) {
     pageNum: 1,
     pageSize: scheme.dataNum,
   }
-  // console.log('doLinkQuery', this.linkQueryMap, conditions, params)
+  console.log('doLinkQuery', this.linkQueryMap, conditions, params)
   // 没有条件，不发起请求
   if (!conditions) return
   // this.$get(this.linkQueryMap, `${key}.conditions`)
@@ -135,7 +135,12 @@ function doLinkQuery(scheme, formData, index) {
   const hasChanged = conditions.some((m, i) => {
     if (!prevConditions[i]) return true
     if (prevConditions[i].value.length !== m.value.length) return true
-    console.log('doLinkQuery.run.hasChanged', prevConditions[i].value, m.value, prevConditions[i].value.some(n => !m.value.includes(n)))
+    console.log(
+      'doLinkQuery.run.hasChanged',
+      prevConditions[i].value,
+      m.value,
+      prevConditions[i].value.some((n) => !m.value.includes(n))
+    )
     return prevConditions[i].value.some((n) => !m.value.includes(n))
   })
 
@@ -321,18 +326,44 @@ function renderChildForm(h, scheme) {
     dataSource.push(defValue)
   }
 
-  const events = {
-    onConfirm: () => {
-      console.log('dddddoosdsdoooooooo')
-    },
-  }
+  const optionCol = (
+    <el-table-column
+      props={{ label: '' }}
+      scopedSlots={{
+        default: (scope) => {
+          const index = scope.$index
+          return (
+            <div class='row-head'>
+              <span class='row-num'>{index + 1}</span>
+              <el-popconfirm
+                title='确定删除吗？'
+                on={{
+                  onConfirm: () => {
+                    removeItem(index)
+                  },
+                }}
+              >
+                <span slot:default='reference' class='el-icon-delete icon-trash' />
+              </el-popconfirm>
+            </div>
+          )
+        },
+      }}
+    />
+  )
+
+  columns.unshift(optionCol)
+
+  console.log('doLinkQuery.run.dataSource', dataSource)
+
+this.$nextTick(function () {
+  // 渲染完后触发 mounted 事件
+  onMounted.call(this, null, scheme.config, scheme)
+})
 
   return (
     <el-col>
       <el-form-item>
-        <el-popconfirm title='确定删除？' on={events}>
-          <el-button slot='reference'>删除</el-button>
-        </el-popconfirm>
         <el-table style='width: 100%' size='small' props={props}>
           {columns}
         </el-table>

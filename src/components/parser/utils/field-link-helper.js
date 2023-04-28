@@ -105,7 +105,7 @@ export function calcFieldLinks(fieldLinksMap, field, formData, parentScheme, ind
 }
 
 export function calcFieldLinkConditions(field, formData, index) {
-  // console.log('calcFieldLinkConditions', field, formData)
+  console.log('calcFieldLinkConditions', field, formData)
   const filter = field.filterCond.map((m) => {
     // 如果是自定义数据类型，则 value 为常量，不需要从表单获取值
     if (m.typeDisabled) return { condition: m.condition, fieldId: m.value, value: m.value2, typeId: m.typeId }
@@ -115,7 +115,7 @@ export function calcFieldLinkConditions(field, formData, index) {
     }
 
     const value = getIn(formData, path)
-    // console.log('calcFieldLinkConditions.getIn', formData, path, value)
+    console.log('calcFieldLinkConditions.getIn', formData, path, value)
     return { condition: m.condition, fieldId: m.value, value, typeId: m.typeId }
   })
 

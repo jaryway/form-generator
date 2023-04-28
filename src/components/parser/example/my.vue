@@ -399,6 +399,7 @@ export default {
                     type: 0,
                     value: '1647940544961359874',
                     typeId: 'INPUT',
+                    // value2: 'fieldOagrCPB1682128026646.fieldkorrCPB1682128057527',
                     value2: 'fieldOagrCPB1682128026646.fieldpFirCPB1682128031249',
                     condition: 2,
                     typeDisabled: false
