@@ -47,24 +47,38 @@ export function getLinkFields(fields) {
 }
 
 export function getFieldLinksMap(linkFields) {
+  // 条件字段:关联查询字段字典
+  // 一个条件字段可以对应多个关联查询字段
+
   return linkFields.reduce((prev, cur) => {
+    // 只需关联非自定义值，即表单字段值
     const filteredList = (cur.filterCond || []).filter((m) => !m.typeDisabled)
-    // const condFields = filteredList.map((m) => m.value2)
-    const currentMap = filteredList.reduce((p, c) => {
-      // 当前字段发生变化时，构建查询条件
-      // 获取当前字段值
-      // 获取其他的字段
-      const prevList = prev[c.value2] || []
-      const fieldList = cur.linkList.map((m) => m.vModel) // 关联表单的字段
-      const formDesignerId = cur.config.dbTable // 关联的表单
-      const filters = cur.filterCond // 关联的过滤条件
-      const multi = cur.dataNum === 1 ? 0 : 1
 
-      return { ...p, [c.value2]: [...prevList, { vModel: cur.vModel, filters, fieldList, formDesignerId, multi }] }
-    }, {})
+    const current = filteredList.reduce((p, c) => {
+      const itemPrev = p[c.value2] || []
 
-    return { ...prev, ...currentMap }
+      return { ...p, [c.value2]: [...itemPrev, cur] }
+    }, prev)
+
+    return current
   }, {})
+
+  // return linkFields.reduce((prev, cur) => {
+  //   const filteredList = (cur.filterCond || []).filter((m) => !m.typeDisabled)
+  //   // const condFields = filteredList.map((m) => m.value2)
+  //   const currentMap = filteredList.reduce((p, c) => {
+  //     // 当前字段发生变化时，构建查询条件
+  //     // 获取当前字段值
+  //     // 获取其他的字段
+  //     const prevList = prev[c.value2] || []
+  //     const fieldList = cur.linkList.map((m) => m.vModel) // 关联表单的字段
+  //     const formDesignerId = cur.config.dbTable // 关联的表单
+  //     const filters = cur.filterCond // 关联的过滤条件
+  //     const multi = cur.dataNum === 1 ? 0 : 1
+  //     return { ...p, [c.value2]: [...prevList, { vModel: cur.vModel, filters, fieldList, formDesignerId, multi }] }
+  //   }, {})
+  //   return { ...prev, ...currentMap }
+  // }, {})
 }
 
 export function calcFieldLinks(fieldLinksMap, field, formData, parentScheme, index) {
@@ -93,6 +107,8 @@ export function calcFieldLinks(fieldLinksMap, field, formData, parentScheme, ind
 export function calcFieldLinkConditions(field, formData, index) {
   // console.log('calcFieldLinkConditions', field, formData)
   const filter = field.filterCond.map((m) => {
+    // 如果是自定义数据类型，则 value 为常量，不需要从表单获取值
+    if (m.typeDisabled) return { condition: m.condition, fieldId: m.value, value: m.value2, typeId: m.typeId }
     let path = m.value2.split('.')
     if (index !== undefined) {
       path = path.slice(0, -1).concat(index, path.slice(-1))
