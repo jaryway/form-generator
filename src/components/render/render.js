@@ -65,11 +65,7 @@ function buildDataObject(confClone, dataObject) {
     } else if (['config', '__slot__'].includes(key)) {
       dataObject.props[key] = val
     } else if (dataObject[key] !== undefined) {
-      if (
-        dataObject[key] === null ||
-        dataObject[key] instanceof RegExp ||
-        ['boolean', 'string', 'number', 'function'].includes(typeof dataObject[key])
-      ) {
+      if (dataObject[key] === null || dataObject[key] instanceof RegExp || ['boolean', 'string', 'number', 'function'].includes(typeof dataObject[key])) {
         dataObject[key] = val
       } else if (Array.isArray(dataObject[key])) {
         dataObject[key] = [...dataObject[key], ...val]
@@ -107,7 +103,7 @@ function makeDataObject(key) {
     slot: null,
     key,
     ref: null,
-    refInFor: true
+    refInFor: true,
   }
 }
 
@@ -115,17 +111,17 @@ export default {
   props: {
     conf: {
       type: Object,
-      required: true
+      required: true,
     },
     useValue: {
-      type: Boolean
+      type: Boolean,
     },
     value: {
-      type: [String, Number, null, undefined, Object]
+      type: [String, Number, null, undefined, Object],
     },
     on: {
-      type: [String, Number, null, undefined, Object]
-    }
+      type: [String, Number, null, undefined, Object],
+    },
   },
   mounted() {
     this.$emit('mounted', this.conf)
@@ -167,10 +163,15 @@ export default {
     if (this.conf.config.tag === 'el-divider') {
       return h('fg-divider', dataObject, children)
     }
+
     if (this.conf.config.tag === 'input-map') {
       return h('fg-location', dataObject, children)
     }
 
+    if (this.conf.config.tag === 'el-upload') {
+      return h('fg-upload', dataObject, children)
+    }
+
     return h(this.conf.config.tag, dataObject, children)
-  }
+  },
 }
