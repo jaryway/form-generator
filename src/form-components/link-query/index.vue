@@ -14,7 +14,7 @@ import Multiple from './Multiple.vue'
  */
 
 export default {
-  name: 'FgLinkedQuery',
+  name: 'FgLinkQuery',
   props: ['value', 'linkFields', 'linkForm', 'linkFilter', 'linkFilterRel', 'multi', 'allowAdd'],
 
   components: {
@@ -23,6 +23,7 @@ export default {
   },
 
   data() {
+    console.log('fg-link-query')
     return {}
   },
   computed: {

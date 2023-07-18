@@ -38,6 +38,9 @@ const layouts = {
     if (this.formConf.unFocusedComponentBorder) className += ' unfocus-bordered'
     let labelWidth = config.labelWidth ? `${config.labelWidth}px` : null
     if (config.showLabel === false) labelWidth = '0'
+
+    console.log('currentItem', currentItem)
+
     return (
       <el-col
         span={config.span}
@@ -47,7 +50,7 @@ const layouts = {
           event.stopPropagation()
         }}
       >
-        <el-form-item label-width={'auto'} label={config.showLabel ? config.label : ''} required={config.required}>
+        <el-form-item label-width={labelWidth} label={config.showLabel ? config.label : ''} required={config.required}>
           <render
             key={config.renderKey}
             conf={currentItem}
@@ -66,8 +69,9 @@ const layouts = {
     const { activeItem } = this.$listeners
     const config = currentItem.config
     const className = this.activeId === config.formId ? 'drawing-row-item active-from-item' : 'drawing-row-item'
-    const componentName = config.componentName
+    const type = config.type
     let child = renderChildren.apply(this, arguments)
+
     if (currentItem.type === 'flex') {
       child = (
         <el-row type={currentItem.type} justify={currentItem.justify} align={currentItem.align}>
@@ -75,25 +79,64 @@ const layouts = {
         </el-row>
       )
     }
+
+    if (type === 'subform') {
+      return (
+        <el-col span={config.span}>
+          <el-row
+            gutter={config.gutter}
+            class={className + ' subform'}
+            nativeOnClick={(event) => {
+              activeItem(currentItem)
+              event.stopPropagation()
+            }}
+          >
+            {/* <span class='component-name'>{config.componentName}</span> */}
+            <div class='subform-head' type={type}>
+              1
+            </div>
+
+            <draggable list={config.children || []} animation={340} group={rowGroupName} class='drag-wrapper'>
+              {child}
+            </draggable>
+
+            {components.itemBtns.apply(this, arguments)}
+          </el-row>
+        </el-col>
+      )
+    }
+
+    if (type === 'linkqury') {
+      return (
+        <el-col span={config.span}>
+          <el-row
+            gutter={config.gutter}
+            class={className}
+            nativeOnClick={(event) => {
+              activeItem(currentItem)
+              event.stopPropagation()
+            }}
+          >
+            <div class='drag-wrapper'>{child}</div>
+            {components.itemBtns.apply(this, arguments)}
+          </el-row>
+        </el-col>
+      )
+    }
+
     return (
       <el-col span={config.span}>
         <el-row
           gutter={config.gutter}
-          class={className + ' subform'}
+          class={className}
           nativeOnClick={(event) => {
             activeItem(currentItem)
             event.stopPropagation()
           }}
         >
-          {/* <span class='component-name'>{config.componentName}</span> */}
-          <div class='subform-head' componentName={componentName}>
-            1
-          </div>
-
           <draggable list={config.children || []} animation={340} group={rowGroupName} class='drag-wrapper'>
             {child}
           </draggable>
-
           {components.itemBtns.apply(this, arguments)}
         </el-row>
       </el-col>
@@ -139,7 +182,7 @@ export default {
   },
   props: ['currentItem', 'index', 'drawingList', 'activeId', 'formConf', 'rowGroupName'],
   render(h) {
-    console.log('rowGroupName', this.rowGroupName)
+    // console.log('rowGroupName', this.rowGroupName)
     const layout = layouts[this.currentItem.config.layout]
 
     if (layout) {
@@ -202,23 +245,23 @@ export default {
       width: 100%;
     }
 
-    .active-from-item>.el-form-item,
-    .active-from-item:hover>.el-form-item {
+    .active-from-item > .el-form-item,
+    .active-from-item:hover > .el-form-item {
       border-radius: 0;
     }
 
-    .drawing-item:hover>.el-form-item,
-    .drawing-row-item:hover>.el-form-item {
+    .drawing-item:hover > .el-form-item,
+    .drawing-row-item:hover > .el-form-item {
       border-radius: 0;
     }
 
-    .drawing-item>.drawing-item-copy,
-    .drawing-item>.drawing-item-delete {
+    .drawing-item > .drawing-item-copy,
+    .drawing-item > .drawing-item-delete {
       top: 4px;
       right: 8px;
     }
 
-    .drawing-item>.drawing-item-copy {
+    .drawing-item > .drawing-item-copy {
       right: 56px - 24px + 8px;
     }
   }

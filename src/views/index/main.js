@@ -12,8 +12,8 @@ import DatePicker from '@/form-components/date-picker/index.vue'
 import CheckboxGroup from '@/form-components/checkbox-group/index.vue'
 import InputNumber from '@/form-components/input-number/index.vue'
 import Input from '@/form-components/input/index.vue'
-import LinkedData from '@/form-components/linked-data/index.vue'
-import LinkedQuery from '@/form-components/linked-query/index.vue'
+import LinkData from '@/form-components/link-data/index.vue'
+import LinkQuery from '@/form-components/link-query/index.vue'
 import Location from '@/form-components/location/index.vue'
 import RadioGroup from '@/form-components/radio-group/index.vue'
 import Select from '@/form-components/select/index.vue'
@@ -31,8 +31,8 @@ Vue.component('FgCheckboxGroup', CheckboxGroup)
 Vue.component('FgRadioGroup', RadioGroup)
 Vue.component('FgDatePicker', DatePicker)
 Vue.component('FgDivider', Divider)
-Vue.component('FgLinkedData', LinkedData)
-Vue.component('FgLinkedQuery', LinkedQuery)
+Vue.component('FgLinkData', LinkData)
+Vue.component('FgLinkQuery', LinkQuery)
 Vue.component('FgLocation', Location)
 Vue.component('FgSelect', Select)
 Vue.component('FgSignPad', SignPad)
@@ -45,5 +45,5 @@ Vue.prototype.$axios = axios
 
 new Vue({
   router,
-  render: (h) => h(App)
+  render: (h) => h(App),
 }).$mount('#app')
