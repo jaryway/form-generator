@@ -97,3 +97,12 @@ npm run build
 ## 开源协议
 
 [MIT](https://opensource.org/licenses/MIT)
+
+关联查询
+根据条件值进行分组
+key:[condition,condition2]
+
+derict_dep
+direct_dep
+select
+

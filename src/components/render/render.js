@@ -32,7 +32,7 @@ function mountSlotFiles(h, confClone, children) {
     Object.keys(childObjs).forEach((key) => {
       const childFunc = childObjs[key]
       if (confClone.__slot__ && confClone.__slot__[key]) {
-        children.push(childFunc(h, confClone, key))
+        children.push(childFunc(h, confClone, key, this))
       }
     })
   }
@@ -58,11 +58,7 @@ function buildDataObject(confClone, dataObject) {
       const value = this.useValue ? this.value : confClone.config.defaultValue
       vModel.call(this, dataObject, value)
     } else if (dataObject[key] !== undefined) {
-      if (
-        dataObject[key] === null ||
-        dataObject[key] instanceof RegExp ||
-        ['boolean', 'string', 'number', 'function'].includes(typeof dataObject[key])
-      ) {
+      if (dataObject[key] === null || dataObject[key] instanceof RegExp || ['boolean', 'string', 'number', 'function'].includes(typeof dataObject[key])) {
         dataObject[key] = val
       } else if (Array.isArray(dataObject[key])) {
         dataObject[key] = [...dataObject[key], ...val]
@@ -100,7 +96,7 @@ function makeDataObject(key) {
     slot: null,
     key,
     ref: null,
-    refInFor: true
+    refInFor: true,
   }
 }
 
@@ -108,17 +104,17 @@ export default {
   props: {
     conf: {
       type: Object,
-      required: true
+      required: true,
     },
     useValue: {
-      type: Boolean
+      type: Boolean,
     },
     value: {
-      type: [String, Number, null, undefined, Object]
+      type: [String, Number, null, undefined, Object],
     },
     on: {
-      type: [String, Number, null, undefined, Object]
-    }
+      type: [String, Number, null, undefined, Object],
+    },
   },
   mounted() {
     this.$emit('mounted', this.conf)
@@ -129,6 +125,8 @@ export default {
     const confClone = deepClone(this.conf)
     const children = this.$slots.default || []
     dataObject.on = this.$listeners
+
+    console.log('__slot__', children)
     // 如果slots文件夹存在与当前tag同名的文件，则执行文件中的代码
     mountSlotFiles.call(this, h, confClone, children)
 
@@ -140,5 +138,5 @@ export default {
     console.log('render', this.conf, dataObject)
 
     return h(this.conf.config.tag, dataObject, children)
-  }
+  },
 }

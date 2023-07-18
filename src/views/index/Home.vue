@@ -16,21 +16,8 @@
               <svg-icon icon-class="component" />
               {{ item.title }}
             </div>
-            <draggable
-              class="components-draggable"
-              :list="item.list"
-              :group="{ name: 'componentsGroup', pull: 'clone', put: false }"
-              :clone="cloneComponent"
-              draggable=".components-item"
-              :sort="false"
-              @end="onEnd"
-            >
-              <div
-                v-for="(element, index) in item.list"
-                :key="index"
-                class="components-item"
-                @click="addComponent(element)"
-              >
+            <draggable class="components-draggable" :list="item.list" :group="{ name: 'componentsGroup', pull: 'clone', put: false }" :clone="cloneComponent" draggable=".components-item" :sort="false" @end="onEnd" @start="onStart">
+              <div v-for="(element, index) in item.list" :key="index" class="components-item" @click="addComponent(element)">
                 <div class="components-body">
                   <svg-icon :icon-class="element.config.tagIcon" />
                   {{ element.config.label }}
@@ -44,6 +31,9 @@
 
     <div class="center-board">
       <div class="action-bar">
+        <el-popconfirm confirm-button-text="好的" cancel-button-text="不用了" icon="el-icon-info" icon-color="red" title="这是一段内容确定删除吗？" @onConfirm="console.log('fff')">
+          <el-button slot="reference">删除</el-button>
+        </el-popconfirm>
         <el-button icon="el-icon-video-play" type="text" @click="run"> 运行 </el-button>
         <el-button icon="el-icon-view" type="text" @click="showJson"> 查看json </el-button>
         <el-button icon="el-icon-download" type="text" @click="download"> 导出vue文件 </el-button>
@@ -52,25 +42,9 @@
       </div>
       <el-scrollbar class="center-scrollbar">
         <el-row class="center-board-row" :gutter="formConf.gutter">
-          <el-form
-            :size="formConf.size"
-            :label-position="formConf.labelPosition"
-            :disabled="formConf.disabled"
-            :label-width="formConf.labelWidth + 'px'"
-          >
-            <draggable class="drawing-board" :list="drawingList" :animation="340" group="componentsGroup">
-              <draggable-item
-                v-for="(item, index) in drawingList"
-                :key="item.renderKey"
-                :drawing-list="drawingList"
-                :current-item="item"
-                :index="index"
-                :active-id="activeId"
-                :form-conf="formConf"
-                @activeItem="activeFormItem"
-                @copyItem="drawingItemCopy"
-                @deleteItem="drawingItemDelete"
-              />
+          <el-form :size="formConf.size" :label-position="formConf.labelPosition" :disabled="formConf.disabled" :label-width="formConf.labelWidth + 'px'">
+            <draggable class="drawing-board" :list="drawingList" :animation="340" group="componentsGroup" @end="onItemEnd">
+              <draggable-item v-for="(item, index) in drawingList" :key="item.renderKey" :drawing-list="drawingList" :current-item="item" :index="index" :active-id="activeId" :form-conf="formConf" @activeItem="activeFormItem" @copyItem="drawingItemCopy" @deleteItem="drawingItemDelete" :rowGroupName="rowGroupName" />
             </draggable>
             <div v-show="!drawingList.length" class="empty-info">从左侧拖入或点选组件进行表单设计</div>
           </el-form>
@@ -78,27 +52,11 @@
       </el-scrollbar>
     </div>
 
-    <right-panel
-      :active-data="activeData"
-      :form-conf="formConf"
-      :show-field="!!drawingList.length"
-      @tag-change="tagChange"
-      @fetch-data="fetchData"
-    />
+    <right-panel :active-data="activeData" :form-conf="formConf" :show-field="!!drawingList.length" @tag-change="tagChange" @fetch-data="fetchData" />
 
     <form-drawer :visible.sync="drawerVisible" :form-data="formData" size="100%" :generate-conf="generateConf" />
-    <json-drawer
-      size="60%"
-      :visible.sync="jsonDrawerVisible"
-      :json-str="JSON.stringify(formData)"
-      @refresh="refreshJson"
-    />
-    <code-type-dialog
-      :visible.sync="dialogVisible"
-      title="选择生成类型"
-      :show-file-name="showFileName"
-      @confirm="generate"
-    />
+    <json-drawer size="60%" :visible.sync="jsonDrawerVisible" :json-str="JSON.stringify(formData)" @refresh="refreshJson" />
+    <code-type-dialog :visible.sync="dialogVisible" title="选择生成类型" :show-file-name="showFileName" @confirm="generate" />
     <input id="copyNode" type="hidden" />
   </div>
 </template>
@@ -163,6 +121,7 @@ export default {
       activeData: drawingDefalut[0],
       saveDrawingListDebounce: debounce(340, saveDrawingList),
       saveIdGlobalDebounce: debounce(340, saveIdGlobal),
+      rowGroupName: '',
       leftComponents: [
         {
           title: '输入型组件',
@@ -182,12 +141,8 @@ export default {
   computed: {},
   watch: {
     // eslint-disable-next-line func-names
-    'activeData.config.label': function (val, oldVal) {
-      if (
-        this.activeData.placeholder === undefined ||
-        !this.activeData.config.tag ||
-        oldActiveId !== this.activeId
-      ) {
+    'activeData.__config__.label': function (val, oldVal) {
+      if (this.activeData.placeholder === undefined || !this.activeData.__config__.tag || oldActiveId !== this.activeId) {
         return
       }
       this.activeData.placeholder = this.activeData.placeholder.replace(oldVal, '') + val
@@ -210,6 +165,11 @@ export default {
         this.saveIdGlobalDebounce(val)
       },
       immediate: true,
+    },
+    activeData: {
+      handler(val) {
+        console.log('activeData', val, val.config.formId)
+      },
     },
   },
   mounted() {
@@ -289,12 +249,48 @@ export default {
       this.activeData = currentItem
       this.activeId = currentItem.config.formId
     },
-    onEnd(obj) {
+    onEnd1(obj) {
       if (obj.from !== obj.to) {
         this.fetchData(tempActiveData)
         this.activeData = tempActiveData
         this.activeId = this.idGlobal
       }
+    },
+
+    onEnd(obj) {
+      if (obj.from !== obj.to) {
+        this.activeData = tempActiveData
+        // this.activeId = tempActiveData.vModel
+        this.activeId = this.idGlobal
+      }
+      this.rowGroupName = ''
+    },
+    onStart(obj) {
+      console.log('onStart', obj)
+      if (obj.item._underlying_vm_ && !obj.item._underlying_vm_.notChild) {
+        this.rowGroupName = 'componentsGroup'
+      }
+    },
+    onItemEnd(obj) {
+      const params = { projectId: this.projectId }
+      if (this.drawingList[obj.newIndex - 1]) {
+        const sort1 = this.drawingList[obj.newIndex - 1].sort
+        params.beforePosition = sort1
+      }
+      if (this.drawingList[obj.newIndex + 1]) {
+        const sort2 = this.drawingList[obj.newIndex + 1].sort
+        params.afterPosition = sort2
+      }
+      params.formItemId = this.drawingList[obj.newIndex].vModel
+      params.type = this.drawingList[obj.newIndex].typeId
+      // if (params.beforePosition || params.afterPosition) {
+      //   //重置排序
+      //   // updateFormProjectItemSort(params).then((res) => {
+      //   //   let data = res.data;
+      //   //   this.drawingList[obj.newIndex].sort = data.maxFormItemSort;
+      //   //   this.idGlobal = data.maxFormItemId ? data.maxFormItemId : 100;
+      //   // });
+      // }
     },
     addComponent(item) {
       const clone = this.cloneComponent(item)
@@ -318,7 +314,7 @@ export default {
       if (config.layout === 'colFormItem') {
         item.vModel = `field${this.idGlobal}`
       } else if (config.layout === 'rowFormItem') {
-        config.componentName = `row${this.idGlobal}`
+        config.componentName = config.componentName || `row${this.idGlobal}`
         !Array.isArray(config.children) && (config.children = [])
         delete config.label // rowFormItem无需配置label属性
       }
@@ -356,10 +352,11 @@ export default {
         this.idGlobal = 100
       })
     },
-    drawingItemCopy(item, list) {
+    drawingItemCopy(item, list, index) {
       let clone = deepClone(item)
       clone = this.createIdAndKey(clone)
-      list.push(clone)
+      // list.push(clone)
+      list.splice(index, 0, clone)
       this.activeFormItem(clone)
     },
     drawingItemDelete(index, list) {

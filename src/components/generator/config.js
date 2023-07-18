@@ -576,28 +576,28 @@ export const layoutComponents = [
       defaultValueType: 0,
       defaultValueSource: {
         type: 0,
-        id: ''
+        id: '',
       },
       displayType: true,
       required: undefined,
       showRequired: false,
       layout: 'rowFormItem',
-      componentName: 'CHILD_FORM'
+      componentName: 'subform'
     },
     children: [],
     tableList: [],
     __slot__: {
-      dataList: []
+      dataList: [],
     },
     style: {
       width: '254px',
-      maxWidth: '100%'
+      maxWidth: '100%',
     },
     fieldDisplayRules: [],
     readonly: false,
     editable: true,
     visibility: true,
-    notChild: true,
+    notChild: false,
     type: 'flex'
     // conditionType: 9
   },
@@ -629,7 +629,7 @@ export const layoutComponents = [
       tag: 'el-table',
       document: 'https://element.eleme.cn/#/zh-CN/component/table',
       span: 24,
-      formId: 101,
+      // formId: 101,
       renderKey: 1595761764203,
       componentName: 'row101',
       showLabel: true,
