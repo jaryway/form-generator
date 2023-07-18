@@ -37,6 +37,7 @@ module.exports = {
     },
   },
   devServer: {
+    port: 8870,
     client: { overlay: false },
   },
   productionSourceMap: false,
