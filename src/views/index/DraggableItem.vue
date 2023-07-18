@@ -47,7 +47,7 @@ const layouts = {
           event.stopPropagation()
         }}
       >
-        <el-form-item label-width={labelWidth} label={config.showLabel ? config.label : ''} required={config.required}>
+        <el-form-item label-width={'auto'} label={config.showLabel ? config.label : ''} required={config.required}>
           <render
             key={config.renderKey}
             conf={currentItem}
@@ -157,10 +157,12 @@ export default {
   justify-content: start;
   flex: auto;
   width: 100%;
+
   &::v-deep .el-col {
     margin-top: 0;
   }
 }
+
 .drag-wrapper {
   display: flex;
   flex-direction: row;
@@ -169,9 +171,11 @@ export default {
   width: 0;
   padding-right: 60px;
 }
+
 .subform-head {
   flex: 0 0 50px;
 }
+
 .subform {
   .subform-head {
     border: solid 1px #ccc;
@@ -187,31 +191,40 @@ export default {
       display: flex;
       flex-direction: column;
     }
+
     .el-form-item {
       padding: 0 8px 8px;
       flex: auto;
     }
+
     .el-form-item__label {
       padding: 0;
+      width: 100%;
     }
-    .active-from-item > .el-form-item,
-    .active-from-item:hover > .el-form-item {
+
+    .active-from-item>.el-form-item,
+    .active-from-item:hover>.el-form-item {
       border-radius: 0;
     }
 
-    .drawing-item:hover > .el-form-item,
-    .drawing-row-item:hover > .el-form-item {
+    .drawing-item:hover>.el-form-item,
+    .drawing-row-item:hover>.el-form-item {
       border-radius: 0;
     }
 
-    .drawing-item > .drawing-item-copy,
-    .drawing-item > .drawing-item-delete {
+    .drawing-item>.drawing-item-copy,
+    .drawing-item>.drawing-item-delete {
       top: 4px;
       right: 8px;
     }
-    .drawing-item > .drawing-item-copy {
+
+    .drawing-item>.drawing-item-copy {
       right: 56px - 24px + 8px;
     }
   }
+}
+
+::v-deep .el-form--label-top .subform .el-form-item__label {
+  padding: 0;
 }
 </style>

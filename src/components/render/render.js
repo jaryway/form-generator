@@ -7,17 +7,16 @@ const componentChild = {}
  * 文件名为key，对应JSON配置中的__config__.tag
  * 文件内容为value，解析JSON配置中的__slot__
  */
-const slotsFiles = require.context('./slots', false, /\.js$/)
-const keys = slotsFiles.keys() || []
-keys.forEach((key) => {
-  const tag = key.replace(/^\.\/(.*)\.\w+$/, '$1')
-  const value = slotsFiles(key).default
-  componentChild[tag] = value
-})
+// const slotsFiles = require.context('./slots', false, /\.js$/)
+// const keys = slotsFiles.keys() || []
+// keys.forEach((key) => {
+//   const tag = key.replace(/^\.\/(.*)\.\w+$/, '$1')
+//   const value = slotsFiles(key).default
+//   componentChild[tag] = value
+// })
 
 function vModel(dataObject, defaultValue) {
   dataObject.props.value = defaultValue
-
   dataObject.on.input = (val) => {
     this.$emit('input', val)
   }
@@ -26,17 +25,23 @@ function vModel(dataObject, defaultValue) {
   // }
 }
 
-function mountSlotFiles(h, confClone, children) {
-  const childObjs = componentChild[confClone.config.tag]
-  if (childObjs) {
-    Object.keys(childObjs).forEach((key) => {
-      const childFunc = childObjs[key]
-      if (confClone.__slot__ && confClone.__slot__[key]) {
-        children.push(childFunc(h, confClone, key, this))
-      }
-    })
-  }
-}
+// function mountSlotFiles(h, confClone, children) {
+//   // eslint-disable-next-line prefer-const
+//   let tag = confClone.config.tag
+//   if (confClone.config.tag === 'el-checkbox-group') {
+//     tag = 'checkbox-group'
+//   }
+
+//   const childObjs = componentChild[tag]
+//   if (childObjs) {
+//     Object.keys(childObjs).forEach((key) => {
+//       const childFunc = childObjs[key]
+//       if (confClone.__slot__ && confClone.__slot__[key]) {
+//         children.push(childFunc(h, confClone, key, this))
+//       }
+//     })
+//   }
+// }
 
 function emitEvents(confClone) {
   ;['on', 'nativeOn'].forEach((attr) => {
@@ -52,13 +57,19 @@ function emitEvents(confClone) {
 
 function buildDataObject(confClone, dataObject) {
   Object.keys(confClone).forEach((key) => {
-    // console.log('buildDataObject', dataObject, confClone)
     const val = confClone[key]
     if (key === 'vModel') {
       const value = this.useValue ? this.value : confClone.config.defaultValue
+      // console.log('render.render.buildDataObject', this.useValue, this.value, confClone.config.defaultValue)
       vModel.call(this, dataObject, value)
+    } else if (['config', '__slot__'].includes(key)) {
+      dataObject.props[key] = val
     } else if (dataObject[key] !== undefined) {
-      if (dataObject[key] === null || dataObject[key] instanceof RegExp || ['boolean', 'string', 'number', 'function'].includes(typeof dataObject[key])) {
+      if (
+        dataObject[key] === null ||
+        dataObject[key] instanceof RegExp ||
+        ['boolean', 'string', 'number', 'function'].includes(typeof dataObject[key])
+      ) {
         dataObject[key] = val
       } else if (Array.isArray(dataObject[key])) {
         dataObject[key] = [...dataObject[key], ...val]
@@ -75,8 +86,8 @@ function buildDataObject(confClone, dataObject) {
 }
 
 function clearAttrs(dataObject) {
-  delete dataObject.attrs.config
-  delete dataObject.attrs.__slot__
+  // delete dataObject.attrs.config
+  // delete dataObject.attrs.__slot__
   delete dataObject.attrs.__methods__
 }
 
@@ -96,7 +107,7 @@ function makeDataObject(key) {
     slot: null,
     key,
     ref: null,
-    refInFor: true,
+    refInFor: true
   }
 }
 
@@ -104,17 +115,17 @@ export default {
   props: {
     conf: {
       type: Object,
-      required: true,
+      required: true
     },
     useValue: {
-      type: Boolean,
+      type: Boolean
     },
     value: {
-      type: [String, Number, null, undefined, Object],
+      type: [String, Number, null, undefined, Object]
     },
     on: {
-      type: [String, Number, null, undefined, Object],
-    },
+      type: [String, Number, null, undefined, Object]
+    }
   },
   mounted() {
     this.$emit('mounted', this.conf)
@@ -126,17 +137,40 @@ export default {
     const children = this.$slots.default || []
     dataObject.on = this.$listeners
 
-    console.log('__slot__', children)
+    // console.log('__slot__', children)
     // 如果slots文件夹存在与当前tag同名的文件，则执行文件中的代码
-    mountSlotFiles.call(this, h, confClone, children)
+    // mountSlotFiles.call(this, h, confClone, children)
 
     // 将字符串类型的事件，发送为消息
     emitEvents.call(this, confClone)
 
     // 将json表单配置转化为vue render可以识别的 “数据对象（dataObject）”
     buildDataObject.call(this, confClone, dataObject)
-    console.log('render', this.conf, dataObject)
+    console.log('render.render', confClone, dataObject)
+
+    if (this.conf.config.tag === 'el-checkbox-group') {
+      return h('fg-checkbox-group', dataObject, children)
+    }
+
+    if (this.conf.config.tag === 'el-radio-group') {
+      return h('fg-radio-group', dataObject, children)
+    }
+
+    if (this.conf.config.tag === 'el-input') {
+      return h('fg-input', dataObject, children)
+    }
+
+    if (this.conf.config.tag === 'el-date-picker') {
+      return h('fg-date-picker', dataObject, children)
+    }
+
+    if (this.conf.config.tag === 'el-divider') {
+      return h('fg-divider', dataObject, children)
+    }
+    if (this.conf.config.tag === 'input-map') {
+      return h('fg-location', dataObject, children)
+    }
 
     return h(this.conf.config.tag, dataObject, children)
-  },
+  }
 }

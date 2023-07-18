@@ -1,6 +1,6 @@
 export default {
   options(h, conf, key) {
-    console.log('render.render.ggggggg')
+    console.log('render.render.xxxxxxxxxxxxxxxxxxx', this, conf)
     const list = []
     conf.__slot__.options.forEach((item) => {
       if (conf.config.optionType === 'button') {
@@ -15,6 +15,13 @@ export default {
         )
       }
     })
+    list.push(
+      <el-input
+        onInput={(v) => {
+          // this.$emit('onInput', v)
+        }}
+      />
+    )
     return list
   }
 }

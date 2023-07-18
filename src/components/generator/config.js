@@ -260,6 +260,11 @@ export const selectComponents = [
         {
           label: '选项二',
           value: 2
+        },
+        {
+          label: '其他',
+          // value: ,
+          isOther: true
         }
       ]
     },
@@ -449,6 +454,22 @@ export const selectComponents = [
     'readonly': false
   },
   {
+    'typeId': 'DIVIDER',
+    'typeName': '分割线',
+    'config': {
+      label: '分割线',
+      showLabel: false,
+      tag: 'el-divider',
+      tagIcon: 'divider',
+      layout: 'colFormItem'
+    },
+    'color': undefined,
+    'style': { width: '100%' },
+    'direction': 'horizontal', // 设置分割线方向
+    'content-position': 'center',
+    'notChild': true
+  },
+  {
     'config': {
       label: '评分',
       tag: 'el-rate',
@@ -542,13 +563,15 @@ export const layoutComponents = [
       showLabel: true,
       changeTag: true,
       labelWidth: null,
-      tag: 'my-address',
+      tag: 'fg-address',
       tagIcon: 'button',
       span: 24,
       layout: 'colFormItem',
-      document: 'https://element.eleme.cn/#/zh-CN/component/button'
+      document: 'https://element.eleme.cn/#/zh-CN/component/button',
+      defaultValue: ['北京市', '东城区', '中山大道西']
     },
-    defaultValue: { areas: '黄埔温差', addr: '中山大道西' }
+
+    type: 2
     // __slot__: {
     //   default: '主要按钮'
     // },
@@ -559,6 +582,139 @@ export const layoutComponents = [
     // plain: false,
     // circle: false,
     // disabled: false
+  },
+  {
+    typeId: 'INPUT_MAP',
+    typeName: '定位',
+    config: {
+      label: '定位',
+      labelWidth: null,
+      showLabel: true,
+      changeTag: false,
+      tag: 'input-map',
+      tagIcon: 'input',
+      showDefaultValue: true,
+      defaultValue: undefined,
+      defaultValueType: 0,
+      defaultValueSource: { type: 0, id: '' },
+      displayType: true,
+      required: true,
+      limitTargeting: false,
+      limitTargetingOpt: 1,
+      layout: 'colFormItem',
+      span: 24,
+      auto: ''
+    },
+    placeholder: undefined,
+    showLatitudeAndLongitude: false,
+    allowFineTuning: false,
+    readonly: false,
+    editable: true,
+    visibility: true,
+    fineTuningNum: 0,
+    style: {
+      width: '254px',
+      maxWidth: '100%'
+    },
+    conditionType: 8
+  },
+  {
+    'typeId': 'UPLOAD-IMG',
+    'typeName': '图片',
+    'config': {
+      label: '图片',
+      tag: 'el-upload',
+      tagIcon: 'upload',
+      layout: 'colFormItem',
+      showDefaultValue: false,
+      defaultValue: null,
+      displayType: true,
+      showLabel: true,
+      showRegList: false,
+      labelWidth: null,
+      required: true,
+      span: 24,
+      showTip: false,
+
+      // buttonText: '',
+      changeTag: true
+    },
+    'expand': {
+      limit: 0,
+      fileSize: 10,
+      sizeUnit: 'MB'
+    },
+    'setting': {
+      onlyOne: false,
+      limit: false
+    },
+    '__slot__': {
+      'list-type': true
+    },
+    'style': {
+      width: '254px',
+      maxWidth: '100%'
+    },
+    // 'action': getAppApiUrl() + '/assist/oss/upload/image',
+    'accept': 'image/*',
+    'show-file-list': false,
+    'name': 'file',
+    'auto-upload': true,
+    'list-type': 'picture',
+    // 'file-list':[],
+    'multiple': true,
+    'drag': true,
+    'readonly': false,
+    'editable': true,
+    'visibility': true
+  },
+  {
+    'typeId': 'UPLOAD-FILE',
+    'typeName': '附件',
+    'config': {
+      label: '附件',
+      tag: 'el-upload',
+      tagIcon: 'upload',
+      layout: 'colFormItem',
+      showDefaultValue: false,
+      defaultValue: null,
+      displayType: true,
+      showLabel: true,
+      showRegList: false,
+      labelWidth: null,
+      required: true,
+      span: 24,
+      showTip: false,
+      buttonText: '点击上传',
+      changeTag: true
+    },
+    'expand': {
+      limit: 0,
+      fileSize: 10,
+      sizeUnit: 'MB',
+      accept: ''
+    },
+    'setting': {
+      onlyOne: false,
+      accept: '',
+      limit: false
+    },
+    '__slot__': {
+      'list-type': true
+    },
+    'style': {
+      width: '254px',
+      maxWidth: '100%'
+    },
+    // 'action': getAppApiUrl() + '/assist/oss/upload/file',
+    'show-file-list': false,
+    'name': 'file',
+    'auto-upload': true,
+    'list-type': 'text',
+    'multiple': true,
+    'editable': true,
+    'visibility': true,
+    'readonly': false
   },
   {
     // 组件的自定义配置
@@ -576,7 +732,7 @@ export const layoutComponents = [
       defaultValueType: 0,
       defaultValueSource: {
         type: 0,
-        id: '',
+        id: ''
       },
       displayType: true,
       required: undefined,
@@ -587,11 +743,11 @@ export const layoutComponents = [
     children: [],
     tableList: [],
     __slot__: {
-      dataList: [],
+      dataList: []
     },
     style: {
       width: '254px',
-      maxWidth: '100%',
+      maxWidth: '100%'
     },
     fieldDisplayRules: [],
     readonly: false,
