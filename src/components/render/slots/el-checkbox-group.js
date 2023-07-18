@@ -7,7 +7,7 @@ export default {
       } else {
         list.push(
           <el-checkbox label={item.value} border={conf.border}>
-            {item.label}
+            {item.label} 000
           </el-checkbox>
         )
       }

@@ -85,13 +85,14 @@ function setValue(event, config, scheme, parentScheme, index) {
 
 function onBlur(event, config, scheme, parentScheme, index) {
   // 处理关联查询
-  const cond = calcFieldLinks(this.fieldLinksMap, scheme, this[this.formConf.formModel], parentScheme, index)
+  // const cond = calcFieldLinks(this.fieldLinksMap, scheme, this[this.formConf.formModel], parentScheme, index)
   // 如果
   // console.log('linkFields.calcFieldLinks', scheme, this.fieldLinksMap, parentScheme, cond)
   // 处理数据联动
   // 处理关联查询
   // 找到依赖于当前字段的所有关联字段，并开始计算是否要发起查询请求
   const linkScheme = this.fieldLinksMap[scheme.vModel]
+  console.log('onBlur', this.fieldLinksMap, index)
   if (linkScheme) {
     doLinkQuery.call(this, linkScheme, index)
   }
@@ -356,10 +357,10 @@ function renderChildForm(h, scheme) {
 
   console.log('doLinkQuery.run.dataSource', dataSource)
 
-this.$nextTick(function () {
-  // 渲染完后触发 mounted 事件
-  onMounted.call(this, null, scheme.config, scheme)
-})
+  this.$nextTick(function () {
+    // 渲染完后触发 mounted 事件
+    onMounted.call(this, null, scheme.config, scheme)
+  })
 
   return (
     <el-col>

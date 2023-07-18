@@ -1,3 +1,14 @@
+
+/**
+ * 显隐规则
+ * 规则：条件=>显隐字段
+ * 当满足满足什么条件时，显示某个字段
+ * 关联查询
+ * 当字段发生变化，并且满足什么条件时，执行某个动作
+ * 数据联动
+ * 当某个字段发生变化时执行查询
+ */
+
 const isMemberOrDeptField = (typeId) => ['MEMBER_RADIO', 'DEPT_RADIO', 'MEMBER_CHECK', 'DEPT_CHECK'].includes(typeId)
 const calcCondition = (op, value, condValue) => {
   switch (op) {

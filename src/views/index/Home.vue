@@ -16,7 +16,7 @@
               <svg-icon icon-class="component" />
               {{ item.title }}
             </div>
-            <draggable class="components-draggable" :list="item.list" :group="{ name: 'componentsGroup', pull: 'clone', put: false }" :clone="cloneComponent" draggable=".components-item" :sort="false" @end="onEnd">
+            <draggable class="components-draggable" :list="item.list" :group="{ name: 'componentsGroup', pull: 'clone', put: false }" :clone="cloneComponent" draggable=".components-item" :sort="false" @end="onEnd" @start="onStart">
               <div v-for="(element, index) in item.list" :key="index" class="components-item" @click="addComponent(element)">
                 <div class="components-body">
                   <svg-icon :icon-class="element.config.tagIcon" />
@@ -43,8 +43,8 @@
       <el-scrollbar class="center-scrollbar">
         <el-row class="center-board-row" :gutter="formConf.gutter">
           <el-form :size="formConf.size" :label-position="formConf.labelPosition" :disabled="formConf.disabled" :label-width="formConf.labelWidth + 'px'">
-            <draggable class="drawing-board" :list="drawingList" :animation="340" group="componentsGroup">
-              <draggable-item v-for="(item, index) in drawingList" :key="item.renderKey" :drawing-list="drawingList" :current-item="item" :index="index" :active-id="activeId" :form-conf="formConf" @activeItem="activeFormItem" @copyItem="drawingItemCopy" @deleteItem="drawingItemDelete" />
+            <draggable class="drawing-board" :list="drawingList" :animation="340" group="componentsGroup" @end="onItemEnd">
+              <draggable-item v-for="(item, index) in drawingList" :key="item.renderKey" :drawing-list="drawingList" :current-item="item" :index="index" :active-id="activeId" :form-conf="formConf" @activeItem="activeFormItem" @copyItem="drawingItemCopy" @deleteItem="drawingItemDelete" :rowGroupName="rowGroupName" />
             </draggable>
             <div v-show="!drawingList.length" class="empty-info">从左侧拖入或点选组件进行表单设计</div>
           </el-form>
@@ -121,6 +121,7 @@ export default {
       activeData: drawingDefalut[0],
       saveDrawingListDebounce: debounce(340, saveDrawingList),
       saveIdGlobalDebounce: debounce(340, saveIdGlobal),
+      rowGroupName: '',
       leftComponents: [
         {
           title: '输入型组件',
@@ -164,6 +165,11 @@ export default {
         this.saveIdGlobalDebounce(val)
       },
       immediate: true,
+    },
+    activeData: {
+      handler(val) {
+        console.log('activeData', val, val.config.formId)
+      },
     },
   },
   mounted() {
@@ -243,12 +249,48 @@ export default {
       this.activeData = currentItem
       this.activeId = currentItem.config.formId
     },
-    onEnd(obj) {
+    onEnd1(obj) {
       if (obj.from !== obj.to) {
         this.fetchData(tempActiveData)
         this.activeData = tempActiveData
         this.activeId = this.idGlobal
       }
+    },
+
+    onEnd(obj) {
+      if (obj.from !== obj.to) {
+        this.activeData = tempActiveData
+        // this.activeId = tempActiveData.vModel
+        this.activeId = this.idGlobal
+      }
+      this.rowGroupName = ''
+    },
+    onStart(obj) {
+      console.log('onStart', obj)
+      if (obj.item._underlying_vm_ && !obj.item._underlying_vm_.notChild) {
+        this.rowGroupName = 'componentsGroup'
+      }
+    },
+    onItemEnd(obj) {
+      const params = { projectId: this.projectId }
+      if (this.drawingList[obj.newIndex - 1]) {
+        const sort1 = this.drawingList[obj.newIndex - 1].sort
+        params.beforePosition = sort1
+      }
+      if (this.drawingList[obj.newIndex + 1]) {
+        const sort2 = this.drawingList[obj.newIndex + 1].sort
+        params.afterPosition = sort2
+      }
+      params.formItemId = this.drawingList[obj.newIndex].vModel
+      params.type = this.drawingList[obj.newIndex].typeId
+      // if (params.beforePosition || params.afterPosition) {
+      //   //重置排序
+      //   // updateFormProjectItemSort(params).then((res) => {
+      //   //   let data = res.data;
+      //   //   this.drawingList[obj.newIndex].sort = data.maxFormItemSort;
+      //   //   this.idGlobal = data.maxFormItemId ? data.maxFormItemId : 100;
+      //   // });
+      // }
     },
     addComponent(item) {
       const clone = this.cloneComponent(item)
@@ -272,7 +314,7 @@ export default {
       if (config.layout === 'colFormItem') {
         item.vModel = `field${this.idGlobal}`
       } else if (config.layout === 'rowFormItem') {
-        config.componentName = `row${this.idGlobal}`
+        config.componentName = config.componentName || `row${this.idGlobal}`
         !Array.isArray(config.children) && (config.children = [])
         delete config.label // rowFormItem无需配置label属性
       }
@@ -310,10 +352,11 @@ export default {
         this.idGlobal = 100
       })
     },
-    drawingItemCopy(item, list) {
+    drawingItemCopy(item, list, index) {
       let clone = deepClone(item)
       clone = this.createIdAndKey(clone)
-      list.push(clone)
+      // list.push(clone)
+      list.splice(index, 0, clone)
       this.activeFormItem(clone)
     },
     drawingItemDelete(index, list) {

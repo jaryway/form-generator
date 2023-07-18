@@ -10,7 +10,7 @@ const components = {
         class='drawing-item-copy'
         title='复制'
         onClick={(event) => {
-          copyItem(currentItem, list)
+          copyItem(currentItem, list, index)
           event.stopPropagation()
         }}
       >
@@ -62,10 +62,11 @@ const layouts = {
       </el-col>
     )
   },
-  rowFormItem(h, currentItem, index, list) {
+  rowFormItem(h, currentItem, index, list, rowGroupName) {
     const { activeItem } = this.$listeners
     const config = currentItem.config
     const className = this.activeId === config.formId ? 'drawing-row-item active-from-item' : 'drawing-row-item'
+    const componentName = config.componentName
     let child = renderChildren.apply(this, arguments)
     if (currentItem.type === 'flex') {
       child = (
@@ -78,16 +79,21 @@ const layouts = {
       <el-col span={config.span}>
         <el-row
           gutter={config.gutter}
-          class={className}
+          class={className + ' subform'}
           nativeOnClick={(event) => {
             activeItem(currentItem)
             event.stopPropagation()
           }}
         >
-          <span class='component-name'>{config.componentName}</span>
-          <draggable list={config.children || []} animation={340} group='componentsGroup' class='drag-wrapper'>
+          {/* <span class='component-name'>{config.componentName}</span> */}
+          <div class='subform-head' componentName={componentName}>
+            1
+          </div>
+
+          <draggable list={config.children || []} animation={340} group={rowGroupName} class='drag-wrapper'>
             {child}
           </draggable>
+
           {components.itemBtns.apply(this, arguments)}
         </el-row>
       </el-col>
@@ -131,14 +137,81 @@ export default {
     render,
     draggable,
   },
-  props: ['currentItem', 'index', 'drawingList', 'activeId', 'formConf'],
+  props: ['currentItem', 'index', 'drawingList', 'activeId', 'formConf', 'rowGroupName'],
   render(h) {
+    console.log('rowGroupName', this.rowGroupName)
     const layout = layouts[this.currentItem.config.layout]
 
     if (layout) {
-      return layout.call(this, h, this.currentItem, this.index, this.drawingList)
+      return layout.call(this, h, this.currentItem, this.index, this.drawingList, this.rowGroupName)
     }
     return layoutIsNotFound.call(this)
   },
 }
 </script>
+
+<style lang="less" scoped>
+.drawing-row-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  flex: auto;
+  width: 100%;
+  &::v-deep .el-col {
+    margin-top: 0;
+  }
+}
+.drag-wrapper {
+  display: flex;
+  flex-direction: row;
+  flex: auto;
+  overflow: auto;
+  width: 0;
+  padding-right: 60px;
+}
+.subform-head {
+  flex: 0 0 50px;
+}
+.subform {
+  .subform-head {
+    border: solid 1px #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  ::v-deep {
+    .drawing-item {
+      // display: flex;
+      flex: 0 0 200px;
+      display: flex;
+      flex-direction: column;
+    }
+    .el-form-item {
+      padding: 0 8px 8px;
+      flex: auto;
+    }
+    .el-form-item__label {
+      padding: 0;
+    }
+    .active-from-item > .el-form-item,
+    .active-from-item:hover > .el-form-item {
+      border-radius: 0;
+    }
+
+    .drawing-item:hover > .el-form-item,
+    .drawing-row-item:hover > .el-form-item {
+      border-radius: 0;
+    }
+
+    .drawing-item > .drawing-item-copy,
+    .drawing-item > .drawing-item-delete {
+      top: 4px;
+      right: 8px;
+    }
+    .drawing-item > .drawing-item-copy {
+      right: 56px - 24px + 8px;
+    }
+  }
+}
+</style>
