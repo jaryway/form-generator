@@ -11,8 +11,8 @@
       </a>
       <el-scrollbar class="right-scrollbar">
         <!-- 组件属性 -->
-        <el-form v-show="currentTab === 'field' && showField" size="small" label-width="90px">
-          <el-form-item v-if="activeData.config.changeTag" label="组件类型">
+        <el-form v-show="currentTab === 'field' && showField" size="small">
+          <!-- <el-form-item v-if="activeData.config.changeTag" label="组件类型">
             <el-select
               v-model="activeData.config.tagIcon"
               placeholder="请选择组件类型"
@@ -31,13 +31,13 @@
                 </el-option>
               </el-option-group>
             </el-select>
-          </el-form-item>
-          <el-form-item v-if="activeData.vModel !== undefined" label="字段名">
+          </el-form-item> -->
+          <!-- <el-form-item v-if="activeData.vModel !== undefined" label="字段名">
             <el-input v-model="activeData.vModel" placeholder="请输入字段名（v-model）" />
-          </el-form-item>
-          <el-form-item v-if="activeData.config.componentName !== undefined" label="组件名">
+          </el-form-item> -->
+          <!-- <el-form-item v-if="activeData.config.componentName !== undefined" label="组件名">
             {{ activeData.config.componentName }}
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item v-if="activeData.config.label !== undefined" label="标题">
             <el-input v-model="activeData.config.label" placeholder="请输入标题" @input="changeRenderKey" />
           </el-form-item>
@@ -51,13 +51,9 @@
             <el-input v-model="activeData['end-placeholder']" placeholder="请输入占位提示" />
           </el-form-item>
           <el-form-item v-if="activeData.config.span !== undefined" label="表单栅格">
-            <el-slider
-              v-model="activeData.config.span"
-              :max="24"
-              :min="1"
-              :marks="{ 12: '' }"
-              @change="spanChange"
-            />
+            <div style="width: 100%; display: inline-block">
+              <el-slider v-model="activeData.config.span" :max="24" :min="1" :marks="{ 12: '' }" @change="spanChange" />
+            </div>
           </el-form-item>
           <el-form-item
             v-if="activeData.config.layout === 'rowFormItem' && activeData.gutter !== undefined"
@@ -92,7 +88,10 @@
           <el-form-item v-if="activeData.style && activeData.style.width !== undefined" label="组件宽度">
             <el-input v-model="activeData.style.width" placeholder="请输入组件宽度" clearable />
           </el-form-item>
-          <el-form-item v-if="activeData.vModel !== undefined" label="默认值">
+          <el-form-item
+            v-if="activeData.vModel !== undefined && activeData.config.showDefaultValue !== false"
+            label="默认值"
+          >
             <el-input
               :value="setDefaultValue(activeData.config.defaultValue)"
               placeholder="请输入默认值"
@@ -240,10 +239,7 @@
               <el-radio-button label="picture-card"> picture-card </el-radio-button>
             </el-radio-group>
           </el-form-item>
-          <el-form-item
-            v-if="activeData.type !== undefined && activeData.config.tag === 'el-button'"
-            label="按钮类型"
-          >
+          <el-form-item v-if="activeData.type !== undefined && activeData.config.tag === 'el-button'" label="按钮类型">
             <el-select v-model="activeData.type" :style="{ width: '100%' }">
               <el-option label="primary" value="primary" />
               <el-option label="success" value="success" />
@@ -591,7 +587,7 @@ const dateTimeFormat = {
   datetime: 'yyyy-MM-dd HH:mm:ss',
   daterange: 'yyyy-MM-dd',
   monthrange: 'yyyy-MM',
-  datetimerange: 'yyyy-MM-dd HH:mm:ss',
+  datetimerange: 'yyyy-MM-dd HH:mm:ss'
 }
 
 // 使changeRenderKey在目标组件改变时可用
@@ -600,7 +596,7 @@ const needRerenderList = ['tinymce']
 export default {
   components: {
     TreeNodeDialog,
-    IconsDialog,
+    IconsDialog
   },
   props: ['showField', 'activeData', 'formConf'],
   data() {
@@ -613,89 +609,89 @@ export default {
       dateTypeOptions: [
         {
           label: '日(date)',
-          value: 'date',
+          value: 'date'
         },
         {
           label: '周(week)',
-          value: 'week',
+          value: 'week'
         },
         {
           label: '月(month)',
-          value: 'month',
+          value: 'month'
         },
         {
           label: '年(year)',
-          value: 'year',
+          value: 'year'
         },
         {
           label: '日期时间(datetime)',
-          value: 'datetime',
-        },
+          value: 'datetime'
+        }
       ],
       dateRangeTypeOptions: [
         {
           label: '日期范围(daterange)',
-          value: 'daterange',
+          value: 'daterange'
         },
         {
           label: '月范围(monthrange)',
-          value: 'monthrange',
+          value: 'monthrange'
         },
         {
           label: '日期时间范围(datetimerange)',
-          value: 'datetimerange',
-        },
+          value: 'datetimerange'
+        }
       ],
       colorFormatOptions: [
         {
           label: 'hex',
-          value: 'hex',
+          value: 'hex'
         },
         {
           label: 'rgb',
-          value: 'rgb',
+          value: 'rgb'
         },
         {
           label: 'rgba',
-          value: 'rgba',
+          value: 'rgba'
         },
         {
           label: 'hsv',
-          value: 'hsv',
+          value: 'hsv'
         },
         {
           label: 'hsl',
-          value: 'hsl',
-        },
+          value: 'hsl'
+        }
       ],
       justifyOptions: [
         {
           label: 'start',
-          value: 'start',
+          value: 'start'
         },
         {
           label: 'end',
-          value: 'end',
+          value: 'end'
         },
         {
           label: 'center',
-          value: 'center',
+          value: 'center'
         },
         {
           label: 'space-around',
-          value: 'space-around',
+          value: 'space-around'
         },
         {
           label: 'space-between',
-          value: 'space-between',
-        },
+          value: 'space-between'
+        }
       ],
       layoutTreeProps: {
         label(data, node) {
           const config = data.config
           return data.componentName || `${config.label}: ${data.vModel}`
-        },
-      },
+        }
+      }
     }
   },
   computed: {
@@ -715,12 +711,12 @@ export default {
       return [
         {
           label: '输入型组件',
-          options: inputComponents,
+          options: inputComponents
         },
         {
           label: '选择型组件',
-          options: selectComponents,
-        },
+          options: selectComponents
+        }
       ]
     },
     activeTag() {
@@ -734,27 +730,27 @@ export default {
     },
     isShowStep() {
       return ['el-input-number', 'el-slider'].indexOf(this.activeTag) > -1
-    },
+    }
   },
   watch: {
     formConf: {
       handler(val) {
         saveFormConf(val)
       },
-      deep: true,
-    },
+      deep: true
+    }
   },
   methods: {
     addReg() {
       this.activeData.config.regList.push({
         pattern: '',
-        message: '',
+        message: ''
       })
     },
     addSelectItem() {
       this.activeData.__slot__.options.push({
         label: '',
-        value: '',
+        value: ''
       })
     },
     addTreeItem() {
@@ -877,8 +873,8 @@ export default {
       if (needRerenderList.includes(this.activeData.config.tag)) {
         this.activeData.config.renderKey = +new Date()
       }
-    },
-  },
+    }
+  }
 }
 </script>
 

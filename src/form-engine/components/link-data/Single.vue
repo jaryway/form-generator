@@ -13,21 +13,16 @@ import { deepClone } from '@/utils/index'
 
 export default {
   name: 'FgLinkQuerySingle',
-  props: ['value', 'linkFields'],
-  // components: { render }
-  data() {
-    return {}
-  },
-  mounted() {},
+  props: ['data', 'linkFields'],
+
   computed: {
     model() {
-      return deepClone(this.value || {})
+      return deepClone(this.data || {})
     },
     fields() {
       return this.linkFields
     }
   }
-  // methods: {},
 }
 </script>
 

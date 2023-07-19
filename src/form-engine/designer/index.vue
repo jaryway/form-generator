@@ -55,10 +55,10 @@
         >
           <el-button slot="reference">删除</el-button>
         </el-popconfirm> -->
-        <el-button icon="el-icon-video-play" type="text" @click="run"> 运行 </el-button>
-        <el-button icon="el-icon-view" type="text" @click="showJson"> 查看json </el-button>
-        <el-button icon="el-icon-download" type="text" @click="download"> 导出vue文件 </el-button>
-        <el-button class="copy-btn-main" icon="el-icon-document-copy" type="text" @click="copy"> 复制代码 </el-button>
+        <!-- <el-button icon="el-icon-video-play" type="text" @click="run"> 运行 </el-button> -->
+        <!-- <el-button icon="el-icon-view" type="text" @click="showJson"> 查看json </el-button> -->
+        <!-- <el-button icon="el-icon-download" type="text" @click="download"> 导出vue文件 </el-button> -->
+        <!-- <el-button class="copy-btn-main" icon="el-icon-document-copy" type="text" @click="copy"> 复制代码 </el-button> -->
         <el-button class="delete-btn" icon="el-icon-delete" type="text" @click="empty"> 清空 </el-button>
       </div>
       <el-scrollbar class="center-scrollbar">
@@ -105,19 +105,19 @@
       @fetch-data="fetchData"
     />
 
-    <form-drawer :visible.sync="drawerVisible" :form-data="formData" size="100%" :generate-conf="generateConf" />
-    <json-drawer
+    <!-- <form-drawer :visible.sync="drawerVisible" :form-data="formData" size="100%" :generate-conf="generateConf" /> -->
+    <!-- <json-drawer
       size="60%"
       :visible.sync="jsonDrawerVisible"
       :json-str="JSON.stringify(formData)"
       @refresh="refreshJson"
-    />
-    <code-type-dialog
+    /> -->
+    <!-- <code-type-dialog
       :visible.sync="dialogVisible"
       title="选择生成类型"
       :show-file-name="showFileName"
       @confirm="generate"
-    />
+    /> -->
     <input id="copyNode" type="hidden" />
   </div>
 </template>
@@ -127,18 +127,18 @@ import draggable from 'vuedraggable'
 import { debounce } from 'throttle-debounce'
 import { saveAs } from 'file-saver'
 import ClipboardJS from 'clipboard'
-import render from '@/components/render/render'
-import FormDrawer from './FormDrawer'
-import JsonDrawer from './JsonDrawer'
-import RightPanel from './RightPanel'
-import { inputComponents, selectComponents, layoutComponents, formConf } from '@/components/generator/config'
+// import render from '../render/render'
+// import FormDrawer from './FormDrawer'
+// import JsonDrawer from './JsonDrawer'
+import RightPanel from './right-panel'
+import { inputComponents, selectComponents, layoutComponents, formConf } from '../generator/config'
 import { exportDefault, beautifierConf, isNumberStr, titleCase, deepClone, isObjectObject } from '@/utils/index'
-import { makeUpHtml, vueTemplate, vueScript, cssStyle } from '@/components/generator/html'
-import { makeUpJs } from '@/components/generator/js'
-import { makeUpCss } from '@/components/generator/css'
-import drawingDefalut from '@/components/generator/drawingDefalut'
+import { makeUpHtml, vueTemplate, vueScript, cssStyle } from '../generator/html'
+import { makeUpJs } from '../generator/js'
+import { makeUpCss } from '../generator/css'
+import drawingDefalut from '../generator/drawingDefalut'
 import logo from '@/assets/logo.png'
-import CodeTypeDialog from './CodeTypeDialog'
+// import CodeTypeDialog from './CodeTypeDialog'
 import DraggableItem from './DraggableItem'
 import { getDrawingList, saveDrawingList, getIdGlobal, saveIdGlobal, getFormConf } from '@/utils/db'
 import loadBeautifier from '@/utils/loadBeautifier'
@@ -154,11 +154,11 @@ const idGlobal = getIdGlobal()
 export default {
   components: {
     draggable,
-    render,
-    FormDrawer,
-    JsonDrawer,
+    // render,
+    // FormDrawer,
+    // JsonDrawer,
     RightPanel,
-    CodeTypeDialog,
+    // CodeTypeDialog,
     DraggableItem
   },
   data() {
