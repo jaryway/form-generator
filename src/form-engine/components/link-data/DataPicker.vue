@@ -5,12 +5,12 @@ export default {
 
   inject: {
     linkDataRequest: {},
-    onLinkDataSelect: {}
   },
 
   data() {
     return {
-      dataSource: []
+      fields: [],
+      dataSource: [],
     }
   },
 
@@ -25,13 +25,15 @@ export default {
         fieldList: [],
         filter: {},
         pageNum: 1,
-        pageSize: 10
+        pageSize: 10,
       }
 
       this.linkDataRequest(params) //
         .then((resp) => {
-          // console.log('respresprespresp10', resp)
-          this.dataSource = resp
+          console.log('respresprespresp10', resp)
+          const { list, headList, pageNum, pageSize } = resp
+          this.dataSource = list || []
+          this.fields = headList
         })
         .catch((ex) => {
           console.error(ex)
@@ -42,17 +44,14 @@ export default {
     },
     handleSelect(_selection, row) {
       // this.$emit('select', row)
+      // console.log('handleSelect', this.$refs.refTable)
       this.$emit('update:visible', false)
-      this.$emit('select', row)
-      if (!this.onLinkDataSelect) {
-        console.warn(' 未提供 onLinkDataSelect 方法')
-      }
-
-      this.onLinkDataSelect(this.field, row)
-    }
+      this.$emit('select', row || {})
+      this.$refs.refTable.clearSelection()
+    },
   },
   render() {
-    const fields = this.linkFields || []
+    const fields = this.fields || []
 
     const loop = (data) => {
       return data.map((field, key) => {
@@ -65,20 +64,14 @@ export default {
     }
 
     return (
-      <el-dialog
-        size='small'
-        title='选择数据'
-        visible={this.visible}
-        onOpen={this.handleOpen}
-        onClose={this.handleClose}
-      >
-        <el-table size='small' border data={this.dataSource} row-key='id' onSelect={this.handleSelect}>
+      <el-dialog size='small' title='选择数据' visible={this.visible} onOpen={this.handleOpen} onClose={this.handleClose}>
+        <el-table size='small' ref='refTable' border data={this.dataSource} row-key='id' onSelect={this.handleSelect}>
           <el-table-column type='selection' width='55' align='center' />
           {loop(fields)}
         </el-table>
       </el-dialog>
     )
-  }
+  },
 }
 </script>
 

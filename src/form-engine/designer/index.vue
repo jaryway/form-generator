@@ -16,22 +16,8 @@
               <svg-icon icon-class="component" />
               {{ item.title }}
             </div>
-            <draggable
-              class="components-draggable"
-              :list="item.list"
-              :group="{ name: 'componentsGroup', pull: 'clone', put: false }"
-              :clone="cloneComponent"
-              draggable=".components-item"
-              :sort="false"
-              @end="onEnd"
-              @start="onStart"
-            >
-              <div
-                v-for="(element, index) in item.list"
-                :key="index"
-                class="components-item"
-                @click="addComponent(element)"
-              >
+            <draggable class="components-draggable" :list="item.list" :group="{ name: 'componentsGroup', pull: 'clone', put: false }" :clone="cloneComponent" draggable=".components-item" :sort="false" @end="onEnd" @start="onStart">
+              <div v-for="(element, index) in item.list" :key="index" class="components-item" @click="addComponent(element)">
                 <div class="components-body">
                   <svg-icon :icon-class="element.config.tagIcon" />
                   {{ element.config.label }}
@@ -64,32 +50,9 @@
       <el-scrollbar class="center-scrollbar">
         <el-row class="center-board-row" :gutter="formConf.gutter">
           <!-- <CheckboxGroup v-model="users" /> -->
-          <el-form
-            :size="formConf.size"
-            :label-position="formConf.labelPosition"
-            :disabled="formConf.disabled"
-            :label-width="formConf.labelWidth + 'px'"
-          >
-            <draggable
-              class="drawing-board"
-              :list="drawingList"
-              :animation="340"
-              group="componentsGroup"
-              @end="onItemEnd"
-            >
-              <draggable-item
-                v-for="(item, index) in drawingList"
-                :key="item.renderKey"
-                :drawing-list="drawingList"
-                :current-item="item"
-                :index="index"
-                :active-id="activeId"
-                :form-conf="formConf"
-                @activeItem="activeFormItem"
-                @copyItem="drawingItemCopy"
-                @deleteItem="drawingItemDelete"
-                :rowGroupName="rowGroupName"
-              />
+          <el-form :size="formConf.size" :label-position="formConf.labelPosition" :disabled="formConf.disabled" :label-width="formConf.labelWidth + 'px'">
+            <draggable class="drawing-board" :list="drawingList" :animation="340" group="componentsGroup" @end="onItemEnd">
+              <draggable-item v-for="(item, index) in drawingList" :key="item.renderKey" :drawing-list="drawingList" :current-item="item" :index="index" :active-id="activeId" :form-conf="formConf" @activeItem="activeFormItem" @copyItem="drawingItemCopy" @deleteItem="drawingItemDelete" :rowGroupName="rowGroupName" />
             </draggable>
             <div v-show="!drawingList.length" class="empty-info">从左侧拖入或点选组件进行表单设计</div>
           </el-form>
@@ -97,13 +60,7 @@
       </el-scrollbar>
     </div>
 
-    <right-panel
-      :active-data="activeData"
-      :form-conf="formConf"
-      :show-field="!!drawingList.length"
-      @tag-change="tagChange"
-      @fetch-data="fetchData"
-    />
+    <right-panel :active-data="activeData" :form-conf="formConf" :show-field="!!drawingList.length" @tag-change="tagChange" @fetch-data="fetchData" />
 
     <!-- <form-drawer :visible.sync="drawerVisible" :form-data="formData" size="100%" :generate-conf="generateConf" /> -->
     <!-- <json-drawer
@@ -159,7 +116,7 @@ export default {
     // JsonDrawer,
     RightPanel,
     // CodeTypeDialog,
-    DraggableItem
+    DraggableItem,
   },
   data() {
     return {
@@ -187,17 +144,17 @@ export default {
       leftComponents: [
         {
           title: '输入型组件',
-          list: inputComponents
+          list: inputComponents,
         },
         {
           title: '选择型组件',
-          list: selectComponents
+          list: selectComponents,
         },
         {
           title: '布局型组件',
-          list: layoutComponents
-        }
-      ]
+          list: layoutComponents,
+        },
+      ],
     }
   },
   computed: {},
@@ -206,47 +163,40 @@ export default {
       async linkDataRequest() {
         return Promise.resolve([{ fieldGTFmdMB1681184052316: '这是一个单行文本' }])
       },
-      onLinkDataSelect(field, row) {
-        console.log('onLinkDataSelect', field, row)
-      }
     }
   },
   watch: {
     // eslint-disable-next-line func-names
     'activeData.__config__.label': function (val, oldVal) {
-      if (
-        this.activeData.placeholder === undefined ||
-        !this.activeData.__config__.tag ||
-        oldActiveId !== this.activeId
-      ) {
+      if (this.activeData.placeholder === undefined || !this.activeData.__config__.tag || oldActiveId !== this.activeId) {
         return
       }
       this.activeData.placeholder = this.activeData.placeholder.replace(oldVal, '') + val
     },
-    'activeId': {
+    activeId: {
       handler(val) {
         oldActiveId = val
       },
-      immediate: true
+      immediate: true,
     },
-    'drawingList': {
+    drawingList: {
       handler(val) {
         this.saveDrawingListDebounce(val)
         if (val.length === 0) this.idGlobal = 100
       },
-      deep: true
+      deep: true,
     },
-    'idGlobal': {
+    idGlobal: {
       handler(val) {
         this.saveIdGlobalDebounce(val)
       },
-      immediate: true
+      immediate: true,
     },
-    'activeData': {
+    activeData: {
       handler(val) {
         console.log('activeData', val, val.config.formId)
-      }
-    }
+      },
+    },
   },
   mounted() {
     if (Array.isArray(drawingListInDB) && drawingListInDB.length > 0) {
@@ -267,10 +217,10 @@ export default {
         this.$notify({
           title: '成功',
           message: '代码已复制到剪切板，可粘贴。',
-          type: 'success'
+          type: 'success',
         })
         return codeStr
-      }
+      },
     })
     clipboard.on('error', (e) => {
       this.$message.error('代码复制失败')
@@ -307,7 +257,7 @@ export default {
         this.setLoading(component, true)
         this.$axios({
           method,
-          url
+          url,
         }).then((resp) => {
           this.setLoading(component, false)
           this.setRespData(component, resp.data)
@@ -402,7 +352,7 @@ export default {
     AssembleFormData() {
       this.formData = {
         fields: deepClone(this.drawingList),
-        ...this.formConf
+        ...this.formConf,
       }
     },
     generate(data) {
@@ -505,8 +455,8 @@ export default {
       this.drawingList = deepClone(data.fields)
       delete data.fields
       this.formConf = data
-    }
-  }
+    },
+  },
 }
 </script>
 

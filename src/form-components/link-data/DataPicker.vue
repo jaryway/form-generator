@@ -5,12 +5,11 @@ export default {
 
   inject: {
     linkDataRequest: {},
-    onLinkDataSelect: {}
   },
 
   data() {
     return {
-      dataSource: []
+      dataSource: [],
     }
   },
 
@@ -25,7 +24,7 @@ export default {
         fieldList: [],
         filter: {},
         pageNum: 1,
-        pageSize: 10
+        pageSize: 10,
       }
 
       this.linkDataRequest(params) //
@@ -44,12 +43,7 @@ export default {
       // this.$emit('select', row)
       this.$emit('update:visible', false)
       this.$emit('select', row)
-      if (!this.onLinkDataSelect) {
-        console.warn(' 未提供 onLinkDataSelect 方法')
-      }
-
-      this.onLinkDataSelect(this.field, row)
-    }
+    },
   },
   render() {
     const fields = this.linkFields || []
@@ -65,20 +59,14 @@ export default {
     }
 
     return (
-      <el-dialog
-        size='small'
-        title='选择数据'
-        visible={this.visible}
-        onOpen={this.handleOpen}
-        onClose={this.handleClose}
-      >
+      <el-dialog size='small' title='选择数据' visible={this.visible} onOpen={this.handleOpen} onClose={this.handleClose}>
         <el-table size='small' border data={this.dataSource} row-key='id' onSelect={this.handleSelect}>
           <el-table-column type='selection' width='55' align='center' />
           {loop(fields)}
         </el-table>
       </el-dialog>
     )
-  }
+  },
 }
 </script>
 

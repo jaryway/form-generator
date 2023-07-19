@@ -16,6 +16,7 @@ import { deepClone } from '@/utils/index'
 // })
 
 function vModel(dataObject, defaultValue) {
+  // console.log('dataObject.on.vModel', defaultValue)
   dataObject.props.value = defaultValue
   dataObject.on.input = (val) => {
     this.$emit('input', val)
@@ -55,6 +56,8 @@ function emitEvents(confClone) {
   })
 }
 
+const propFields = ['config', '__slot__', 'linkedShowField', 'linkList', 'filterCond', 'linkedFillRules']
+
 function buildDataObject(confClone, dataObject) {
   Object.keys(confClone).forEach((key) => {
     const val = confClone[key]
@@ -62,14 +65,10 @@ function buildDataObject(confClone, dataObject) {
       const value = this.useValue ? this.value : confClone.config.defaultValue
       dataObject.props[key] = val
       vModel.call(this, dataObject, value)
-    } else if (['config', '__slot__'].includes(key)) {
+    } else if (propFields.includes(key)) {
       dataObject.props[key] = val
     } else if (dataObject[key] !== undefined) {
-      if (
-        dataObject[key] === null ||
-        dataObject[key] instanceof RegExp ||
-        ['boolean', 'string', 'number', 'function'].includes(typeof dataObject[key])
-      ) {
+      if (dataObject[key] === null || dataObject[key] instanceof RegExp || ['boolean', 'string', 'number', 'function'].includes(typeof dataObject[key])) {
         dataObject[key] = val
       } else if (Array.isArray(dataObject[key])) {
         dataObject[key] = [...dataObject[key], ...val]
@@ -107,7 +106,7 @@ function makeDataObject(key) {
     slot: null,
     key,
     ref: null,
-    refInFor: true
+    refInFor: true,
   }
 }
 
@@ -115,21 +114,21 @@ export default {
   props: {
     conf: {
       type: Object,
-      required: true
+      required: true,
     },
     useValue: {
-      type: Boolean
+      type: Boolean,
     },
     value: {
-      type: [String, Number, null, undefined, Object]
+      type: [String, Number, null, undefined, Object],
     },
     on: {
-      type: [String, Number, null, undefined, Object]
-    }
+      type: [String, Number, null, undefined, Object],
+    },
   },
   mounted() {
-    this.$emit('mounted', this.conf)
-    console.log('render.mounted', this.conf)
+    // this.$emit('mounted', this.conf)
+    // console.log('render.mounted', this.conf)
   },
   render(h) {
     const dataObject = makeDataObject(this.key)
@@ -146,7 +145,7 @@ export default {
 
     // 将json表单配置转化为vue render可以识别的 “数据对象（dataObject）”
     buildDataObject.call(this, confClone, dataObject)
-    console.log('render.render', confClone, dataObject)
+    // console.log('render.render', confClone, dataObject)
 
     if (this.conf.config.tag === 'el-checkbox-group') {
       return h('fg-checkbox-group', dataObject, children)
@@ -176,6 +175,18 @@ export default {
       return h('fg-upload', dataObject, children)
     }
 
+    if (this.conf.typeId === 'CHILD_FORM') {
+      return h('fg-subform', dataObject, children)
+    }
+
+    if (this.conf.typeId === 'LINKED_DATA') {
+      return h('fg-link-data', dataObject, children)
+    }
+
+    if (this.conf.typeId === 'QUERY_CHECK') {
+      return h('fg-link-query', dataObject, children)
+    }
+
     return h(this.conf.config.tag, dataObject, children)
-  }
+  },
 }
