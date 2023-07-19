@@ -22,12 +22,18 @@
 </template>
 
 <script>
+import FieldPanel from './FieldPanel'
+import FormPanel from './FormPanel'
+
 export default {
   name: 'RightPanel',
   props: ['showField', 'activeData', 'formConf', 'drawingList'],
+  components: { FieldPanel, FormPanel },
 
   data() {
-    return {}
+    return {
+      currentTab: 'field'
+    }
   },
 
   mounted() {},
