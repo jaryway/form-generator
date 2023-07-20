@@ -16,7 +16,7 @@ import { deepClone } from '@/utils/index'
 // })
 
 function vModel(dataObject, defaultValue) {
-  // console.log('dataObject.on.vModel', defaultValue)
+  console.log('dataObject.vModel', defaultValue)
   dataObject.props.value = defaultValue
   dataObject.on.input = (val) => {
     this.$emit('input', val)
@@ -25,24 +25,6 @@ function vModel(dataObject, defaultValue) {
   //   this.$emit('blur', val)
   // }
 }
-
-// function mountSlotFiles(h, confClone, children) {
-//   // eslint-disable-next-line prefer-const
-//   let tag = confClone.config.tag
-//   if (confClone.config.tag === 'el-checkbox-group') {
-//     tag = 'checkbox-group'
-//   }
-
-//   const childObjs = componentChild[tag]
-//   if (childObjs) {
-//     Object.keys(childObjs).forEach((key) => {
-//       const childFunc = childObjs[key]
-//       if (confClone.__slot__ && confClone.__slot__[key]) {
-//         children.push(childFunc(h, confClone, key, this))
-//       }
-//     })
-//   }
-// }
 
 function emitEvents(confClone) {
   ;['on', 'nativeOn'].forEach((attr) => {
@@ -56,19 +38,46 @@ function emitEvents(confClone) {
   })
 }
 
-const propFields = ['config', '__slot__', 'linkedShowField', 'linkList', 'filterCond', 'linkedFillRules']
+const baseProps = [
+  'config',
+  '__slot__',
+  'linkedShowField',
+  'linkList',
+  'filterCond',
+  'linkedFillRules',
+  'typeId',
+  'typeName',
+  'editable',
+  'visibility',
+  'tableList',
+  'description',
+  'renderInTable',
+  'parentKey',
+  'rowIndex',
+  'repeatReminderText'
+]
+const subformProps = ['children', 'value']
+const ignoreProps = ['notChild']
 
 function buildDataObject(confClone, dataObject) {
   Object.keys(confClone).forEach((key) => {
+    if (ignoreProps.includes(key)) return
+
     const val = confClone[key]
     if (key === 'vModel') {
-      const value = this.useValue ? this.value : confClone.config.defaultValue
+      const value = this.values ? this.values[confClone.vModel] : confClone.config.defaultValue
       dataObject.props[key] = val
       vModel.call(this, dataObject, value)
-    } else if (propFields.includes(key)) {
+    } else if (key === 'editable') {
+      dataObject.attrs['disabled'] = !confClone.editable
+    } else if ((confClone.typeId === 'CHILD_FORM' && subformProps.includes(key)) || baseProps.includes(key)) {
       dataObject.props[key] = val
     } else if (dataObject[key] !== undefined) {
-      if (dataObject[key] === null || dataObject[key] instanceof RegExp || ['boolean', 'string', 'number', 'function'].includes(typeof dataObject[key])) {
+      if (
+        dataObject[key] === null ||
+        dataObject[key] instanceof RegExp ||
+        ['boolean', 'string', 'number', 'function'].includes(typeof dataObject[key])
+      ) {
         dataObject[key] = val
       } else if (Array.isArray(dataObject[key])) {
         dataObject[key] = [...dataObject[key], ...val]
@@ -106,7 +115,7 @@ function makeDataObject(key) {
     slot: null,
     key,
     ref: null,
-    refInFor: true,
+    refInFor: true
   }
 }
 
@@ -114,17 +123,9 @@ export default {
   props: {
     conf: {
       type: Object,
-      required: true,
+      required: true
     },
-    useValue: {
-      type: Boolean,
-    },
-    value: {
-      type: [String, Number, null, undefined, Object],
-    },
-    on: {
-      type: [String, Number, null, undefined, Object],
-    },
+    values: { type: [Object] }
   },
   mounted() {
     // this.$emit('mounted', this.conf)
@@ -135,6 +136,7 @@ export default {
     const confClone = deepClone(this.conf)
     const children = this.$slots.default || []
     dataObject.on = this.$listeners
+    // console.log('scheme.render...', this.values)
 
     // console.log('__slot__', children)
     // 如果slots文件夹存在与当前tag同名的文件，则执行文件中的代码
@@ -145,8 +147,8 @@ export default {
 
     // 将json表单配置转化为vue render可以识别的 “数据对象（dataObject）”
     buildDataObject.call(this, confClone, dataObject)
-    // console.log('render.render', confClone, dataObject)
 
+    console.log('dataObject', dataObject.props.value)
     if (this.conf.config.tag === 'el-checkbox-group') {
       return h('fg-checkbox-group', dataObject, children)
     }
@@ -176,6 +178,7 @@ export default {
     }
 
     if (this.conf.typeId === 'CHILD_FORM') {
+      console.log('dataSource.Parse.7', dataObject.props.value, this.values)
       return h('fg-subform', dataObject, children)
     }
 
@@ -188,5 +191,5 @@ export default {
     }
 
     return h(this.conf.config.tag, dataObject, children)
-  },
+  }
 }

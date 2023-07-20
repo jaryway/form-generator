@@ -1,27 +1,27 @@
 export const formData = {
   fields: [
     {
-      clearable: true,
-      visibility: true,
-      editable: true,
-      format: 'yyyy-MM-dd',
-      typeName: '日期时间',
+      'clearable': true,
+      'visibility': true,
+      'editable': true,
+      'format': 'yyyy-MM-dd',
+      'typeName': '日期时间',
       'value-format': 'yyyy-MM-dd',
-      description: '',
-      type: 'date',
-      readonly: false,
-      style: {
+      'description': '',
+      'type': 'date',
+      'readonly': false,
+      'style': {
         width: '254px',
-        maxWidth: '100%',
+        maxWidth: '100%'
       },
-      typeId: 'DATE',
-      conditionType: 2,
-      placeholder: '请选择实际送货日期',
-      config: {
+      'typeId': 'DATE',
+      'conditionType': 2,
+      'placeholder': '请选择实际送货日期',
+      'config': {
         label: '实际送货日期',
         defaultValueSource: {
           id: '',
-          type: 0,
+          type: 0
         },
         required: true,
         showLabel: true,
@@ -33,9 +33,9 @@ export const formData = {
         changeTag: true,
         tag: 'el-date-picker',
         defaultValueType: 0,
-        span: 6,
+        span: 6
       },
-      vModel: 'fieldKknDhEB1678166837506',
+      'vModel': 'fieldKknDhEB1678166837506'
     },
     {
       visibility: true,
@@ -46,7 +46,7 @@ export const formData = {
       readonly: false,
       segment: 'vertical',
       style: {
-        display: 'block',
+        display: 'block'
       },
       typeId: 'RADIO',
       conditionType: 3,
@@ -64,23 +64,23 @@ export const formData = {
         tagIcon: 'radio',
         changeTag: true,
         tag: 'el-radio-group',
-        span: 6,
+        span: 6
       },
       __slot__: {
         options: [
           {
             checked: true,
             label: '是',
-            value: 1,
+            value: 1
           },
           {
             checked: false,
             label: '否',
-            value: 2,
-          },
-        ],
+            value: 2
+          }
+        ]
       },
-      vModel: 'fieldlXUGSFB1678437737540',
+      vModel: 'fieldlXUGSFB1678437737540'
     },
     {
       visibility: true,
@@ -91,7 +91,7 @@ export const formData = {
       readonly: false,
       segment: 'vertical',
       style: {
-        display: 'block',
+        display: 'block'
       },
       typeId: 'RADIO',
       conditionType: 3,
@@ -109,30 +109,30 @@ export const formData = {
         tagIcon: 'radio',
         changeTag: true,
         tag: 'el-radio-group',
-        span: 6,
+        span: 6
       },
       __slot__: {
         options: [
           {
             checked: true,
             label: '是',
-            value: 1,
+            value: 1
           },
           {
             checked: false,
             label: '否',
-            value: 2,
-          },
-        ],
+            value: 2
+          }
+        ]
       },
-      vModel: 'fieldKCTcSFB1678440827065',
+      vModel: 'fieldKCTcSFB1678440827065'
     },
     {
       linkedFillRules: [
         {
           visible: 1,
           depend: {
-            field: 'fieldYgHKSFB167843826480601',
+            field: 'fieldYgHKSFB167843826480601'
           },
           check: true,
           label: '编号',
@@ -143,8 +143,8 @@ export const formData = {
           name: 'fieldsQLGSFB1678438134927',
           typeId: 'INPUT',
           id: '1634114142449610754',
-          vModel: 'fieldsQLGSFB1678438134927',
-        },
+          vModel: 'fieldsQLGSFB1678438134927'
+        }
       ],
       visibility: true,
       editable: true,
@@ -161,14 +161,14 @@ export const formData = {
           name: 'fieldsQLGSFB1678438134927',
           typeId: 'INPUT',
           id: '1634114142449610754',
-          vModel: 'fieldsQLGSFB1678438134927',
-        },
+          vModel: 'fieldsQLGSFB1678438134927'
+        }
       ],
       readonly: false,
       showTitle: false,
       style: {
         width: '100%',
-        maxWidth: '100%',
+        maxWidth: '100%'
       },
       typeId: 'LINKED_DATA',
       filterCond: [],
@@ -185,10 +185,10 @@ export const formData = {
         tagIcon: 'input',
         changeTag: true,
         tag: 'my-form',
-        span: 6,
+        span: 6
       },
       linkedShowField: [],
-      vModel: 'fieldkgPHSFB1678437864676',
+      vModel: 'fieldkgPHSFB1678437864676'
     },
     {
       visibility: true,
@@ -201,7 +201,7 @@ export const formData = {
       linkVModel: 'fieldkgPHSFB1678437864676',
       style: {
         width: '254px',
-        maxWidth: '100%',
+        maxWidth: '100%'
       },
       typeId: 'INPUT',
       placeholder: '请输入到货合同号',
@@ -210,34 +210,34 @@ export const formData = {
         typeOption: [
           {
             label: '无',
-            value: 'text',
+            value: 'text'
           },
           {
             label: '手机号码',
-            value: 'phoneNumber',
+            value: 'phoneNumber'
           },
           {
             label: '电话号码',
-            value: 'tel',
+            value: 'tel'
           },
           {
             label: '邮政编码',
-            value: 'zipCode',
+            value: 'zipCode'
           },
           {
             label: '身份证号码',
-            value: 'idNumber',
+            value: 'idNumber'
           },
           {
             label: '邮箱',
-            value: 'email',
-          },
+            value: 'email'
+          }
         ],
         format: 'text',
         label: '到货合同号',
         defaultValueSource: {
           id: '',
-          type: 0,
+          type: 0
         },
         required: true,
         showLabel: true,
@@ -248,16 +248,16 @@ export const formData = {
         changeTag: true,
         tag: 'el-input',
         defaultValueType: 0,
-        span: 6,
+        span: 6
       },
-      vModel: 'fieldYgHKSFB167843826480601',
+      vModel: 'fieldYgHKSFB167843826480601'
     },
     {
       linkedFillRules: [
         {
           visible: 1,
           depend: {
-            field: 'fieldQmWKSFB167843830585501',
+            field: 'fieldQmWKSFB167843830585501'
           },
           check: true,
           label: '编号',
@@ -268,8 +268,8 @@ export const formData = {
           name: 'fieldsQLGSFB1678438134927',
           typeId: 'INPUT',
           id: '1634114142449610754',
-          vModel: 'fieldsQLGSFB1678438134927',
-        },
+          vModel: 'fieldsQLGSFB1678438134927'
+        }
       ],
       visibility: true,
       editable: true,
@@ -280,7 +280,7 @@ export const formData = {
       showTitle: true,
       style: {
         width: '100%',
-        maxWidth: '100%',
+        maxWidth: '100%'
       },
       typeId: 'LINKED_DATA',
       filterCond: [],
@@ -297,10 +297,10 @@ export const formData = {
         tagIcon: 'input',
         changeTag: true,
         tag: 'my-form',
-        span: 6,
+        span: 6
       },
       linkedShowField: [],
-      vModel: 'fieldSlqGSFB1678438219215',
+      vModel: 'fieldSlqGSFB1678438219215'
     },
     {
       visibility: true,
@@ -313,7 +313,7 @@ export const formData = {
       linkVModel: 'fieldSlqGSFB1678438219215',
       style: {
         width: '254px',
-        maxWidth: '100%',
+        maxWidth: '100%'
       },
       typeId: 'INPUT',
       placeholder: '请输入送货单号',
@@ -322,34 +322,34 @@ export const formData = {
         typeOption: [
           {
             label: '无',
-            value: 'text',
+            value: 'text'
           },
           {
             label: '手机号码',
-            value: 'phoneNumber',
+            value: 'phoneNumber'
           },
           {
             label: '电话号码',
-            value: 'tel',
+            value: 'tel'
           },
           {
             label: '邮政编码',
-            value: 'zipCode',
+            value: 'zipCode'
           },
           {
             label: '身份证号码',
-            value: 'idNumber',
+            value: 'idNumber'
           },
           {
             label: '邮箱',
-            value: 'email',
-          },
+            value: 'email'
+          }
         ],
         format: 'text',
         label: '送货单号',
         defaultValueSource: {
           id: '',
-          type: 0,
+          type: 0
         },
         required: true,
         showLabel: true,
@@ -360,16 +360,16 @@ export const formData = {
         changeTag: true,
         tag: 'el-input',
         defaultValueType: 0,
-        span: 6,
+        span: 6
       },
-      vModel: 'fieldQmWKSFB167843830585501',
+      vModel: 'fieldQmWKSFB167843830585501'
     },
     {
       linkedFillRules: [
         {
           visible: 1,
           depend: {
-            field: 'fielddVdMSFB167843860511801',
+            field: 'fielddVdMSFB167843860511801'
           },
           check: true,
           label: '编号',
@@ -380,8 +380,8 @@ export const formData = {
           name: 'fieldsQLGSFB1678438134927',
           typeId: 'INPUT',
           id: '1634114142449610754',
-          vModel: 'fieldsQLGSFB1678438134927',
-        },
+          vModel: 'fieldsQLGSFB1678438134927'
+        }
       ],
       visibility: true,
       editable: true,
@@ -392,7 +392,7 @@ export const formData = {
       showTitle: true,
       style: {
         width: '100%',
-        maxWidth: '100%',
+        maxWidth: '100%'
       },
       typeId: 'LINKED_DATA',
       filterCond: [],
@@ -409,10 +409,10 @@ export const formData = {
         tagIcon: 'input',
         changeTag: true,
         tag: 'my-form',
-        span: 6,
+        span: 6
       },
       linkedShowField: [],
-      vModel: 'fieldBFsLSFB1678438503850',
+      vModel: 'fieldBFsLSFB1678438503850'
     },
     {
       visibility: true,
@@ -425,7 +425,7 @@ export const formData = {
       linkVModel: 'fieldBFsLSFB1678438503850',
       style: {
         width: '254px',
-        maxWidth: '100%',
+        maxWidth: '100%'
       },
       typeId: 'INPUT',
       placeholder: '请输入船号',
@@ -434,34 +434,34 @@ export const formData = {
         typeOption: [
           {
             label: '无',
-            value: 'text',
+            value: 'text'
           },
           {
             label: '手机号码',
-            value: 'phoneNumber',
+            value: 'phoneNumber'
           },
           {
             label: '电话号码',
-            value: 'tel',
+            value: 'tel'
           },
           {
             label: '邮政编码',
-            value: 'zipCode',
+            value: 'zipCode'
           },
           {
             label: '身份证号码',
-            value: 'idNumber',
+            value: 'idNumber'
           },
           {
             label: '邮箱',
-            value: 'email',
-          },
+            value: 'email'
+          }
         ],
         format: 'text',
         label: '船号',
         defaultValueSource: {
           id: '',
-          type: 0,
+          type: 0
         },
         required: true,
         showLabel: true,
@@ -472,9 +472,9 @@ export const formData = {
         changeTag: true,
         tag: 'el-input',
         defaultValueType: 0,
-        span: 6,
+        span: 6
       },
-      vModel: 'fielddVdMSFB167843860511801',
+      vModel: 'fielddVdMSFB167843860511801'
     },
     {
       notChild: true,
@@ -490,7 +490,7 @@ export const formData = {
             {
               visible: 1,
               depend: {
-                field: 'fieldKMhNSFB167843875651801',
+                field: 'fieldKMhNSFB167843875651801'
               },
               check: true,
               label: '编号',
@@ -501,8 +501,8 @@ export const formData = {
               name: 'fieldsQLGSFB1678438134927',
               typeId: 'INPUT',
               id: '1634114142449610754',
-              vModel: 'fieldsQLGSFB1678438134927',
-            },
+              vModel: 'fieldsQLGSFB1678438134927'
+            }
           ],
           visibility: true,
           editable: true,
@@ -514,7 +514,7 @@ export const formData = {
           showTitle: false,
           style: {
             width: '100%',
-            maxWidth: '100%',
+            maxWidth: '100%'
           },
           typeId: 'LINKED_DATA',
           filterCond: [],
@@ -531,10 +531,10 @@ export const formData = {
             tagIcon: 'input',
             changeTag: true,
             tag: 'my-form',
-            span: 24,
+            span: 24
           },
           linkedShowField: [],
-          vModel: 'fieldmiyDhEB1678166867066',
+          vModel: 'fieldmiyDhEB1678166867066'
         },
         {
           visibility: true,
@@ -548,7 +548,7 @@ export const formData = {
           linkVModel: 'fieldmiyDhEB1678166867066',
           style: {
             width: '254px',
-            maxWidth: '100%',
+            maxWidth: '100%'
           },
           typeId: 'INPUT',
           placeholder: '请输入工程号',
@@ -557,34 +557,34 @@ export const formData = {
             typeOption: [
               {
                 label: '无',
-                value: 'text',
+                value: 'text'
               },
               {
                 label: '手机号码',
-                value: 'phoneNumber',
+                value: 'phoneNumber'
               },
               {
                 label: '电话号码',
-                value: 'tel',
+                value: 'tel'
               },
               {
                 label: '邮政编码',
-                value: 'zipCode',
+                value: 'zipCode'
               },
               {
                 label: '身份证号码',
-                value: 'idNumber',
+                value: 'idNumber'
               },
               {
                 label: '邮箱',
-                value: 'email',
-              },
+                value: 'email'
+              }
             ],
             format: 'text',
             label: '工程号',
             defaultValueSource: {
               id: '',
-              type: 0,
+              type: 0
             },
             required: true,
             showLabel: true,
@@ -595,9 +595,9 @@ export const formData = {
             changeTag: true,
             tag: 'el-input',
             defaultValueType: 0,
-            span: 6,
+            span: 6
           },
-          vModel: 'fieldKMhNSFB167843875651801',
+          vModel: 'fieldKMhNSFB167843875651801'
         },
         {
           visibility: true,
@@ -610,7 +610,7 @@ export const formData = {
           readonly: false,
           style: {
             width: '254px',
-            maxWidth: '100%',
+            maxWidth: '100%'
           },
           typeId: 'INPUT',
           placeholder: '请输入技术采购单号',
@@ -619,34 +619,34 @@ export const formData = {
             typeOption: [
               {
                 label: '无',
-                value: 'text',
+                value: 'text'
               },
               {
                 label: '手机号码',
-                value: 'phoneNumber',
+                value: 'phoneNumber'
               },
               {
                 label: '电话号码',
-                value: 'tel',
+                value: 'tel'
               },
               {
                 label: '邮政编码',
-                value: 'zipCode',
+                value: 'zipCode'
               },
               {
                 label: '身份证号码',
-                value: 'idNumber',
+                value: 'idNumber'
               },
               {
                 label: '邮箱',
-                value: 'email',
-              },
+                value: 'email'
+              }
             ],
             format: 'text',
             label: '技术采购单号',
             defaultValueSource: {
               id: '',
-              type: 0,
+              type: 0
             },
             required: false,
             showLabel: true,
@@ -657,9 +657,9 @@ export const formData = {
             changeTag: true,
             tag: 'el-input',
             defaultValueType: 0,
-            span: 6,
+            span: 6
           },
-          vModel: 'fieldgAgOSFB1678438901921',
+          vModel: 'fieldgAgOSFB1678438901921'
         },
         {
           visibility: true,
@@ -672,7 +672,7 @@ export const formData = {
           readonly: false,
           style: {
             width: '254px',
-            maxWidth: '100%',
+            maxWidth: '100%'
           },
           typeId: 'INPUT',
           placeholder: '请输入采购单号',
@@ -681,34 +681,34 @@ export const formData = {
             typeOption: [
               {
                 label: '无',
-                value: 'text',
+                value: 'text'
               },
               {
                 label: '手机号码',
-                value: 'phoneNumber',
+                value: 'phoneNumber'
               },
               {
                 label: '电话号码',
-                value: 'tel',
+                value: 'tel'
               },
               {
                 label: '邮政编码',
-                value: 'zipCode',
+                value: 'zipCode'
               },
               {
                 label: '身份证号码',
-                value: 'idNumber',
+                value: 'idNumber'
               },
               {
                 label: '邮箱',
-                value: 'email',
-              },
+                value: 'email'
+              }
             ],
             format: 'text',
             label: '采购单号',
             defaultValueSource: {
               id: '',
-              type: 0,
+              type: 0
             },
             required: true,
             showLabel: true,
@@ -719,9 +719,9 @@ export const formData = {
             changeTag: true,
             tag: 'el-input',
             defaultValueType: 0,
-            span: 6,
+            span: 6
           },
-          vModel: 'fieldecpOSFB1678438918981',
+          vModel: 'fieldecpOSFB1678438918981'
         },
         {
           visibility: true,
@@ -734,7 +734,7 @@ export const formData = {
           readonly: false,
           style: {
             width: '254px',
-            maxWidth: '100%',
+            maxWidth: '100%'
           },
           typeId: 'INPUT',
           placeholder: '请输入合同号',
@@ -743,34 +743,34 @@ export const formData = {
             typeOption: [
               {
                 label: '无',
-                value: 'text',
+                value: 'text'
               },
               {
                 label: '手机号码',
-                value: 'phoneNumber',
+                value: 'phoneNumber'
               },
               {
                 label: '电话号码',
-                value: 'tel',
+                value: 'tel'
               },
               {
                 label: '邮政编码',
-                value: 'zipCode',
+                value: 'zipCode'
               },
               {
                 label: '身份证号码',
-                value: 'idNumber',
+                value: 'idNumber'
               },
               {
                 label: '邮箱',
-                value: 'email',
-              },
+                value: 'email'
+              }
             ],
             format: 'text',
             label: '合同号',
             defaultValueSource: {
               id: '',
-              type: 0,
+              type: 0
             },
             required: false,
             showLabel: true,
@@ -781,9 +781,9 @@ export const formData = {
             changeTag: true,
             tag: 'el-input',
             defaultValueType: 0,
-            span: 6,
+            span: 6
           },
-          vModel: 'fieldygrOSFB1678438925179',
+          vModel: 'fieldygrOSFB1678438925179'
         },
         {
           visibility: true,
@@ -796,7 +796,7 @@ export const formData = {
           readonly: false,
           style: {
             width: '254px',
-            maxWidth: '100%',
+            maxWidth: '100%'
           },
           typeId: 'INPUT',
           placeholder: '请输入物资编码',
@@ -805,34 +805,34 @@ export const formData = {
             typeOption: [
               {
                 label: '无',
-                value: 'text',
+                value: 'text'
               },
               {
                 label: '手机号码',
-                value: 'phoneNumber',
+                value: 'phoneNumber'
               },
               {
                 label: '电话号码',
-                value: 'tel',
+                value: 'tel'
               },
               {
                 label: '邮政编码',
-                value: 'zipCode',
+                value: 'zipCode'
               },
               {
                 label: '身份证号码',
-                value: 'idNumber',
+                value: 'idNumber'
               },
               {
                 label: '邮箱',
-                value: 'email',
-              },
+                value: 'email'
+              }
             ],
             format: 'text',
             label: '物资编码',
             defaultValueSource: {
               id: '',
-              type: 0,
+              type: 0
             },
             required: true,
             showLabel: true,
@@ -843,9 +843,9 @@ export const formData = {
             changeTag: true,
             tag: 'el-input',
             defaultValueType: 0,
-            span: 6,
+            span: 6
           },
-          vModel: 'fieldGzKPSFB1678438977514',
+          vModel: 'fieldGzKPSFB1678438977514'
         },
         {
           visibility: true,
@@ -858,7 +858,7 @@ export const formData = {
           readonly: false,
           style: {
             width: '254px',
-            maxWidth: '100%',
+            maxWidth: '100%'
           },
           typeId: 'INPUT',
           placeholder: '请输入物资描述',
@@ -867,34 +867,34 @@ export const formData = {
             typeOption: [
               {
                 label: '无',
-                value: 'text',
+                value: 'text'
               },
               {
                 label: '手机号码',
-                value: 'phoneNumber',
+                value: 'phoneNumber'
               },
               {
                 label: '电话号码',
-                value: 'tel',
+                value: 'tel'
               },
               {
                 label: '邮政编码',
-                value: 'zipCode',
+                value: 'zipCode'
               },
               {
                 label: '身份证号码',
-                value: 'idNumber',
+                value: 'idNumber'
               },
               {
                 label: '邮箱',
-                value: 'email',
-              },
+                value: 'email'
+              }
             ],
             format: 'text',
             label: '物资描述',
             defaultValueSource: {
               id: '',
-              type: 0,
+              type: 0
             },
             required: false,
             showLabel: true,
@@ -905,9 +905,9 @@ export const formData = {
             changeTag: true,
             tag: 'el-input',
             defaultValueType: 0,
-            span: 6,
+            span: 6
           },
-          vModel: 'fieldWvXPSFB1678439011906',
+          vModel: 'fieldWvXPSFB1678439011906'
         },
         {
           visibility: true,
@@ -920,7 +920,7 @@ export const formData = {
           readonly: false,
           style: {
             width: '254px',
-            maxWidth: '100%',
+            maxWidth: '100%'
           },
           typeId: 'INPUT',
           placeholder: '请输入物资规格',
@@ -929,34 +929,34 @@ export const formData = {
             typeOption: [
               {
                 label: '无',
-                value: 'text',
+                value: 'text'
               },
               {
                 label: '手机号码',
-                value: 'phoneNumber',
+                value: 'phoneNumber'
               },
               {
                 label: '电话号码',
-                value: 'tel',
+                value: 'tel'
               },
               {
                 label: '邮政编码',
-                value: 'zipCode',
+                value: 'zipCode'
               },
               {
                 label: '身份证号码',
-                value: 'idNumber',
+                value: 'idNumber'
               },
               {
                 label: '邮箱',
-                value: 'email',
-              },
+                value: 'email'
+              }
             ],
             format: 'text',
             label: '物资规格',
             defaultValueSource: {
               id: '',
-              type: 0,
+              type: 0
             },
             required: false,
             showLabel: true,
@@ -967,9 +967,9 @@ export const formData = {
             changeTag: true,
             tag: 'el-input',
             defaultValueType: 0,
-            span: 6,
+            span: 6
           },
-          vModel: 'fieldpIYPSFB1678439012491',
+          vModel: 'fieldpIYPSFB1678439012491'
         },
         {
           visibility: true,
@@ -982,7 +982,7 @@ export const formData = {
           readonly: false,
           style: {
             width: '254px',
-            maxWidth: '100%',
+            maxWidth: '100%'
           },
           typeId: 'INPUT',
           placeholder: '请输入管理单位',
@@ -991,34 +991,34 @@ export const formData = {
             typeOption: [
               {
                 label: '无',
-                value: 'text',
+                value: 'text'
               },
               {
                 label: '手机号码',
-                value: 'phoneNumber',
+                value: 'phoneNumber'
               },
               {
                 label: '电话号码',
-                value: 'tel',
+                value: 'tel'
               },
               {
                 label: '邮政编码',
-                value: 'zipCode',
+                value: 'zipCode'
               },
               {
                 label: '身份证号码',
-                value: 'idNumber',
+                value: 'idNumber'
               },
               {
                 label: '邮箱',
-                value: 'email',
-              },
+                value: 'email'
+              }
             ],
             format: 'text',
             label: '管理单位',
             defaultValueSource: {
               id: '',
-              type: 0,
+              type: 0
             },
             required: false,
             showLabel: true,
@@ -1029,9 +1029,9 @@ export const formData = {
             changeTag: true,
             tag: 'el-input',
             defaultValueType: 0,
-            span: 6,
+            span: 6
           },
-          vModel: 'fieldgEYPSFB1678439012707',
+          vModel: 'fieldgEYPSFB1678439012707'
         },
         {
           visibility: true,
@@ -1044,7 +1044,7 @@ export const formData = {
           readonly: false,
           style: {
             width: '254px',
-            maxWidth: '100%',
+            maxWidth: '100%'
           },
           typeId: 'INPUT',
           placeholder: '请输入计价单位',
@@ -1053,34 +1053,34 @@ export const formData = {
             typeOption: [
               {
                 label: '无',
-                value: 'text',
+                value: 'text'
               },
               {
                 label: '手机号码',
-                value: 'phoneNumber',
+                value: 'phoneNumber'
               },
               {
                 label: '电话号码',
-                value: 'tel',
+                value: 'tel'
               },
               {
                 label: '邮政编码',
-                value: 'zipCode',
+                value: 'zipCode'
               },
               {
                 label: '身份证号码',
-                value: 'idNumber',
+                value: 'idNumber'
               },
               {
                 label: '邮箱',
-                value: 'email',
-              },
+                value: 'email'
+              }
             ],
             format: 'text',
             label: '计价单位',
             defaultValueSource: {
               id: '',
-              type: 0,
+              type: 0
             },
             required: false,
             showLabel: true,
@@ -1091,46 +1091,46 @@ export const formData = {
             changeTag: true,
             tag: 'el-input',
             defaultValueType: 0,
-            span: 6,
+            span: 6
           },
-          vModel: 'fieldaCYPSFB1678439012897',
+          vModel: 'fieldaCYPSFB1678439012897'
         },
         {
           'step-strictly': false,
-          controls: false,
-          visibility: true,
-          editable: true,
-          precision: 0,
-          typeName: '数字',
-          description: '',
+          'controls': false,
+          'visibility': true,
+          'editable': true,
+          'precision': 0,
+          'typeName': '数字',
+          'description': '',
           'controls-position': '',
-          parentKey: 'fieldeCtDhEB1678166852263',
-          readonly: false,
-          step: 1,
-          style: {
+          'parentKey': 'fieldeCtDhEB1678166852263',
+          'readonly': false,
+          'step': 1,
+          'style': {
             width: '254px',
-            maxWidth: '100%',
+            maxWidth: '100%'
           },
-          typeId: 'NUMBER_INPUT',
-          conditionType: 1,
-          placeholder: '请输入送货管理数量',
-          config: {
+          'typeId': 'NUMBER_INPUT',
+          'conditionType': 1,
+          'placeholder': '请输入送货管理数量',
+          'config': {
             typeOption: [
               {
                 label: '数值',
-                value: 1,
+                value: 1
               },
               {
                 label: '百分比',
-                value: 2,
-              },
+                value: 2
+              }
             ],
             format: 1,
             showThousandsSeparator: false,
             label: '送货管理数量',
             defaultValueSource: {
               id: '',
-              type: 0,
+              type: 0
             },
             required: true,
             showLabel: true,
@@ -1143,46 +1143,46 @@ export const formData = {
             showDecimal: false,
             defaultValueType: 0,
             limitRange: false,
-            span: 6,
+            span: 6
           },
-          vModel: 'fieldFkSQSFB1678439138948',
+          'vModel': 'fieldFkSQSFB1678439138948'
         },
         {
           'step-strictly': false,
-          controls: false,
-          visibility: true,
-          editable: false,
-          precision: 0,
-          typeName: '数字',
-          description: '',
+          'controls': false,
+          'visibility': true,
+          'editable': false,
+          'precision': 0,
+          'typeName': '数字',
+          'description': '',
           'controls-position': '',
-          parentKey: 'fieldeCtDhEB1678166852263',
-          readonly: false,
-          step: 1,
-          style: {
+          'parentKey': 'fieldeCtDhEB1678166852263',
+          'readonly': false,
+          'step': 1,
+          'style': {
             width: '254px',
-            maxWidth: '100%',
+            maxWidth: '100%'
           },
-          typeId: 'NUMBER_INPUT',
-          conditionType: 1,
-          placeholder: '请输入送货计价数量',
-          config: {
+          'typeId': 'NUMBER_INPUT',
+          'conditionType': 1,
+          'placeholder': '请输入送货计价数量',
+          'config': {
             typeOption: [
               {
                 label: '数值',
-                value: 1,
+                value: 1
               },
               {
                 label: '百分比',
-                value: 2,
-              },
+                value: 2
+              }
             ],
             format: 1,
             showThousandsSeparator: false,
             label: '送货计价数量',
             defaultValueSource: {
               id: '',
-              type: 0,
+              type: 0
             },
             required: false,
             showLabel: true,
@@ -1195,9 +1195,9 @@ export const formData = {
             showDecimal: false,
             defaultValueType: 0,
             limitRange: false,
-            span: 6,
+            span: 6
           },
-          vModel: 'fieldssfQSFB1678439174063',
+          'vModel': 'fieldssfQSFB1678439174063'
         },
         {
           visibility: true,
@@ -1210,7 +1210,7 @@ export const formData = {
           readonly: false,
           style: {
             width: '254px',
-            maxWidth: '100%',
+            maxWidth: '100%'
           },
           typeId: 'INPUT',
           placeholder: '请输入炉批号',
@@ -1219,34 +1219,34 @@ export const formData = {
             typeOption: [
               {
                 label: '无',
-                value: 'text',
+                value: 'text'
               },
               {
                 label: '手机号码',
-                value: 'phoneNumber',
+                value: 'phoneNumber'
               },
               {
                 label: '电话号码',
-                value: 'tel',
+                value: 'tel'
               },
               {
                 label: '邮政编码',
-                value: 'zipCode',
+                value: 'zipCode'
               },
               {
                 label: '身份证号码',
-                value: 'idNumber',
+                value: 'idNumber'
               },
               {
                 label: '邮箱',
-                value: 'email',
-              },
+                value: 'email'
+              }
             ],
             format: 'text',
             label: '炉批号',
             defaultValueSource: {
               id: '',
-              type: 0,
+              type: 0
             },
             required: false,
             showLabel: true,
@@ -1257,9 +1257,9 @@ export const formData = {
             changeTag: true,
             tag: 'el-input',
             defaultValueType: 0,
-            span: 6,
+            span: 6
           },
-          vModel: 'fieldrCYPSFB1678439013073',
+          vModel: 'fieldrCYPSFB1678439013073'
         },
         {
           visibility: true,
@@ -1272,7 +1272,7 @@ export const formData = {
           readonly: false,
           style: {
             width: '254px',
-            maxWidth: '100%',
+            maxWidth: '100%'
           },
           typeId: 'INPUT',
           placeholder: '请输入批号',
@@ -1281,34 +1281,34 @@ export const formData = {
             typeOption: [
               {
                 label: '无',
-                value: 'text',
+                value: 'text'
               },
               {
                 label: '手机号码',
-                value: 'phoneNumber',
+                value: 'phoneNumber'
               },
               {
                 label: '电话号码',
-                value: 'tel',
+                value: 'tel'
               },
               {
                 label: '邮政编码',
-                value: 'zipCode',
+                value: 'zipCode'
               },
               {
                 label: '身份证号码',
-                value: 'idNumber',
+                value: 'idNumber'
               },
               {
                 label: '邮箱',
-                value: 'email',
-              },
+                value: 'email'
+              }
             ],
             format: 'text',
             label: '批号',
             defaultValueSource: {
               id: '',
-              type: 0,
+              type: 0
             },
             required: false,
             showLabel: true,
@@ -1319,33 +1319,33 @@ export const formData = {
             changeTag: true,
             tag: 'el-input',
             defaultValueType: 0,
-            span: 6,
+            span: 6
           },
-          vModel: 'fieldPyBRSFB1678439234351',
+          vModel: 'fieldPyBRSFB1678439234351'
         },
         {
-          clearable: true,
-          visibility: true,
-          editable: true,
-          format: 'yyyy-MM-dd',
-          typeName: '日期时间',
+          'clearable': true,
+          'visibility': true,
+          'editable': true,
+          'format': 'yyyy-MM-dd',
+          'typeName': '日期时间',
           'value-format': 'yyyy-MM-dd',
-          description: '',
-          type: 'date',
-          parentKey: 'fieldeCtDhEB1678166852263',
-          readonly: false,
-          style: {
+          'description': '',
+          'type': 'date',
+          'parentKey': 'fieldeCtDhEB1678166852263',
+          'readonly': false,
+          'style': {
             width: '254px',
-            maxWidth: '100%',
+            maxWidth: '100%'
           },
-          typeId: 'DATE',
-          conditionType: 2,
-          placeholder: '请选择生产日期',
-          config: {
+          'typeId': 'DATE',
+          'conditionType': 2,
+          'placeholder': '请选择生产日期',
+          'config': {
             label: '生产日期',
             defaultValueSource: {
               id: '',
-              type: 0,
+              type: 0
             },
             required: false,
             showLabel: true,
@@ -1357,46 +1357,46 @@ export const formData = {
             changeTag: true,
             tag: 'el-date-picker',
             defaultValueType: 0,
-            span: 6,
+            span: 6
           },
-          vModel: 'fieldcuHRSFB1678439250186',
+          'vModel': 'fieldcuHRSFB1678439250186'
         },
         {
           'step-strictly': false,
-          controls: false,
-          visibility: true,
-          editable: true,
-          precision: 0,
-          typeName: '数字',
-          description: '',
+          'controls': false,
+          'visibility': true,
+          'editable': true,
+          'precision': 0,
+          'typeName': '数字',
+          'description': '',
           'controls-position': '',
-          parentKey: 'fieldeCtDhEB1678166852263',
-          readonly: false,
-          step: 1,
-          style: {
+          'parentKey': 'fieldeCtDhEB1678166852263',
+          'readonly': false,
+          'step': 1,
+          'style': {
             width: '254px',
-            maxWidth: '100%',
+            maxWidth: '100%'
           },
-          typeId: 'NUMBER_INPUT',
-          conditionType: 1,
-          placeholder: '请输入保质期天数',
-          config: {
+          'typeId': 'NUMBER_INPUT',
+          'conditionType': 1,
+          'placeholder': '请输入保质期天数',
+          'config': {
             typeOption: [
               {
                 label: '数值',
-                value: 1,
+                value: 1
               },
               {
                 label: '百分比',
-                value: 2,
-              },
+                value: 2
+              }
             ],
             format: 1,
             showThousandsSeparator: false,
             label: '保质期天数',
             defaultValueSource: {
               id: '',
-              type: 0,
+              type: 0
             },
             required: false,
             showLabel: true,
@@ -1409,9 +1409,9 @@ export const formData = {
             showDecimal: false,
             defaultValueType: 0,
             limitRange: false,
-            span: 6,
+            span: 6
           },
-          vModel: 'fieldyPQRSFB1678439272553',
+          'vModel': 'fieldyPQRSFB1678439272553'
         },
         {
           visibility: true,
@@ -1424,7 +1424,7 @@ export const formData = {
           readonly: false,
           style: {
             width: '254px',
-            maxWidth: '100%',
+            maxWidth: '100%'
           },
           typeId: 'INPUT',
           placeholder: '请输入包装规格',
@@ -1433,34 +1433,34 @@ export const formData = {
             typeOption: [
               {
                 label: '无',
-                value: 'text',
+                value: 'text'
               },
               {
                 label: '手机号码',
-                value: 'phoneNumber',
+                value: 'phoneNumber'
               },
               {
                 label: '电话号码',
-                value: 'tel',
+                value: 'tel'
               },
               {
                 label: '邮政编码',
-                value: 'zipCode',
+                value: 'zipCode'
               },
               {
                 label: '身份证号码',
-                value: 'idNumber',
+                value: 'idNumber'
               },
               {
                 label: '邮箱',
-                value: 'email',
-              },
+                value: 'email'
+              }
             ],
             format: 'text',
             label: '包装规格',
             defaultValueSource: {
               id: '',
-              type: 0,
+              type: 0
             },
             required: false,
             showLabel: true,
@@ -1471,9 +1471,9 @@ export const formData = {
             changeTag: true,
             tag: 'el-input',
             defaultValueType: 0,
-            span: 6,
+            span: 6
           },
-          vModel: 'fieldmNYPSFB1678439013273',
+          vModel: 'fieldmNYPSFB1678439013273'
         },
         {
           visibility: true,
@@ -1486,7 +1486,7 @@ export const formData = {
           readonly: false,
           style: {
             width: '254px',
-            maxWidth: '100%',
+            maxWidth: '100%'
           },
           typeId: 'INPUT',
           placeholder: '请输入来船名/车牌号*',
@@ -1495,34 +1495,34 @@ export const formData = {
             typeOption: [
               {
                 label: '无',
-                value: 'text',
+                value: 'text'
               },
               {
                 label: '手机号码',
-                value: 'phoneNumber',
+                value: 'phoneNumber'
               },
               {
                 label: '电话号码',
-                value: 'tel',
+                value: 'tel'
               },
               {
                 label: '邮政编码',
-                value: 'zipCode',
+                value: 'zipCode'
               },
               {
                 label: '身份证号码',
-                value: 'idNumber',
+                value: 'idNumber'
               },
               {
                 label: '邮箱',
-                value: 'email',
-              },
+                value: 'email'
+              }
             ],
             format: 'text',
             label: '来船名/车牌号*',
             defaultValueSource: {
               id: '',
-              type: 0,
+              type: 0
             },
             required: false,
             showLabel: true,
@@ -1533,9 +1533,9 @@ export const formData = {
             changeTag: true,
             tag: 'el-input',
             defaultValueType: 0,
-            span: 6,
+            span: 6
           },
-          vModel: 'fieldcXYPSFB1678439013433',
+          vModel: 'fieldcXYPSFB1678439013433'
         },
         {
           visibility: true,
@@ -1548,7 +1548,7 @@ export const formData = {
           readonly: false,
           style: {
             width: '254px',
-            maxWidth: '100%',
+            maxWidth: '100%'
           },
           typeId: 'INPUT',
           placeholder: '请输入生产厂商',
@@ -1557,34 +1557,34 @@ export const formData = {
             typeOption: [
               {
                 label: '无',
-                value: 'text',
+                value: 'text'
               },
               {
                 label: '手机号码',
-                value: 'phoneNumber',
+                value: 'phoneNumber'
               },
               {
                 label: '电话号码',
-                value: 'tel',
+                value: 'tel'
               },
               {
                 label: '邮政编码',
-                value: 'zipCode',
+                value: 'zipCode'
               },
               {
                 label: '身份证号码',
-                value: 'idNumber',
+                value: 'idNumber'
               },
               {
                 label: '邮箱',
-                value: 'email',
-              },
+                value: 'email'
+              }
             ],
             format: 'text',
             label: '生产厂商',
             defaultValueSource: {
               id: '',
-              type: 0,
+              type: 0
             },
             required: false,
             showLabel: true,
@@ -1595,9 +1595,9 @@ export const formData = {
             changeTag: true,
             tag: 'el-input',
             defaultValueType: 0,
-            span: 6,
+            span: 6
           },
-          vModel: 'fieldNYYPSFB1678439013618',
+          vModel: 'fieldNYYPSFB1678439013618'
         },
         {
           visibility: true,
@@ -1610,7 +1610,7 @@ export const formData = {
           readonly: false,
           style: {
             width: '254px',
-            maxWidth: '100%',
+            maxWidth: '100%'
           },
           typeId: 'INPUT',
           placeholder: '请输入备注',
@@ -1619,34 +1619,34 @@ export const formData = {
             typeOption: [
               {
                 label: '无',
-                value: 'text',
+                value: 'text'
               },
               {
                 label: '手机号码',
-                value: 'phoneNumber',
+                value: 'phoneNumber'
               },
               {
                 label: '电话号码',
-                value: 'tel',
+                value: 'tel'
               },
               {
                 label: '邮政编码',
-                value: 'zipCode',
+                value: 'zipCode'
               },
               {
                 label: '身份证号码',
-                value: 'idNumber',
+                value: 'idNumber'
               },
               {
                 label: '邮箱',
-                value: 'email',
-              },
+                value: 'email'
+              }
             ],
             format: 'text',
             label: '备注',
             defaultValueSource: {
               id: '',
-              type: 0,
+              type: 0
             },
             required: false,
             showLabel: true,
@@ -1657,9 +1657,9 @@ export const formData = {
             changeTag: true,
             tag: 'el-input',
             defaultValueType: 0,
-            span: 6,
+            span: 6
           },
-          vModel: 'fieldmoZSSFB1678439438746',
+          vModel: 'fieldmoZSSFB1678439438746'
         },
         {
           visibility: true,
@@ -1672,7 +1672,7 @@ export const formData = {
           readonly: false,
           style: {
             width: '254px',
-            maxWidth: '100%',
+            maxWidth: '100%'
           },
           typeId: 'INPUT',
           placeholder: '请输入条形码',
@@ -1681,34 +1681,34 @@ export const formData = {
             typeOption: [
               {
                 label: '无',
-                value: 'text',
+                value: 'text'
               },
               {
                 label: '手机号码',
-                value: 'phoneNumber',
+                value: 'phoneNumber'
               },
               {
                 label: '电话号码',
-                value: 'tel',
+                value: 'tel'
               },
               {
                 label: '邮政编码',
-                value: 'zipCode',
+                value: 'zipCode'
               },
               {
                 label: '身份证号码',
-                value: 'idNumber',
+                value: 'idNumber'
               },
               {
                 label: '邮箱',
-                value: 'email',
-              },
+                value: 'email'
+              }
             ],
             format: 'text',
             label: '条形码',
             defaultValueSource: {
               id: '',
-              type: 0,
+              type: 0
             },
             required: false,
             showLabel: true,
@@ -1719,9 +1719,9 @@ export const formData = {
             changeTag: true,
             tag: 'el-input',
             defaultValueType: 0,
-            span: 6,
+            span: 6
           },
-          vModel: 'fieldvDkSSFB1678439466498',
+          vModel: 'fieldvDkSSFB1678439466498'
         },
         {
           visibility: true,
@@ -1734,7 +1734,7 @@ export const formData = {
           readonly: false,
           style: {
             width: '254px',
-            maxWidth: '100%',
+            maxWidth: '100%'
           },
           typeId: 'INPUT',
           placeholder: '请输入零件号',
@@ -1743,34 +1743,34 @@ export const formData = {
             typeOption: [
               {
                 label: '无',
-                value: 'text',
+                value: 'text'
               },
               {
                 label: '手机号码',
-                value: 'phoneNumber',
+                value: 'phoneNumber'
               },
               {
                 label: '电话号码',
-                value: 'tel',
+                value: 'tel'
               },
               {
                 label: '邮政编码',
-                value: 'zipCode',
+                value: 'zipCode'
               },
               {
                 label: '身份证号码',
-                value: 'idNumber',
+                value: 'idNumber'
               },
               {
                 label: '邮箱',
-                value: 'email',
-              },
+                value: 'email'
+              }
             ],
             format: 'text',
             label: '零件号',
             defaultValueSource: {
               id: '',
-              type: 0,
+              type: 0
             },
             required: false,
             showLabel: true,
@@ -1781,46 +1781,46 @@ export const formData = {
             changeTag: true,
             tag: 'el-input',
             defaultValueType: 0,
-            span: 6,
+            span: 6
           },
-          vModel: 'fieldCwsSSFB1678439490386',
+          vModel: 'fieldCwsSSFB1678439490386'
         },
         {
           'step-strictly': false,
-          controls: false,
-          visibility: true,
-          editable: true,
-          precision: 0,
-          typeName: '数字',
-          description: '',
+          'controls': false,
+          'visibility': true,
+          'editable': true,
+          'precision': 0,
+          'typeName': '数字',
+          'description': '',
           'controls-position': '',
-          parentKey: 'fieldeCtDhEB1678166852263',
-          readonly: false,
-          step: 1,
-          style: {
+          'parentKey': 'fieldeCtDhEB1678166852263',
+          'readonly': false,
+          'step': 1,
+          'style': {
             width: '254px',
-            maxWidth: '100%',
+            maxWidth: '100%'
           },
-          typeId: 'NUMBER_INPUT',
-          conditionType: 1,
-          placeholder: '请输入单价',
-          config: {
+          'typeId': 'NUMBER_INPUT',
+          'conditionType': 1,
+          'placeholder': '请输入单价',
+          'config': {
             typeOption: [
               {
                 label: '数值',
-                value: 1,
+                value: 1
               },
               {
                 label: '百分比',
-                value: 2,
-              },
+                value: 2
+              }
             ],
             format: 1,
             showThousandsSeparator: false,
             label: '单价',
             defaultValueSource: {
               id: '',
-              type: 0,
+              type: 0
             },
             required: false,
             showLabel: true,
@@ -1833,9 +1833,9 @@ export const formData = {
             showDecimal: false,
             defaultValueType: 0,
             limitRange: false,
-            span: 6,
+            span: 6
           },
-          vModel: 'fieldKDZTSFB1678439577508',
+          'vModel': 'fieldKDZTSFB1678439577508'
         },
         {
           visibility: true,
@@ -1848,7 +1848,7 @@ export const formData = {
           readonly: false,
           style: {
             width: '254px',
-            maxWidth: '100%',
+            maxWidth: '100%'
           },
           typeId: 'INPUT',
           placeholder: '请输入生产托盘号',
@@ -1857,34 +1857,34 @@ export const formData = {
             typeOption: [
               {
                 label: '无',
-                value: 'text',
+                value: 'text'
               },
               {
                 label: '手机号码',
-                value: 'phoneNumber',
+                value: 'phoneNumber'
               },
               {
                 label: '电话号码',
-                value: 'tel',
+                value: 'tel'
               },
               {
                 label: '邮政编码',
-                value: 'zipCode',
+                value: 'zipCode'
               },
               {
                 label: '身份证号码',
-                value: 'idNumber',
+                value: 'idNumber'
               },
               {
                 label: '邮箱',
-                value: 'email',
-              },
+                value: 'email'
+              }
             ],
             format: 'text',
             label: '生产托盘号',
             defaultValueSource: {
               id: '',
-              type: 0,
+              type: 0
             },
             required: false,
             showLabel: true,
@@ -1895,46 +1895,46 @@ export const formData = {
             changeTag: true,
             tag: 'el-input',
             defaultValueType: 0,
-            span: 6,
+            span: 6
           },
-          vModel: 'fieldIDgTSFB1678439596204',
+          vModel: 'fieldIDgTSFB1678439596204'
         },
         {
           'step-strictly': false,
-          controls: false,
-          visibility: true,
-          editable: true,
-          precision: 0,
-          typeName: '数字',
-          description: '',
+          'controls': false,
+          'visibility': true,
+          'editable': true,
+          'precision': 0,
+          'typeName': '数字',
+          'description': '',
           'controls-position': '',
-          parentKey: 'fieldeCtDhEB1678166852263',
-          readonly: false,
-          step: 1,
-          style: {
+          'parentKey': 'fieldeCtDhEB1678166852263',
+          'readonly': false,
+          'step': 1,
+          'style': {
             width: '254px',
-            maxWidth: '100%',
+            maxWidth: '100%'
           },
-          typeId: 'NUMBER_INPUT',
-          conditionType: 1,
-          placeholder: '请输入已送货数量',
-          config: {
+          'typeId': 'NUMBER_INPUT',
+          'conditionType': 1,
+          'placeholder': '请输入已送货数量',
+          'config': {
             typeOption: [
               {
                 label: '数值',
-                value: 1,
+                value: 1
               },
               {
                 label: '百分比',
-                value: 2,
-              },
+                value: 2
+              }
             ],
             format: 1,
             showThousandsSeparator: false,
             label: '已送货数量',
             defaultValueSource: {
               id: '',
-              type: 0,
+              type: 0
             },
             required: false,
             showLabel: true,
@@ -1947,9 +1947,9 @@ export const formData = {
             showDecimal: false,
             defaultValueType: 0,
             limitRange: false,
-            span: 6,
+            span: 6
           },
-          vModel: 'fieldHItTSFB1678439632289',
+          'vModel': 'fieldHItTSFB1678439632289'
         },
         {
           visibility: true,
@@ -1962,7 +1962,7 @@ export const formData = {
           readonly: false,
           style: {
             width: '254px',
-            maxWidth: '100%',
+            maxWidth: '100%'
           },
           typeId: 'INPUT',
           placeholder: '请输入名称',
@@ -1971,34 +1971,34 @@ export const formData = {
             typeOption: [
               {
                 label: '无',
-                value: 'text',
+                value: 'text'
               },
               {
                 label: '手机号码',
-                value: 'phoneNumber',
+                value: 'phoneNumber'
               },
               {
                 label: '电话号码',
-                value: 'tel',
+                value: 'tel'
               },
               {
                 label: '邮政编码',
-                value: 'zipCode',
+                value: 'zipCode'
               },
               {
                 label: '身份证号码',
-                value: 'idNumber',
+                value: 'idNumber'
               },
               {
                 label: '邮箱',
-                value: 'email',
-              },
+                value: 'email'
+              }
             ],
             format: 'text',
             label: '名称',
             defaultValueSource: {
               id: '',
-              type: 0,
+              type: 0
             },
             required: false,
             showLabel: true,
@@ -2009,9 +2009,9 @@ export const formData = {
             changeTag: true,
             tag: 'el-input',
             defaultValueType: 0,
-            span: 6,
+            span: 6
           },
-          vModel: 'fieldOVFUSFB1678439665509',
+          vModel: 'fieldOVFUSFB1678439665509'
         },
         {
           visibility: true,
@@ -2024,7 +2024,7 @@ export const formData = {
           readonly: false,
           style: {
             width: '254px',
-            maxWidth: '100%',
+            maxWidth: '100%'
           },
           typeId: 'INPUT',
           placeholder: '请输入图号',
@@ -2033,34 +2033,34 @@ export const formData = {
             typeOption: [
               {
                 label: '无',
-                value: 'text',
+                value: 'text'
               },
               {
                 label: '手机号码',
-                value: 'phoneNumber',
+                value: 'phoneNumber'
               },
               {
                 label: '电话号码',
-                value: 'tel',
+                value: 'tel'
               },
               {
                 label: '邮政编码',
-                value: 'zipCode',
+                value: 'zipCode'
               },
               {
                 label: '身份证号码',
-                value: 'idNumber',
+                value: 'idNumber'
               },
               {
                 label: '邮箱',
-                value: 'email',
-              },
+                value: 'email'
+              }
             ],
             format: 'text',
             label: '图号',
             defaultValueSource: {
               id: '',
-              type: 0,
+              type: 0
             },
             required: false,
             showLabel: true,
@@ -2071,9 +2071,9 @@ export const formData = {
             changeTag: true,
             tag: 'el-input',
             defaultValueType: 0,
-            span: 6,
+            span: 6
           },
-          vModel: 'fieldXgKUSFB1678439679788',
+          vModel: 'fieldXgKUSFB1678439679788'
         },
         {
           visibility: true,
@@ -2086,7 +2086,7 @@ export const formData = {
           readonly: false,
           style: {
             width: '254px',
-            maxWidth: '100%',
+            maxWidth: '100%'
           },
           typeId: 'INPUT',
           placeholder: '请输入材质',
@@ -2095,34 +2095,34 @@ export const formData = {
             typeOption: [
               {
                 label: '无',
-                value: 'text',
+                value: 'text'
               },
               {
                 label: '手机号码',
-                value: 'phoneNumber',
+                value: 'phoneNumber'
               },
               {
                 label: '电话号码',
-                value: 'tel',
+                value: 'tel'
               },
               {
                 label: '邮政编码',
-                value: 'zipCode',
+                value: 'zipCode'
               },
               {
                 label: '身份证号码',
-                value: 'idNumber',
+                value: 'idNumber'
               },
               {
                 label: '邮箱',
-                value: 'email',
-              },
+                value: 'email'
+              }
             ],
             format: 'text',
             label: '材质',
             defaultValueSource: {
               id: '',
-              type: 0,
+              type: 0
             },
             required: false,
             showLabel: true,
@@ -2133,9 +2133,9 @@ export const formData = {
             changeTag: true,
             tag: 'el-input',
             defaultValueType: 0,
-            span: 6,
+            span: 6
           },
-          vModel: 'fieldFkNUSFB1678439687269',
+          vModel: 'fieldFkNUSFB1678439687269'
         },
         {
           visibility: true,
@@ -2148,7 +2148,7 @@ export const formData = {
           readonly: false,
           style: {
             width: '254px',
-            maxWidth: '100%',
+            maxWidth: '100%'
           },
           typeId: 'INPUT',
           placeholder: '请输入规格',
@@ -2157,34 +2157,34 @@ export const formData = {
             typeOption: [
               {
                 label: '无',
-                value: 'text',
+                value: 'text'
               },
               {
                 label: '手机号码',
-                value: 'phoneNumber',
+                value: 'phoneNumber'
               },
               {
                 label: '电话号码',
-                value: 'tel',
+                value: 'tel'
               },
               {
                 label: '邮政编码',
-                value: 'zipCode',
+                value: 'zipCode'
               },
               {
                 label: '身份证号码',
-                value: 'idNumber',
+                value: 'idNumber'
               },
               {
                 label: '邮箱',
-                value: 'email',
-              },
+                value: 'email'
+              }
             ],
             format: 'text',
             label: '规格',
             defaultValueSource: {
               id: '',
-              type: 0,
+              type: 0
             },
             required: false,
             showLabel: true,
@@ -2195,9 +2195,9 @@ export const formData = {
             changeTag: true,
             tag: 'el-input',
             defaultValueType: 0,
-            span: 6,
+            span: 6
           },
-          vModel: 'fieldCfQUSFB1678439695284',
+          vModel: 'fieldCfQUSFB1678439695284'
         },
         {
           visibility: true,
@@ -2210,7 +2210,7 @@ export const formData = {
           readonly: false,
           style: {
             width: '254px',
-            maxWidth: '100%',
+            maxWidth: '100%'
           },
           typeId: 'INPUT',
           placeholder: '请输入单重',
@@ -2219,34 +2219,34 @@ export const formData = {
             typeOption: [
               {
                 label: '无',
-                value: 'text',
+                value: 'text'
               },
               {
                 label: '手机号码',
-                value: 'phoneNumber',
+                value: 'phoneNumber'
               },
               {
                 label: '电话号码',
-                value: 'tel',
+                value: 'tel'
               },
               {
                 label: '邮政编码',
-                value: 'zipCode',
+                value: 'zipCode'
               },
               {
                 label: '身份证号码',
-                value: 'idNumber',
+                value: 'idNumber'
               },
               {
                 label: '邮箱',
-                value: 'email',
-              },
+                value: 'email'
+              }
             ],
             format: 'text',
             label: '单重',
             defaultValueSource: {
               id: '',
-              type: 0,
+              type: 0
             },
             required: false,
             showLabel: true,
@@ -2257,9 +2257,9 @@ export const formData = {
             changeTag: true,
             tag: 'el-input',
             defaultValueType: 0,
-            span: 6,
+            span: 6
           },
-          vModel: 'fieldwNTUSFB1678439702246',
+          vModel: 'fieldwNTUSFB1678439702246'
         },
         {
           visibility: true,
@@ -2272,7 +2272,7 @@ export const formData = {
           readonly: false,
           style: {
             width: '254px',
-            maxWidth: '100%',
+            maxWidth: '100%'
           },
           typeId: 'INPUT',
           placeholder: '请输入生产批次',
@@ -2281,34 +2281,34 @@ export const formData = {
             typeOption: [
               {
                 label: '无',
-                value: 'text',
+                value: 'text'
               },
               {
                 label: '手机号码',
-                value: 'phoneNumber',
+                value: 'phoneNumber'
               },
               {
                 label: '电话号码',
-                value: 'tel',
+                value: 'tel'
               },
               {
                 label: '邮政编码',
-                value: 'zipCode',
+                value: 'zipCode'
               },
               {
                 label: '身份证号码',
-                value: 'idNumber',
+                value: 'idNumber'
               },
               {
                 label: '邮箱',
-                value: 'email',
-              },
+                value: 'email'
+              }
             ],
             format: 'text',
             label: '生产批次',
             defaultValueSource: {
               id: '',
-              type: 0,
+              type: 0
             },
             required: false,
             showLabel: true,
@@ -2319,9 +2319,9 @@ export const formData = {
             changeTag: true,
             tag: 'el-input',
             defaultValueType: 0,
-            span: 6,
+            span: 6
           },
-          vModel: 'fieldvqWUSFB1678439712061',
+          vModel: 'fieldvqWUSFB1678439712061'
         },
         {
           visibility: true,
@@ -2334,7 +2334,7 @@ export const formData = {
           readonly: false,
           style: {
             width: '254px',
-            maxWidth: '100%',
+            maxWidth: '100%'
           },
           typeId: 'INPUT',
           placeholder: '请输入作业部门',
@@ -2343,34 +2343,34 @@ export const formData = {
             typeOption: [
               {
                 label: '无',
-                value: 'text',
+                value: 'text'
               },
               {
                 label: '手机号码',
-                value: 'phoneNumber',
+                value: 'phoneNumber'
               },
               {
                 label: '电话号码',
-                value: 'tel',
+                value: 'tel'
               },
               {
                 label: '邮政编码',
-                value: 'zipCode',
+                value: 'zipCode'
               },
               {
                 label: '身份证号码',
-                value: 'idNumber',
+                value: 'idNumber'
               },
               {
                 label: '邮箱',
-                value: 'email',
-              },
+                value: 'email'
+              }
             ],
             format: 'text',
             label: '作业部门',
             defaultValueSource: {
               id: '',
-              type: 0,
+              type: 0
             },
             required: false,
             showLabel: true,
@@ -2381,33 +2381,33 @@ export const formData = {
             changeTag: true,
             tag: 'el-input',
             defaultValueType: 0,
-            span: 6,
+            span: 6
           },
-          vModel: 'fieldCOZUSFB1678439719179',
+          vModel: 'fieldCOZUSFB1678439719179'
         },
         {
-          clearable: true,
-          visibility: true,
-          editable: true,
-          format: 'yyyy-MM-dd',
-          typeName: '日期时间',
+          'clearable': true,
+          'visibility': true,
+          'editable': true,
+          'format': 'yyyy-MM-dd',
+          'typeName': '日期时间',
           'value-format': 'yyyy-MM-dd',
-          description: '',
-          type: 'date',
-          parentKey: 'fieldeCtDhEB1678166852263',
-          readonly: false,
-          style: {
+          'description': '',
+          'type': 'date',
+          'parentKey': 'fieldeCtDhEB1678166852263',
+          'readonly': false,
+          'style': {
             width: '254px',
-            maxWidth: '100%',
+            maxWidth: '100%'
           },
-          typeId: 'DATE',
-          conditionType: 2,
-          placeholder: '请选择计划需求日期',
-          config: {
+          'typeId': 'DATE',
+          'conditionType': 2,
+          'placeholder': '请选择计划需求日期',
+          'config': {
             label: '计划需求日期',
             defaultValueSource: {
               id: '',
-              type: 0,
+              type: 0
             },
             required: false,
             showLabel: true,
@@ -2419,46 +2419,46 @@ export const formData = {
             changeTag: true,
             tag: 'el-date-picker',
             defaultValueType: 0,
-            span: 6,
+            span: 6
           },
-          vModel: 'fieldIbkUSFB1678439749381',
+          'vModel': 'fieldIbkUSFB1678439749381'
         },
         {
           'step-strictly': false,
-          controls: false,
-          visibility: true,
-          editable: true,
-          precision: 0,
-          typeName: '数字',
-          description: '',
+          'controls': false,
+          'visibility': true,
+          'editable': true,
+          'precision': 0,
+          'typeName': '数字',
+          'description': '',
           'controls-position': '',
-          parentKey: 'fieldeCtDhEB1678166852263',
-          readonly: false,
-          step: 1,
-          style: {
+          'parentKey': 'fieldeCtDhEB1678166852263',
+          'readonly': false,
+          'step': 1,
+          'style': {
             width: '254px',
-            maxWidth: '100%',
+            maxWidth: '100%'
           },
-          typeId: 'NUMBER_INPUT',
-          conditionType: 1,
-          placeholder: '请输入减少数量',
-          config: {
+          'typeId': 'NUMBER_INPUT',
+          'conditionType': 1,
+          'placeholder': '请输入减少数量',
+          'config': {
             typeOption: [
               {
                 label: '数值',
-                value: 1,
+                value: 1
               },
               {
                 label: '百分比',
-                value: 2,
-              },
+                value: 2
+              }
             ],
             format: 1,
             showThousandsSeparator: false,
             label: '减少数量',
             defaultValueSource: {
               id: '',
-              type: 0,
+              type: 0
             },
             required: false,
             showLabel: true,
@@ -2471,9 +2471,9 @@ export const formData = {
             showDecimal: false,
             defaultValueType: 0,
             limitRange: false,
-            span: 6,
+            span: 6
           },
-          vModel: 'fieldTBrUSFB1678439767198',
+          'vModel': 'fieldTBrUSFB1678439767198'
         },
         {
           visibility: true,
@@ -2486,7 +2486,7 @@ export const formData = {
           readonly: false,
           style: {
             width: '254px',
-            maxWidth: '100%',
+            maxWidth: '100%'
           },
           typeId: 'INPUT',
           placeholder: '请输入托盘零件号',
@@ -2495,34 +2495,34 @@ export const formData = {
             typeOption: [
               {
                 label: '无',
-                value: 'text',
+                value: 'text'
               },
               {
                 label: '手机号码',
-                value: 'phoneNumber',
+                value: 'phoneNumber'
               },
               {
                 label: '电话号码',
-                value: 'tel',
+                value: 'tel'
               },
               {
                 label: '邮政编码',
-                value: 'zipCode',
+                value: 'zipCode'
               },
               {
                 label: '身份证号码',
-                value: 'idNumber',
+                value: 'idNumber'
               },
               {
                 label: '邮箱',
-                value: 'email',
-              },
+                value: 'email'
+              }
             ],
             format: 'text',
             label: '托盘零件号',
             defaultValueSource: {
               id: '',
-              type: 0,
+              type: 0
             },
             required: false,
             showLabel: true,
@@ -2533,9 +2533,9 @@ export const formData = {
             changeTag: true,
             tag: 'el-input',
             defaultValueType: 0,
-            span: 6,
+            span: 6
           },
-          vModel: 'fieldFDzUSFB1678439789033',
+          vModel: 'fieldFDzUSFB1678439789033'
         },
         {
           visibility: true,
@@ -2548,7 +2548,7 @@ export const formData = {
           readonly: false,
           style: {
             width: '254px',
-            maxWidth: '100%',
+            maxWidth: '100%'
           },
           typeId: 'INPUT',
           placeholder: '输入请请料单号',
@@ -2557,34 +2557,34 @@ export const formData = {
             typeOption: [
               {
                 label: '无',
-                value: 'text',
+                value: 'text'
               },
               {
                 label: '手机号码',
-                value: 'phoneNumber',
+                value: 'phoneNumber'
               },
               {
                 label: '电话号码',
-                value: 'tel',
+                value: 'tel'
               },
               {
                 label: '邮政编码',
-                value: 'zipCode',
+                value: 'zipCode'
               },
               {
                 label: '身份证号码',
-                value: 'idNumber',
+                value: 'idNumber'
               },
               {
                 label: '邮箱',
-                value: 'email',
-              },
+                value: 'email'
+              }
             ],
             format: 'text',
             label: '请料单号',
             defaultValueSource: {
               id: '',
-              type: 0,
+              type: 0
             },
             required: false,
             showLabel: true,
@@ -2595,15 +2595,14 @@ export const formData = {
             changeTag: true,
             tag: 'el-input',
             defaultValueType: 0,
-            span: 6,
+            span: 6
           },
-          vModel: 'fieldfLGVSFB1678439816341',
-        },
+          vModel: 'fieldfLGVSFB1678439816341'
+        }
       ],
       tableList: [],
       style: {
-        width: '254px',
-        maxWidth: '100%',
+        maxWidth: '100%'
       },
       typeId: 'CHILD_FORM',
       value: [
@@ -2643,18 +2642,18 @@ export const formData = {
           fieldGzKPSFB1678438977514: '',
           fieldCOZUSFB1678439719179: '',
           fieldIbkUSFB1678439749381: '',
-          fieldssfQSFB1678439174063: '',
-        },
+          fieldssfQSFB1678439174063: ''
+        }
       ],
       config: {
         label: '明细',
         defaultValueSource: {
           id: '',
-          type: 0,
+          type: 0
         },
         showLabel: true,
         renderKey: 'eCtDhEB1678166852263',
-        layout: 'rowFormItem',
+        layout: 'colFormItem',
         displayType: true,
         showDefaultValue: true,
         tagIcon: 'input',
@@ -2662,18 +2661,18 @@ export const formData = {
         changeTag: true,
         tag: 'my-table',
         defaultValueType: 0,
-        span: 24,
+        span: 24
       },
       __slot__: {
-        dataList: [],
+        dataList: []
       },
-      vModel: 'fieldeCtDhEB1678166852263',
-    },
+      vModel: 'fieldeCtDhEB1678166852263'
+    }
   ],
   formConf: {
     dataFilterSetting: {
       cond: [],
-      rel: 0,
+      rel: 0
     },
     description: '',
     disabled: false,
@@ -2690,8 +2689,8 @@ export const formData = {
     size: 'mini',
     submitAssociationOperation: [],
     submitButtonState: 0,
-    submitButtonText: '提交',
-  },
+    submitButtonText: '提交'
+  }
 }
 
 export const formValues = {
@@ -2701,8 +2700,8 @@ export const formValues = {
       id: '1634027128165412866',
       name: 'admin002',
       typeId: 'MEMBER_RADIO',
-      type: 0,
-    },
+      type: 0
+    }
   ],
   fielddVdMSFB167843860511801: '007',
   updateBy: [
@@ -2710,8 +2709,8 @@ export const formValues = {
       id: '1634027128165412866',
       name: 'admin002',
       typeId: 'MEMBER_RADIO',
-      type: 0,
-    },
+      type: 0
+    }
   ],
   createTime: '2023-03-10 17:29:52',
   fieldQmWKSFB167843830585501: '005',
@@ -2756,7 +2755,7 @@ export const formValues = {
       fieldGzKPSFB1678438977514: '2017045551-001*搭焊法兰*Z-2-D-DI-041*PF56833',
       fieldCOZUSFB1678439719179: 'bumen01',
       fieldssfQSFB1678439174063: '',
-      fieldIbkUSFB1678439749381: '2023-03-07',
+      fieldIbkUSFB1678439749381: '2023-03-07'
     },
     {
       fieldXgKUSFB1678439679788: 'tuhao02',
@@ -2793,9 +2792,9 @@ export const formValues = {
       fieldGzKPSFB1678438977514: '2017045551-001*搭焊法兰*Z-2-D-DI-041*PF56836',
       fieldCOZUSFB1678439719179: 'bumen02',
       fieldssfQSFB1678439174063: null,
-      fieldIbkUSFB1678439749381: '2023-03-06',
-    },
-  ],
+      fieldIbkUSFB1678439749381: '2023-03-06'
+    }
+  ]
 }
 
 export const filterLinkData = {
@@ -2814,21 +2813,21 @@ export const filterLinkData = {
             id: '1634027128165412866',
             name: 'admin002',
             typeId: 'MEMBER_RADIO',
-            type: 0,
-          },
+            type: 0
+          }
         ],
         updateBy: [
           {
             id: '1634027128165412866',
             name: 'admin002',
             typeId: 'MEMBER_RADIO',
-            type: 0,
-          },
+            type: 0
+          }
         ],
         createTime: '2023-03-10 16:49:42',
         updateTime: '2023-03-10 16:49:42',
         customTitle: '001',
-        id: '1634114291336478720',
+        id: '1634114291336478720'
       },
       {
         fieldsQLGSFB1678438134927: '002',
@@ -2837,21 +2836,21 @@ export const filterLinkData = {
             id: '1634027128165412866',
             name: 'admin002',
             typeId: 'MEMBER_RADIO',
-            type: 0,
-          },
+            type: 0
+          }
         ],
         updateBy: [
           {
             id: '1634027128165412866',
             name: 'admin002',
             typeId: 'MEMBER_RADIO',
-            type: 0,
-          },
+            type: 0
+          }
         ],
         createTime: '2023-03-10 16:49:45',
         updateTime: '2023-03-10 16:49:45',
         customTitle: '002',
-        id: '1634114306909929472',
+        id: '1634114306909929472'
       },
       {
         fieldsQLGSFB1678438134927: '003',
@@ -2860,21 +2859,21 @@ export const filterLinkData = {
             id: '1634027128165412866',
             name: 'admin002',
             typeId: 'MEMBER_RADIO',
-            type: 0,
-          },
+            type: 0
+          }
         ],
         updateBy: [
           {
             id: '1634027128165412866',
             name: 'admin002',
             typeId: 'MEMBER_RADIO',
-            type: 0,
-          },
+            type: 0
+          }
         ],
         createTime: '2023-03-10 16:49:49',
         updateTime: '2023-03-10 16:49:49',
         customTitle: '003',
-        id: '1634114324077215744',
+        id: '1634114324077215744'
       },
       {
         fieldsQLGSFB1678438134927: '004',
@@ -2883,21 +2882,21 @@ export const filterLinkData = {
             id: '1634027128165412866',
             name: 'admin002',
             typeId: 'MEMBER_RADIO',
-            type: 0,
-          },
+            type: 0
+          }
         ],
         updateBy: [
           {
             id: '1634027128165412866',
             name: 'admin002',
             typeId: 'MEMBER_RADIO',
-            type: 0,
-          },
+            type: 0
+          }
         ],
         createTime: '2023-03-10 16:49:52',
         updateTime: '2023-03-10 16:49:52',
         customTitle: '004',
-        id: '1634114334969823232',
+        id: '1634114334969823232'
       },
       {
         fieldsQLGSFB1678438134927: '005',
@@ -2906,21 +2905,21 @@ export const filterLinkData = {
             id: '1634027128165412866',
             name: 'admin002',
             typeId: 'MEMBER_RADIO',
-            type: 0,
-          },
+            type: 0
+          }
         ],
         updateBy: [
           {
             id: '1634027128165412866',
             name: 'admin002',
             typeId: 'MEMBER_RADIO',
-            type: 0,
-          },
+            type: 0
+          }
         ],
         createTime: '2023-03-10 16:49:55',
         updateTime: '2023-03-10 16:49:55',
         customTitle: '005',
-        id: '1634114346327998464',
+        id: '1634114346327998464'
       },
       {
         fieldsQLGSFB1678438134927: '006',
@@ -2929,21 +2928,21 @@ export const filterLinkData = {
             id: '1634027128165412866',
             name: 'admin002',
             typeId: 'MEMBER_RADIO',
-            type: 0,
-          },
+            type: 0
+          }
         ],
         updateBy: [
           {
             id: '1634027128165412866',
             name: 'admin002',
             typeId: 'MEMBER_RADIO',
-            type: 0,
-          },
+            type: 0
+          }
         ],
         createTime: '2023-03-10 16:49:58',
         updateTime: '2023-03-10 16:49:58',
         customTitle: '006',
-        id: '1634114358910910464',
+        id: '1634114358910910464'
       },
       {
         fieldsQLGSFB1678438134927: '007',
@@ -2952,22 +2951,22 @@ export const filterLinkData = {
             id: '1634027128165412866',
             name: 'admin002',
             typeId: 'MEMBER_RADIO',
-            type: 0,
-          },
+            type: 0
+          }
         ],
         updateBy: [
           {
             id: '1634027128165412866',
             name: 'admin002',
             typeId: 'MEMBER_RADIO',
-            type: 0,
-          },
+            type: 0
+          }
         ],
         createTime: '2023-03-10 16:50:01',
         updateTime: '2023-03-10 16:50:01',
         customTitle: '007',
-        id: '1634114370667544576',
-      },
+        id: '1634114370667544576'
+      }
     ],
     headList: [
       {
@@ -3001,7 +3000,7 @@ export const filterLinkData = {
         tenantId: '1631468255705485314',
         appId: '1631472558016991234',
         children: null,
-        vModel: 'customTitle',
+        vModel: 'customTitle'
       },
       {
         createBy: null,
@@ -3034,7 +3033,7 @@ export const filterLinkData = {
         tenantId: '1631468255705485314',
         appId: '1631472558016991234',
         children: null,
-        vModel: 'fieldsQLGSFB1678438134927',
+        vModel: 'fieldsQLGSFB1678438134927'
       },
       {
         createBy: null,
@@ -3067,7 +3066,7 @@ export const filterLinkData = {
         tenantId: '1631468255705485314',
         appId: '1631472558016991234',
         children: null,
-        vModel: 'createBy',
+        vModel: 'createBy'
       },
       {
         createBy: null,
@@ -3100,7 +3099,7 @@ export const filterLinkData = {
         tenantId: '1631468255705485314',
         appId: '1631472558016991234',
         children: null,
-        vModel: 'updateBy',
+        vModel: 'updateBy'
       },
       {
         createBy: null,
@@ -3133,7 +3132,7 @@ export const filterLinkData = {
         tenantId: '1631468255705485314',
         appId: '1631472558016991234',
         children: null,
-        vModel: 'createTime',
+        vModel: 'createTime'
       },
       {
         createBy: null,
@@ -3166,8 +3165,8 @@ export const filterLinkData = {
         tenantId: '1631468255705485314',
         appId: '1631472558016991234',
         children: null,
-        vModel: 'updateTime',
-      },
-    ],
-  },
+        vModel: 'updateTime'
+      }
+    ]
+  }
 }

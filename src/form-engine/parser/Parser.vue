@@ -2,6 +2,7 @@
 import { deepClone } from '@/utils/index'
 import render from '../render/render.js'
 import { filterLinkData } from './example/mock'
+import getIn from 'lodash/get'
 
 const ruleTrigger = {
   'el-input': 'blur',
@@ -12,28 +13,40 @@ const ruleTrigger = {
   'el-cascader': 'change',
   'el-time-picker': 'change',
   'el-date-picker': 'change',
-  'el-rate': 'change',
+  'el-rate': 'change'
 }
 
 const layouts = {
   colFormItem(h, scheme) {
+    console.log('dataSource.Parse.4')
     const config = scheme.config
     const listeners = buildListeners.call(this, scheme)
     const { formConfCopy } = this
     const model = this[formConfCopy.formModel]
+    // const value = model[scheme.vModel]
+
+    // if (scheme.visibility === false) return null
+
+    if (scheme.typeId === 'CHILD_FORM') {
+      console.log('scheme.colFormItem', scheme.typeId, model, scheme.vModel)
+    }
 
     let labelWidth = config.labelWidth ? `${config.labelWidth}px` : null
     if (config.showLabel === false) labelWidth = '0'
-
+    console.log('dataSource.Parse.5')
     return (
       <el-col span={config.span}>
         <el-form-item label-width={labelWidth} prop={scheme.vModel} label={config.showLabel ? config.label : ''}>
-          <render conf={scheme} on={listeners} use-value={true} value={model[scheme.vModel]} />
+          <render conf={scheme} on={listeners} values={model} />
         </el-form-item>
       </el-col>
     )
   },
   rowFormItem(h, scheme) {
+    console.log('dataSource.Parse.3')
+    if (scheme.typeId === 'CHILD_FORM') {
+      return layouts.colFormItem.call(this, h, scheme)
+    }
     let child = renderChildren.apply(this, arguments)
     if (scheme.type === 'flex') {
       child = (
@@ -44,33 +57,17 @@ const layouts = {
     }
     return (
       <el-col span={scheme.span}>
-        <el-row gutter={scheme.gutter}>{child}</el-row>
+        <el-row gutter={scheme.gutter || 8}>{child}</el-row>
       </el-col>
     )
-  },
+  }
 }
 
 function renderFrom(h) {
   const { formConfCopy } = this
-
-  // console.log('this[formConfCopy.formModel]', this[formConfCopy.formModel])
   const model = this[formConfCopy.formModel]
-
-  // return (
-  //   <el-form props={{ model }}>
-  //     <el-form-item label='Test' prop='fieldKknDhEB1678166837506'>
-  //       <el-input
-  //         value={model.fieldKknDhEB1678166837506}
-  //         onInput={(val) => {
-  //           this.$set(model, 'fieldKknDhEB1678166837506', val)
-  //         }}
-  //       />
-  //     </el-form-item>
-  //   </el-form>
-  // )
-
   return (
-    <el-row gutter={formConfCopy.gutter}>
+    <el-row gutter={formConfCopy.gutter || 8}>
       <el-form
         size={formConfCopy.size}
         label-position={formConfCopy.labelPosition}
@@ -142,31 +139,28 @@ function buildListeners(scheme) {
 
 export default {
   components: { render },
-  // props: {
-  //   formConf: {
-  //     type: Object,
-  //     required: true,
-  //   },
-  //   values: {
-  //     type: Object,
-  //   },
-  // },
-
   props: ['formConf', 'values'],
   provide() {
     return {
-      linkDataRequest: async () => {
+      linkDataRequest: async (params) => {
         // 获取关联数据
         const resp = await Promise.resolve(filterLinkData)
         const { list, headList, pageNum, pageSize, total } = resp.data
-
         return { list, headList, pageNum, pageSize, total }
       },
-      updateFormModel: (key, value, item, row) => {
-        const model = this[this.formConfCopy.formModel]
-        console.log('updateFormModel', { model, key, value, item, row })
-        this.$set(model, key, value)
-      },
+      updateFormModel: (key, value, prevKeys, mode) => {
+        let model = this[this.formConfCopy.formModel]
+        console.log('updateFormModel', key, value, prevKeys, mode)
+        if (prevKeys && prevKeys.filter(Boolean).length) {
+          model = getIn(model, prevKeys.join('.'))
+        }
+
+        if (mode === 'insert') {
+          model.splice(key, 0, value)
+        } else {
+          this.$set(model, key, value)
+        }
+      }
     }
   },
   data() {
@@ -174,7 +168,7 @@ export default {
     const data = {
       formConfCopy: deepClone(this.formConf),
       [this.formConf.formModel]: {},
-      [this.formConf.formRules]: {},
+      [this.formConf.formRules]: {}
     }
     // this.initFormData(data.formConfCopy.fields, data[this.formConf.formModel])
     this.buildRules(data.formConfCopy.fields, data[this.formConf.formRules])
@@ -184,10 +178,9 @@ export default {
     values: {
       immediate: true,
       handler(val) {
-        // console.log('values', val)
         this[this.formConf.formModel] = val
-      },
-    },
+      }
+    }
   },
   methods: {
     initFormData(componentList, formData) {
@@ -230,10 +223,10 @@ export default {
         this.$emit('submit', this[this.formConf.formModel])
         return true
       })
-    },
+    }
   },
   render(h) {
     return renderFrom.call(this, h)
-  },
+  }
 }
 </script>

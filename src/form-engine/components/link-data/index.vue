@@ -3,8 +3,14 @@
     <div class="linkdata-header">
       <el-button size="mini" @click="handleClick">选择数据</el-button>
     </div>
-    <DataPicker :linkFields="fields" :visible.sync="visible" :field="vModel" @select="handleSelect" />
-    <Single :linkFields="fields" :data="model" />
+    <DataPicker
+      :linkFields="fields"
+      :visible.sync="visible"
+      :field="vModel"
+      @select="handleSelect"
+      :multiple="multiple"
+    />
+    <Single v-if="!renderInTable || !multiple" style="margin-top: 8px" :linkFields="fields" :data="model" />
   </div>
 </template>
 
@@ -12,6 +18,7 @@
 import DataPicker from './DataPicker.vue'
 import Single from './Single.vue'
 import { deepClone } from '@/utils/index'
+
 /**
  * 关联数据-选择数据后将选中的数据展示，并根据填充规则，填充其他字段
  *
@@ -23,15 +30,25 @@ export default {
   /**
    * linkFields
    */
-  props: ['value', 'config', 'vModel', 'linkedShowField', 'linkedFillRules', 'linkForm', 'linkFilter', 'linkFilterRel'],
+  props: [
+    'value',
+    'config',
+    'vModel',
+    'renderInTable',
+    'parentKey',
+    'rowIndex',
+    'multiple',
+    'linkedShowField',
+    'linkedFillRules'
+  ],
 
   components: {
     DataPicker,
-    Single,
+    Single
   },
 
   inject: {
-    updateFormModel: {},
+    updateFormModel: {}
   },
 
   data() {
@@ -109,14 +126,14 @@ export default {
       //   }
       // ]
       return this.linkedShowField || []
-    },
+    }
   },
   watch: {
     value: {
       handler(val) {
         this.model = val
-      },
-    },
+      }
+    }
   },
 
   mounted() {},
@@ -127,18 +144,27 @@ export default {
       this.visible = true
     },
     handleSelect(val) {
-      // 1、更新 model
+      val.forEach((m, i) => {
+        if (!this.multiple && i === 0) {
+          // 1、更新 model
+          const m = val[0]
+          this.linkedShowField.forEach((item) => {
+            this.$set(this.model, item.vModel, m[item.vModel])
+          })
+        }
 
-      this.linkedShowField.forEach((item) => {
-        // this.model[item.vModel] = val[item.vModel]
-        this.$set(this.model, item.vModel, val[item.vModel])
+        if (i > 0) {
+          // 第一条后先插入，后更新
+          this.updateFormModel?.(this.rowIndex + i, {}, [this.parentKey], 'insert')
+        }
+
+        // 2、根据填充规则，填充其他数据
+        this.linkedFillRules?.forEach((item) => {
+          this.updateFormModel?.(item.depend.field, m[item.vModel], [this.parentKey, this.rowIndex + i])
+        })
       })
-      // 2、根据填充规则，填充其他数据
-      this.linkedFillRules?.forEach((item) => {
-        this.updateFormModel?.(item.depend.field, val[item.vModel], item, val)
-      })
-    },
-  },
+    }
+  }
 }
 </script>
 
@@ -146,7 +172,7 @@ export default {
 .linkdata {
   &-header {
     line-height: 1;
-    margin-bottom: 8px;
+    // margin-bottom: 8px;
   }
 }
 </style>
