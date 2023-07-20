@@ -11,6 +11,7 @@ export default {
     return {
       fields: [],
       dataSource: [],
+      total: 0,
     }
   },
 
@@ -31,9 +32,10 @@ export default {
       this.linkDataRequest(params) //
         .then((resp) => {
           console.log('respresprespresp10', resp)
-          const { list, headList, pageNum, pageSize } = resp
+          const { list, headList, pageNum, pageSize, total } = resp
           this.dataSource = list || []
           this.fields = headList
+          this.total = total
         })
         .catch((ex) => {
           console.error(ex)
@@ -64,11 +66,28 @@ export default {
     }
 
     return (
-      <el-dialog size='small' title='选择数据' visible={this.visible} onOpen={this.handleOpen} onClose={this.handleClose}>
-        <el-table size='small' ref='refTable' border data={this.dataSource} row-key='id' onSelect={this.handleSelect}>
-          <el-table-column type='selection' width='55' align='center' />
+      <el-dialog
+        width='800px'
+        size='small'
+        title='选择数据'
+        visible={this.visible}
+        onOpen={this.handleOpen}
+        onClose={this.handleClose}
+        scopedSlots={
+          {
+            // footer: () => {
+            //  return <div>footer</div>
+            // },
+          }
+        }
+      >
+        <el-table height={480} size='small' ref='refTable' border data={this.dataSource} row-key='id' onSelect={this.handleSelect}>
+          <el-table-column type='selection' width='40' align='center' fixed='left' />
           {loop(fields)}
         </el-table>
+        <div slot='footer'>
+          <el-pagination background layout='prev, pager, next' total={this.total} />
+        </div>
       </el-dialog>
     )
   },
@@ -76,7 +95,12 @@ export default {
 </script>
 
 <style lang="less" scoped>
-::v-deep .el-dialog__body {
-  padding: 4px 16px 16px;
+::v-deep {
+  .el-dialog__body {
+    padding: 4px 16px 4px;
+  }
+  .el-table .el-table__header .el-table_1_column_1 .cell {
+    display: none;
+  }
 }
 </style>

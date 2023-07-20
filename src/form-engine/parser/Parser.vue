@@ -158,9 +158,9 @@ export default {
       linkDataRequest: async () => {
         // 获取关联数据
         const resp = await Promise.resolve(filterLinkData)
-        const { list, headList, pageNum, pageSize } = resp.data
+        const { list, headList, pageNum, pageSize, total } = resp.data
 
-        return { list, headList, pageNum, pageSize }
+        return { list, headList, pageNum, pageSize, total }
       },
       updateFormModel: (key, value, item, row) => {
         const model = this[this.formConfCopy.formModel]
