@@ -3,6 +3,7 @@ import { deepClone } from '@/utils/index'
 import render from '../render/render.js'
 import { filterLinkData } from './example/mock'
 import getIn from 'lodash/get'
+import { filterLink, listField } from './example/api'
 
 const ruleTrigger = {
   'el-input': 'blur',
@@ -23,9 +24,6 @@ const layouts = {
     const listeners = buildListeners.call(this, scheme)
     const { formConfCopy } = this
     const model = this[formConfCopy.formModel]
-    // const value = model[scheme.vModel]
-
-    // if (scheme.visibility === false) return null
 
     if (scheme.typeId === 'CHILD_FORM') {
       console.log('scheme.colFormItem', scheme.typeId, model, scheme.vModel)
@@ -33,7 +31,7 @@ const layouts = {
 
     let labelWidth = config.labelWidth ? `${config.labelWidth}px` : null
     if (config.showLabel === false) labelWidth = '0'
-    console.log('dataSource.Parse.5')
+    // console.log('dataSource.Parse.5')
     return (
       <el-col span={config.span}>
         <el-form-item label-width={labelWidth} prop={scheme.vModel} label={config.showLabel ? config.label : ''}>
@@ -43,7 +41,7 @@ const layouts = {
     )
   },
   rowFormItem(h, scheme) {
-    console.log('dataSource.Parse.3')
+    // console.log('dataSource.Parse.3')
     if (scheme.typeId === 'CHILD_FORM') {
       return layouts.colFormItem.call(this, h, scheme)
     }
@@ -120,6 +118,7 @@ function renderChildren(h, scheme) {
 function setValue(event, config, scheme) {
   this.$set(config, 'defaultValue', event)
   this.$set(this[this.formConf.formModel], scheme.vModel, event)
+  this.$set(this.fieldsMap[scheme.vModel].config, 'defaultValue', event)
 }
 
 function buildListeners(scheme) {
@@ -139,18 +138,23 @@ function buildListeners(scheme) {
 
 export default {
   components: { render },
-  props: ['formConf', 'values'],
+  props: ['formConf', 'values', 'appId', 'menuId'],
+
   provide() {
     return {
       linkDataRequest: async (params) => {
         // 获取关联数据
-        const resp = await Promise.resolve(filterLinkData)
-        const { list, headList, pageNum, pageSize, total } = resp.data
-        return { list, headList, pageNum, pageSize, total }
+        const data = { appId: this.appId, ...params }
+        const resp = await filterLink(data)
+        return resp
+
+        // const resp = await Promise.resolve(filterLinkData)
+        // const { list, headList, pageNum, pageSize, total } = resp.data
+        // return { list, headList, pageNum, pageSize, total }
       },
       updateFormModel: (key, value, prevKeys, mode) => {
         let model = this[this.formConfCopy.formModel]
-        console.log('updateFormModel', key, value, prevKeys, mode)
+        // console.log('updateFormModel', key, value, prevKeys, mode)
         if (prevKeys && prevKeys.filter(Boolean).length) {
           model = getIn(model, prevKeys.join('.'))
         }
@@ -160,7 +164,10 @@ export default {
         } else {
           this.$set(model, key, value)
         }
-      }
+      },
+      listField,
+      fieldsMap: this.fieldsMap,
+      appId: this.appId
     }
   },
   data() {
@@ -173,6 +180,13 @@ export default {
     // this.initFormData(data.formConfCopy.fields, data[this.formConf.formModel])
     this.buildRules(data.formConfCopy.fields, data[this.formConf.formRules])
     return data
+  },
+  computed: {
+    fieldsMap() {
+      return this.formConf.fields.reduce((prev, cur) => {
+        return { ...prev, [cur.vModel]: cur }
+      }, {})
+    }
   },
   watch: {
     values: {

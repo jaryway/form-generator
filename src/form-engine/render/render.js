@@ -161,6 +161,10 @@ export default {
       return h('fg-input', dataObject, children)
     }
 
+    if (this.conf.config.tag === 'el-select') {
+      return h('fg-select', dataObject, children)
+    }
+
     if (this.conf.config.tag === 'el-date-picker') {
       return h('fg-date-picker', dataObject, children)
     }

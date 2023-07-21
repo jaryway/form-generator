@@ -2,7 +2,14 @@
 <template>
   <div class="test-form">
     <el-button @click="handleClick">handleClick</el-button>
-    <Parser :form-conf="formConf" :values="formValues" @submit="sumbitForm1" />
+    <Parser
+      v-if="!loading"
+      :form-conf="formConf"
+      :values="formValues"
+      @submit="sumbitForm1"
+      :appId="appId"
+      :menu="menuId"
+    />
   </div>
 </template>
 
@@ -12,6 +19,7 @@ import render from '../../render/render.js'
 import { formData, formValues } from './mock'
 import { formData1 } from './mock1'
 import getIn from 'lodash/get'
+import { getUserInfo, getFormConf } from './api'
 
 const c = {
   // 'clearable': true,
@@ -60,10 +68,14 @@ export default {
   data() {
     console.log('formValues', formValues)
     return {
+      loading: true,
+      appId: '1631472558016991234',
+      menuId: '1682035748330536960',
       c,
       key2: +new Date(),
       isEdit: true,
-      formConf: { ...formData1.formConf, fields: formData1.fields, formBtns: true },
+      // formConf: { ...formData1.formConf, fields: formData1.fields, formBtns: true },
+      formConf: {},
       formValues,
       test: { a: { b: { c: 1221 } } }
     }
@@ -83,6 +95,19 @@ export default {
     //   // 更新表单
     //   this.key2 = +new Date()
     // }, 2000)
+    // getUserInfo()
+    this.loading = true
+    getFormConf(this.appId, this.menuId) //
+      .then((resp) => {
+        const { dataListViews } = resp.data
+        const [{ formData }] = dataListViews
+        const formDataCnf = JSON.parse(formData)
+
+        this.formConf = { ...formDataCnf.formConf, fields: formDataCnf.fields, formBtns: true }
+
+        console.log('formDataCnf', this.formConf)
+        this.loading = false
+      })
   },
   methods: {
     handleClick() {

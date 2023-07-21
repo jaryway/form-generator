@@ -11,7 +11,7 @@ const minify =
         removeStyleLinkTypeAttributes: true,
         useShortDoctype: true,
         minifyCSS: true,
-        minifyJS: true,
+        minifyJS: true
       }
 
 function resolve(dir) {
@@ -26,27 +26,36 @@ module.exports = {
       template: 'public/index.html',
       filename: 'index.html',
       chunks: ['chunk-vendors', 'chunk-common', 'index'],
-      minify,
+      minify
     },
     preview: {
       entry: 'src/views/preview/main.js',
       template: 'public/preview.html',
       filename: 'preview.html',
       chunks: ['chunk-vendors', 'chunk-common', 'preview'],
-      minify,
-    },
+      minify
+    }
   },
   devServer: {
     port: 8870,
     client: { overlay: false },
+    proxy: {
+      '/base/frame-workflow/api': {
+        target: 'http://183.236.225.195:9800/',
+        changeOrigin: true,
+        pathRewrite: {
+          ['^' + '/base/frame-workflow/api']: ''
+        }
+      }
+    }
   },
   productionSourceMap: false,
   configureWebpack: {
     externals: {
-      vue: 'Vue',
+      'vue': 'Vue',
       'vue-router': 'VueRouter',
-      'element-ui': 'ELEMENT',
-    },
+      'element-ui': 'ELEMENT'
+    }
   },
   chainWebpack(config) {
     // set svg-sprite-loader
@@ -59,8 +68,8 @@ module.exports = {
       .use('svg-sprite-loader')
       .loader('svg-sprite-loader')
       .options({
-        symbolId: 'icon-[name]',
+        symbolId: 'icon-[name]'
       })
       .end()
-  },
+  }
 }
