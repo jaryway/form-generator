@@ -105,7 +105,7 @@ export default {
 
         this.formConf = { ...formDataCnf.formConf, fields: formDataCnf.fields, formBtns: true }
 
-        console.log('formDataCnf', this.formConf)
+        console.log('formConf', this.formConf)
         this.loading = false
       })
   },

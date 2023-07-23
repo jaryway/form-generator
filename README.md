@@ -106,3 +106,5 @@ derict_dep
 direct_dep
 select
 
+model 只是表单值，没有组件之间的依赖关系，我们需要在值发生变化时
+

@@ -1,8 +1,10 @@
+<!-- eslint-disable no-unreachable -->
 <script>
 import { deepClone } from '@/utils/index'
 import render from '../render/render.js'
 import { filterLinkData } from './example/mock'
 import getIn from 'lodash/get'
+import throttle from 'lodash/throttle'
 import { filterLink, listField } from './example/api'
 
 const ruleTrigger = {
@@ -14,7 +16,7 @@ const ruleTrigger = {
   'el-cascader': 'change',
   'el-time-picker': 'change',
   'el-date-picker': 'change',
-  'el-rate': 'change'
+  'el-rate': 'change',
 }
 
 const layouts = {
@@ -58,7 +60,7 @@ const layouts = {
         <el-row gutter={scheme.gutter || 8}>{child}</el-row>
       </el-col>
     )
-  }
+  },
 }
 
 function renderFrom(h) {
@@ -115,28 +117,125 @@ function renderChildren(h, scheme) {
   return renderFormItem.call(this, h, config.children)
 }
 
-function setValue(event, config, scheme) {
-  this.$set(config, 'defaultValue', event)
-  this.$set(this[this.formConf.formModel], scheme.vModel, event)
-  this.$set(this.fieldsMap[scheme.vModel].config, 'defaultValue', event)
+function setValue(event, config, scheme, rowIndex) {
+  const model = this[this.formConf.formModel]
+  const { parentKey, vModel } = scheme
+
+  if (rowIndex !== undefined) {
+    // console.log('formConf.setValue', model, [scheme.vModel], rowIndex)
+    // this.$set(config, 'defaultValue', event)
+    console.log('setValuesetValuesetValue', model[parentKey])
+    if (model[parentKey] === undefined) {
+      console.log('setValuesetValuesetValue.1', model[parentKey])
+      this.$set(model, parentKey, [])
+    }
+
+    if (!model[parentKey][rowIndex]) {
+      this.$set(model[parentKey], rowIndex, {})
+    }
+
+    // console.log('formConf.setValue9', model[parentKey], rowIndex)
+
+    this.$set(model[parentKey][rowIndex], vModel, event)
+    // this.$set(this.fieldsMap[scheme.vModel].config, 'defaultValue', event)
+    // console.log('formConf.setValue.10', model[parentKey][rowIndex], rowPropName)
+  } else {
+    // this.$set(config, 'defaultValue', event)
+    this.$set(model, vModel, event)
+    // this.$set(this.fieldsMap[scheme.vModel].config, 'defaultValue', event)
+  }
 }
 
-function buildListeners(scheme) {
+function buildListeners(scheme, rowIndex, cb) {
   const config = scheme.config
   const methods = this.formConf.__methods__ || {}
   const listeners = {}
-
+  const self = this
+  console.log('listeners.focus.buildListeners', scheme, rowIndex)
   // 给__methods__中的方法绑定this和event
   Object.keys(methods).forEach((key) => {
     listeners[key] = (event) => methods[key].call(this, event)
   })
   // 响应 render.js 中的 vModel $emit('input', val)
-  listeners.input = (event) => setValue.call(this, event, config, scheme)
+  listeners.input = (event) => {
+    console.log('listeners.input', event, scheme, rowIndex)
+    setValue.call(this, event, config, scheme, rowIndex)
+  }
+
+  if (['SELECT', 'SELECT-MULTIPLE'].includes(scheme.typeId)) {
+    listeners.focus = throttle(
+      function (e) {
+        e.stopPropagation()
+        e.preventDefault()
+        console.log('listeners.focus.select', self, scheme)
+        console.log('listeners.focus.select', self, scheme)
+        // self.$set(self.formConfCopy.fields[1].children[1].config, 'label', self.formConfCopy.fields[1].children[1].config.label + 1)
+
+        // self.$set(self.formConfCopy.fields[1].children[1].__slot__, 'options', [{ label: Math.random(), value: Math.random() }])
+
+        scheme.__slot__.options.splice(0, scheme.__slot__.options.length || 0, ...[{ label: Math.random(), value: Math.random() }])
+        cb?.()
+
+        // self.$set(scheme.__slot__, 'options', [{ label: Math.random(), value: Math.random() }])
+
+        return
+
+        // this.$emit('focus', e)
+        // console.log('mmkmkkkm', this.fieldsMap['fieldeyAOVgB1689866865091'])
+        if (this.optionsModel === 0) return
+
+        let requestParams = {}
+
+        // 数据联动
+        if (this.optionsModel === 2) {
+          const { condition, linkVModel, linkForm } = this.dataLink || {}
+          const cond = condition?.map((item) => {
+            const { autoText, type, condition, curFormFieldId, curFormParentKey, field, typeId } = item
+            // 联动表单的字段 =... 当前表单的字段
+            let value = [autoText]
+            if (type !== 0) {
+              // 当前表单字段的值
+              value = []
+              const curFormField = this.fieldsMap[curFormParentKey || curFormFieldId]
+              if (curFormField) {
+                const { defaultValue } = curFormField.config
+                value = Array.isArray(defaultValue) ? defaultValue : [defaultValue]
+              }
+            }
+
+            return { value: ['上海黄浦动力'], fieldId: field, typeId, condition, hasEmpty: condition < 16 ? 0 : 1 }
+          })
+
+          const [appId, formDesignerId] = linkForm
+          requestParams = { appId, formDesignerId, fieldList: [linkVModel], filter: { rel: 0, cond } }
+        } else {
+          // 关联其他表单
+          const [appId, formDesignerId, fieldId] = this.linkValue || []
+          requestParams = { appId, formDesignerId, fieldId }
+        }
+
+        this.listField(requestParams)
+          .then((resp) => resp.data) //
+          .then((resp) => {
+            console.log('this.listField', resp)
+            const options = (resp.data.list || []).map((m) => ({ label: m, value: m }))
+            this.options = options
+          })
+      },
+      5000, // 对查询结果进行5秒的缓存
+      { leading: true, trailing: false }
+    )
+  } else {
+    listeners.focus = (event, rowIndex, rowPropName) => {
+      console.log('listeners.focus.111', event, rowIndex, rowPropName, scheme)
+    }
+  }
 
   return listeners
 }
 
 export default {
+  name: 'Parse',
   components: { render },
   props: ['formConf', 'values', 'appId', 'menuId'],
 
@@ -165,44 +264,59 @@ export default {
           this.$set(model, key, value)
         }
       },
+      buildListeners: (scheme, rowIndex, cb) => {
+        return buildListeners.call(this, scheme, rowIndex, cb)
+      },
       listField,
       fieldsMap: this.fieldsMap,
-      appId: this.appId
+      appId: this.appId,
     }
   },
   data() {
-    // console.log('vvvvvvv', this.values)
     const data = {
       formConfCopy: deepClone(this.formConf),
       [this.formConf.formModel]: {},
-      [this.formConf.formRules]: {}
+      [this.formConf.formRules]: {},
     }
-    // this.initFormData(data.formConfCopy.fields, data[this.formConf.formModel])
+    const formConfCopy = deepClone(this.formConf)
+    const initialValues = this.initFormData(data.formConfCopy.fields, data[this.formConf.formModel])
     this.buildRules(data.formConfCopy.fields, data[this.formConf.formRules])
-    return data
+    console.log('formConf.data', data, initialValues)
+
+    return {
+      formConfCopy,
+      [this.formConf.formModel]: initialValues,
+      [this.formConf.formRules]: data[this.formConf.formRules],
+    }
   },
   computed: {
     fieldsMap() {
       return this.formConf.fields.reduce((prev, cur) => {
         return { ...prev, [cur.vModel]: cur }
       }, {})
-    }
+    },
   },
-  watch: {
-    values: {
-      immediate: true,
-      handler(val) {
-        this[this.formConf.formModel] = val
-      }
-    }
-  },
+  // watch: {
+  //   values9: {
+  //     immediate: true,
+  //     handler(val) {
+  //       this[this.formConf.formModel] = val
+  //     },
+  //   },
+  // },
   methods: {
     initFormData(componentList, formData) {
-      componentList.forEach((cur) => {
+      return componentList.reduce((prev, cur) => {
+        console.log('formConf.initFormData', componentList, formData)
         const config = cur.config
-        if (cur.vModel) formData[cur.vModel] = config.defaultValue
-        if (config.children) this.initFormData(config.children, formData)
-      })
+        if (cur.vModel) {
+          // formData[] = config.defaultValue
+          return { ...prev, [cur.vModel]: config.defaultValue }
+        }
+        if (config.children) {
+          return { ...prev, ...this.initFormData(config.children) }
+        }
+      }, {})
     },
     buildRules(componentList, rules) {
       componentList.forEach((cur) => {
@@ -237,10 +351,10 @@ export default {
         this.$emit('submit', this[this.formConf.formModel])
         return true
       })
-    }
+    },
   },
   render(h) {
     return renderFrom.call(this, h)
-  }
+  },
 }
 </script>
