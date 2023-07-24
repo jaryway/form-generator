@@ -6,6 +6,7 @@ import { filterLinkData } from './example/mock'
 import getIn from 'lodash/get'
 import throttle from 'lodash/throttle'
 import { filterLink, listField } from './example/api'
+import { calcCondition } from './utils/condition-helper'
 
 const ruleTrigger = {
   'el-input': 'blur',
@@ -103,7 +104,7 @@ const buildLinkQuery = function (field) {
       formDesignerId: config.dbTable,
       fieldList: loopFieldList(config.linkList),
       multi: dataNum * 1 - 1,
-      filter: { rel: 0, cond }
+      filter: { rel: 0, cond },
     }
 
     const hasEmpty = cond.some((m) => m.value.length < 1 && m.condition < 16)
@@ -143,6 +144,10 @@ const buildVisibilityCalc = (rule) => () => {
     // 满足任一条件
     result = (conditionsList || []).some(itemCalculator)
   }
+
+  displayFieldList
+
+  console.log('buildVisibilityCalc', result)
 }
 
 function renderFrom(h) {
@@ -317,7 +322,7 @@ export default {
       appId: this.appId,
       buildListeners: (schame, rowIndex, cb) => {
         return buildListeners.call(this, schame, rowIndex, cb)
-      }
+      },
     }
   },
   data() {
@@ -342,14 +347,15 @@ export default {
   mounted() {
     console.log('test.mounted')
     this.buildWatch(this.formConfCopy.fields)
+    this.buildDisplayRulesWatch(this.formConfCopy.fieldDisplayRules)
   },
   watch: {
     values: {
       immediate: true,
       handler(val) {
         this[this.formConf.formModel] = val
-      }
-    }
+      },
+    },
   },
   // watch: {
   //   values9: {
@@ -440,7 +446,7 @@ export default {
 
           return {
             ...prev,
-            [item.id]: [...prevCondition, { conditionsList, displayFieldList, conditionsChoice }]
+            [item.id]: [...prevCondition, { conditionsList, displayFieldList, conditionsChoice }],
           }
         }, prev)
       }, {})
@@ -449,7 +455,7 @@ export default {
         const doVisibilityCalc = buildVisibilityCalc.call(this, rule)
 
         // 监听字段变化
-        self.$watch(fieldKey, () => doVisibilityCalc())
+        self.$watch(fieldKey, () => doVisibilityCalc(), { immediate: true })
       })
     },
     resetForm() {
