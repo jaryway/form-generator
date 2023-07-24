@@ -139,6 +139,7 @@ export default {
       // fields: this.children || [],
       colConfs: {},
       title: '',
+      keys: {},
       // dataSource: [{ fieldmiyDhEB1678166867066: 'sdfasdf' }]
     }
   },
@@ -201,6 +202,7 @@ export default {
             if (cloneConf.typeId === 'LINKED_DATA') {
               extra = { rowIndex: $index, renderInTable: true, multiple: true }
             }
+
             // this.colConfs[key] = cloneConf
 
             console.log('listeners.focus.select.9999', cloneConf)
@@ -208,19 +210,23 @@ export default {
               console.log('listeners.focus.select.8888', cloneConf, self.children[key], cloneConf.__slot__.options)
 
               self.children[key].__slot__.options = cloneConf.__slot__.options
-              self.$nextTick(() => {
-                self.$set(self.children[key].__slot__, 'options', cloneConf.__slot__.options)
-                self.$set(self.fields[key].config, 'label', 'ddd')
-                self.$set(self.fields[key].__slot__, 'options', cloneConf.__slot__.options)
-                self.title = Math.random()
-                this.$forceUpdate()
-              })
+              // self.$nextTick(() => {
+              self.$set(self.children[key].__slot__, 'options', cloneConf.__slot__.options)
+              self.$set(self.fields[key].config, 'label', 'ddd')
+              self.$set(self.fields[key].__slot__, 'options', cloneConf.__slot__.options)
+
+              let __key = self.fields[key].key || 0
+
+              self.$set(self.fields[key], 'key', __key++)
+              // self.title = Math.random()
+              // this.$forceUpdate()
+              // })
             })
 
             return h(
               'Render',
               {
-                key: key + $index,
+                key: item.key + $index,
                 props: { conf: cloneConf, values: row, key: key + $index },
                 on: listeners,
               },
@@ -229,7 +235,7 @@ export default {
           },
         }
 
-        return <el-table-column minWidth={160} key={key} prop={cloneConf.vModel} label={cloneConf.config.label} scopedSlots={scopedSlots} />
+        return <el-table-column minWidth={160} key={key + '' + cloneConf.key} prop={cloneConf.vModel} label={cloneConf.config.label + cloneConf.key} scopedSlots={scopedSlots} />
       })
     }
 
