@@ -101,7 +101,7 @@ const buildLinkQuery = function (field) {
       appId: this.appId, //
       formDesignerId: config.dbTable,
       fieldList: loopFieldList(config.linkList),
-      multi: dataNum * 1 - 1,
+      multi: dataNum > 1 ? 1 : 0,
       filter: { rel: 0, cond }
     }
 
@@ -125,22 +125,34 @@ const buildLinkQuery = function (field) {
   }
 }
 
-const buildVisibilityCalc = (rule) => () => {
-  const itemCalculator = (item) => {
-    const value = this.fields.find((m) => m.vModel === item.id)
-    const condValue = item.value
-    // return calcCondition(condition, value, condValue)
-    return true
-  }
-  const { conditionsList, displayFieldList, conditionsChoice } = rule
-  let result
+const buildVisibilityCalc = function (rule) {
+  return () => {
+    const self = this
+    const { fields } = self.formConfCopy
 
-  if (conditionsChoice === 1) {
-    // 满足所有条件
-    result = (conditionsList || []).every(itemCalculator)
-  } else {
-    // 满足任一条件
-    result = (conditionsList || []).some(itemCalculator)
+    // const fields = self.filter((m) => (displayFieldList || []).includes(m.vModel))
+    const itemCalculator = (item) => {
+      const value = fields.find((m) => m.vModel === item.id)
+      const condValue = item.value
+      // return calcCondition(condition, value, condValue)
+      return true
+    }
+    const { conditionsList, displayFieldList, conditionsChoice } = rule
+    let result
+
+    if (conditionsChoice === 1) {
+      // 满足所有条件
+      result = (conditionsList || []).every(itemCalculator)
+    } else {
+      // 满足任一条件
+      result = (conditionsList || []).some(itemCalculator)
+    }
+
+    fields
+      .filter((m) => (displayFieldList || []).includes(m.vModel))
+      .forEach((m) => {
+        m.visibility = result
+      })
   }
 }
 
@@ -429,10 +441,10 @@ export default {
       }, {})
 
       Object.entries(caledDisplayRules).forEach(([fieldKey, rule]) => {
-        const doVisibilityCalc = buildVisibilityCalc.call(this, rule)
+        const doVisibilityCalc = buildVisibilityCalc.call(self, rule)
 
         // 监听字段变化
-        self.$watch(fieldKey, () => doVisibilityCalc())
+        self.$watch(fieldKey, () => doVisibilityCalc(), { immediate: true })
       })
     },
     resetForm() {
