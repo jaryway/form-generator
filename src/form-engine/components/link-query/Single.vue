@@ -21,6 +21,7 @@ export default {
   mounted() {},
   computed: {
     model() {
+      console.log('linkFieldValues.Single', this.value)
       return deepClone(this.value || {})
     },
     fields() {

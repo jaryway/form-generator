@@ -38,7 +38,7 @@ function emitEvents(confClone) {
   })
 }
 
-const baseProps = ['config', '__slot__', 'linkedShowField', 'linkList', 'filterCond', 'linkedFillRules', 'typeId', 'typeName', 'editable', 'visibility', 'tableList', 'description', 'renderInTable', 'parentKey', 'rowIndex', 'repeatReminderText']
+const baseProps = ['config', '__slot__', 'linkedShowField', 'linkList', 'filterCond', 'linkedFillRules', 'typeId', 'typeName', 'editable', 'visibility', 'tableList', 'description', 'renderInTable', 'parentKey', 'rowIndex', 'repeatReminderText', 'linkFieldValues']
 const subformProps = ['children', 'value']
 const ignoreProps = ['notChild']
 
@@ -106,6 +106,7 @@ export default {
     },
     values: { type: [Object] },
   },
+
   mounted() {
     // this.$emit('mounted', this.conf)
     // console.log('render.mounted', this.conf)

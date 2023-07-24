@@ -1,7 +1,6 @@
 <!-- eslint-disable no-unreachable -->
 <script>
 import Render from '../../render/render.js'
-import { deepClone } from '@/utils/index'
 const c1 = {
   visibility: true,
   editable: true,
@@ -132,6 +131,9 @@ export default {
   name: 'FgSubform',
   props: ['value', 'config', 'children'],
   components: { Render },
+  inject: {
+    buildListeners: {},
+  },
   data() {
     return {
       tableKey: 'tableKey',
@@ -141,11 +143,8 @@ export default {
       title: '',
       keys: {},
       // dataSource: [{ fieldmiyDhEB1678166867066: 'sdfasdf' }]
+      confs: {},
     }
-  },
-
-  inject: {
-    buildListeners: {},
   },
 
   mounted() {},
@@ -170,107 +169,94 @@ export default {
       },
       set(val) {
         console.log('input.set')
-        this.$emit('input', val)
+        this.$emit('input')
       },
     },
     fields() {
-      console.log('listeners.focus.select.7777')
+      // console.log('listeners.focus.fields.get')
+      console.log('listeners.focus.fields.1.get', this.children)
       return this.children || []
     },
-  },
-  watch: {
-    children: {
-      handler(val) {
-        console.log('listeners.focus.select.66666', val)
-      },
+    columns() {
+      return (this.children || []).reduce((prev, cur, index) => {
+        return { ...prev, [index]: cur, rows: {} }
+      }, {})
     },
   },
   render(h) {
-    // const fields = this.children || []
+    const fields = this.fields // this.children || []
     const self = this
     console.log('dataSource.render.value', this.$props)
 
     const loop = (data) => {
-      return data.map((item, key) => {
-        const cloneConf = deepClone(item)
-        // const { children, config, vModel } = item
+      return data.map((c1, index) => {
+        const { config, vModel, typeId, __slot__, rowKey } = c1
         // console.log('scheme.subform.item', item)
-        // let _key = key
+        const key = rowKey + vModel + index
+
         const scopedSlots = {
           default: ({ row, $index }) => {
             let extra = {}
-            if (cloneConf.typeId === 'LINKED_DATA') {
+            if (typeId === 'LINKED_DATA') {
               extra = { rowIndex: $index, renderInTable: true, multiple: true }
             }
 
-            // this.colConfs[key] = cloneConf
+            const listeners = self.buildListeners(c1, $index, (options) => {
+              console.log('listeners.focus.cb', self.children[index], __slot__)
 
-            console.log('listeners.focus.select.9999', cloneConf)
-            const listeners = self.buildListeners(cloneConf, $index, () => {
-              console.log('listeners.focus.select.8888', cloneConf, self.children[key], cloneConf.__slot__.options)
-
-              self.children[key].__slot__.options = cloneConf.__slot__.options
-              // self.$nextTick(() => {
-              self.$set(self.children[key].__slot__, 'options', cloneConf.__slot__.options)
-              self.$set(self.fields[key].config, 'label', 'ddd')
-              self.$set(self.fields[key].__slot__, 'options', cloneConf.__slot__.options)
-
-              let __key = self.fields[key].key || 0
-
-              self.$set(self.fields[key], 'key', __key++)
-              // self.title = Math.random()
-              // this.$forceUpdate()
-              // })
+              self.$set(self.children[index], 'rowKey', Math.random())
+              self.$set(self.children[index].__slot__, 'options', options)
+              // self.children[key].__slot__.options = c1.__slot__.options
+              // console.log('listeners.focus.fields.1.set', self.children)
+              self.$forceUpdate()
             })
 
-            return h(
-              'Render',
-              {
-                key: item.key + $index,
-                props: { conf: cloneConf, values: row, key: key + $index },
-                on: listeners,
-              },
-              ['dddsfsdf']
-            )
+            console.log('listeners.focus', listeners)
+
+            return h('Render', {
+              props: { conf: { ...c1, ...extra }, values: row, key: $index },
+              on: listeners,
+              // on: {
+              //   input(event) {
+              //     self.$set(row, c1.vModel, event)
+              //   }
+              // }
+            })
           },
         }
 
-        return <el-table-column minWidth={160} key={key + '' + cloneConf.key} prop={cloneConf.vModel} label={cloneConf.config.label + cloneConf.key} scopedSlots={scopedSlots} />
+        return <el-table-column minWidth={160} key={key} prop={vModel} label={config.label} scopedSlots={scopedSlots} />
       })
+    }
+
+    const scopedSlots = {
+      default: ({ $index }) => {
+        return (
+          <div class='row-head'>
+            <span class='row-num'>{$index + 1}</span>
+            <el-popconfirm
+              confirm-button-text='好的'
+              cancel-button-text='不用了'
+              icon='el-icon-info'
+              icon-color='red'
+              title='确定删除吗？'
+              size='mini'
+              onOnConfirm={() => {
+                this.handleDelete($index)
+              }}
+            >
+              <span slot='reference' class='el-icon-delete icon-trash' />
+            </el-popconfirm>
+          </div>
+        )
+      },
     }
 
     return (
       <div class='fg-subform'>
-        {this.title}
-        <el-table maxHeight={480} size='small' title={this.title} key={this.tableKey} ref='refTable' border data={this.dataSource} row-key='id'>
-          <el-table-column
-            type='index'
-            align='center'
-            fixed='left'
-            scopedSlots={{
-              default: ({ $index }) => {
-                return (
-                  <div class='row-head'>
-                    <span class='row-num'>{$index + 1}</span>
-                    <el-popconfirm
-                      confirm-button-text='好的'
-                      cancel-button-text='不用了'
-                      icon='el-icon-info'
-                      icon-color='red'
-                      title='确定删除吗？'
-                      size='mini'
-                      onOnConfirm={() => {
-                        this.handleDelete($index)
-                      }}
-                    >
-                      <span slot='reference' class='el-icon-delete icon-trash' />
-                    </el-popconfirm>
-                  </div>
-                )
-              },
-            }}
-          />
-          {loop(this.fields)}
+        <el-table maxHeight={480} size='small' ref='refTable' border data={this.dataSource} row-key='id'>
+          <el-table-column type='index' align='center' fixed='left' scopedSlots={scopedSlots} />
+          {loop(fields)}
         </el-table>
         <div style='margin-top:8px'>
           <el-button type='default' onClick={this.handelAdd}>
