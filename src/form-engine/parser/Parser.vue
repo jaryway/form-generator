@@ -3,6 +3,7 @@ import { deepClone } from '@/utils/index'
 import render from '../render/render.js'
 import { filterLinkData } from './example/mock'
 import getIn from 'lodash/get'
+import throttle from 'lodash/throttle'
 import { filterLink, listField } from './example/api'
 
 const ruleTrigger = {
@@ -61,6 +62,88 @@ const layouts = {
   }
 }
 
+const buildLinkQuery = function (field) {
+  return () => {
+    const self = this
+    const model = self[self.formConfCopy.formModel]
+    const { filterCond, config, dataNum, typeId, fieldIdx } = field
+    const cond = filterCond.map((m) => {
+      // type：0 表示自定义 | 1 当前表单
+      // condition 运算符
+      let value = ''
+      const { type, condition, value2, value: fieldId } = m
+      if (type === 0) {
+        value = getIn(model, value2)
+      } else {
+        value = value2
+      }
+
+      if (Array.isArray(value)) {
+        if (['MEMBER_RADIO', 'MEMBER_CHECK', 'DEPT_RADIO', 'DEPT_CHECK'].includes(typeId)) {
+          return value.map((j) => j.id)
+        }
+      } else {
+        value = value === undefined || value === null ? [] : [value]
+      }
+
+      return { fieldId, typeId, condition, value }
+    })
+
+    const loopFieldList = (list) => {
+      return (list || []).reduce((prev, cur) => {
+        if (cur.children) return [...prev, cur.vModel, ...loopFieldList(cur.children)]
+        return [...prev, cur.vModel]
+      }, [])
+    }
+
+    // 监听字段变化，构建查询参数，发起查询请求
+    const requestParams = {
+      appId: this.appId, //
+      formDesignerId: config.dbTable,
+      fieldList: loopFieldList(config.linkList),
+      multi: dataNum * 1 - 1,
+      filter: { rel: 0, cond }
+    }
+
+    const hasEmpty = cond.some((m) => m.value.length < 1 && m.condition < 16)
+    if (hasEmpty) return
+
+    return filterLink(requestParams)
+      .then((resp) => resp.data)
+      .then((resp) => {
+        const { list, pageNum, pageSize, total } = resp || {}
+
+        if (dataNum > 1) {
+          // this.$set(this.fields[fieldIdx], 'datalist', list)
+          self.$set(field, 'linkFieldValues', list || [])
+          this.$set(field, 'linkData', { pageNum, pageSize, total, ...requestParams })
+        } else {
+          //
+          self.$set(field, 'linkFieldValues', list?.[0] || {})
+        }
+      })
+  }
+}
+
+const buildVisibilityCalc = (rule) => () => {
+  const itemCalculator = (item) => {
+    const value = this.fields.find((m) => m.vModel === item.id)
+    const condValue = item.value
+    // return calcCondition(condition, value, condValue)
+    return true
+  }
+  const { conditionsList, displayFieldList, conditionsChoice } = rule
+  let result
+
+  if (conditionsChoice === 1) {
+    // 满足所有条件
+    result = (conditionsList || []).every(itemCalculator)
+  } else {
+    // 满足任一条件
+    result = (conditionsList || []).some(itemCalculator)
+  }
+}
+
 function renderFrom(h) {
   const { formConfCopy } = this
   const model = this[formConfCopy.formModel]
@@ -115,23 +198,85 @@ function renderChildren(h, scheme) {
   return renderFormItem.call(this, h, config.children)
 }
 
-function setValue(event, config, scheme) {
-  this.$set(config, 'defaultValue', event)
-  this.$set(this[this.formConf.formModel], scheme.vModel, event)
-  this.$set(this.fieldsMap[scheme.vModel].config, 'defaultValue', event)
+function setValue(event, config, scheme, rowIndex) {
+  const model = this[this.formConf.formModel]
+  const { parentKey, vModel } = scheme
+  if (rowIndex !== undefined) {
+    this.$set(model[parentKey][rowIndex], vModel, event)
+  } else {
+    // this.$set(config, 'defaultValue', event)
+    this.$set(model, vModel, event)
+    // this.$set(this.fieldsMap[scheme.vModel].config, 'defaultValue', event)
+  }
 }
 
-function buildListeners(scheme) {
+function buildListeners(scheme, rowIndex, cb) {
   const config = scheme.config
   const methods = this.formConf.__methods__ || {}
   const listeners = {}
+  const self = this
+  const model = self[self.formConfCopy.formModel]
 
   // 给__methods__中的方法绑定this和event
   Object.keys(methods).forEach((key) => {
     listeners[key] = (event) => methods[key].call(this, event)
   })
   // 响应 render.js 中的 vModel $emit('input', val)
-  listeners.input = (event) => setValue.call(this, event, config, scheme)
+  listeners.input = (event) => setValue.call(self, event, config, scheme, rowIndex)
+
+  listeners.focus = throttle(
+    function (event) {
+      console.log('listeners.focus', event, scheme)
+
+      if (['SELECT', 'SELECT-MULTIPLE'].includes(scheme.typeId)) {
+        if (scheme.optionsModel === 0) return
+
+        let requestParams = {}
+
+        // 数据联动
+        if (scheme.optionsModel === 2) {
+          const { condition, linkVModel, linkForm } = scheme.dataLink || {}
+          const cond = condition?.map((item) => {
+            const { autoText, type, condition, curFormFieldId, field, typeId } = item
+            // 联动表单的字段 =... 当前表单的字段
+            let value = [autoText]
+            if (type !== 0) {
+              // 当前表单字段的值
+              value = []
+              // const curFormField = this.fieldsMap[curFormFieldId]
+              // if (curFormField) {
+              //   const { defaultValue } = curFormField.config
+              const fieldValue = getIn(model, curFormFieldId)
+              value = Array.isArray(fieldValue) ? fieldValue : [fieldValue]
+              // }
+            }
+
+            return { value, fieldId: field, typeId, condition, hasEmpty: condition < 16 ? 0 : 1 }
+          })
+
+          const [appId, formDesignerId] = linkForm
+          requestParams = { appId, formDesignerId, fieldList: [linkVModel], filter: { rel: 0, cond } }
+        } else {
+          // 关联其他表单
+          const [appId, formDesignerId, fieldId] = scheme.linkValue || []
+          requestParams = { appId, formDesignerId, fieldId }
+        }
+
+        // self.$set(scheme.__slot__, 'options', [{ label: Math.random(), value: Math.random() }])
+
+        listField(requestParams)
+          .then((resp) => resp.data) //
+          .then((resp) => {
+            console.log('this.listField', resp)
+            const options = (resp.data.list || []).map((m) => ({ label: m, value: m }))
+            self.$set(scheme.__slot__, 'options', options)
+            cb?.(options)
+          })
+      }
+    },
+    5000,
+    { trailing: false }
+  )
 
   return listeners
 }
@@ -165,13 +310,15 @@ export default {
           this.$set(model, key, value)
         }
       },
-      listField,
-      fieldsMap: this.fieldsMap,
-      appId: this.appId
+      // listField,
+      // fieldsMap: this.fieldsMap,
+      appId: this.appId,
+      buildListeners: (schame, rowIndex, cb) => {
+        return buildListeners.call(this, schame, rowIndex, cb)
+      }
     }
   },
   data() {
-    // console.log('vvvvvvv', this.values)
     const data = {
       formConfCopy: deepClone(this.formConf),
       [this.formConf.formModel]: {},
@@ -179,14 +326,19 @@ export default {
     }
     // this.initFormData(data.formConfCopy.fields, data[this.formConf.formModel])
     this.buildRules(data.formConfCopy.fields, data[this.formConf.formRules])
+
     return data
   },
   computed: {
-    fieldsMap() {
-      return this.formConf.fields.reduce((prev, cur) => {
-        return { ...prev, [cur.vModel]: cur }
-      }, {})
-    }
+    // fieldsMap() {
+    //   return this.formConf.fields.reduce((prev, cur) => {
+    //     return { ...prev, [cur.vModel]: cur }
+    //   }, {})
+    // }
+  },
+  mounted() {
+    console.log('test.mounted')
+    this.buildWatch(this.formConfCopy.fields)
   },
   watch: {
     values: {
@@ -224,6 +376,63 @@ export default {
           })
         }
         if (config.children) this.buildRules(config.children, rules)
+      })
+    },
+    buildWatch(componentList) {
+      const self = this
+      componentList.forEach((field) => {
+        if (field.typeId === 'QUERY_CHECK') {
+          const { filterCond /* config, dataNum, typeId, fieldIdx */ } = field
+          const doLinkQuery = buildLinkQuery.call(self, field)
+          // console.log('buildWatch', filterCond)
+          filterCond.forEach((item) => {
+            // type: 0 表示自定义 | 1 当前表单
+            if (item.type === 0) {
+              console.log('buildWatch.formModel', `${self.formConfCopy.formModel}.${item.value2}`)
+              // 监听依赖的字段变化
+              self.$watch(
+                `${self.formConfCopy.formModel}.${item.value2}`,
+                () => {
+                  console.log('buildWatch.doLinkQuery')
+                  // self.$set(field, 'linkFieldValues', { name: 'asdfasd' })
+                  doLinkQuery()
+                },
+                { immediate: true }
+              )
+            }
+          })
+        }
+
+        if (field.children) {
+          this.buildWatch(field.children)
+        }
+      })
+    },
+    // 字段显隐
+    buildDisplayRulesWatch(displayRules) {
+      const self = this
+      const caledDisplayRules = (displayRules || []).reduce((prev, cur) => {
+        // 字段值发生变化，
+        // 计算条件
+        // 设置显示隐藏
+
+        const { conditionsList, displayFieldList, conditionsChoice } = cur
+        return conditionsList.reduce((prev, item) => {
+          const prevCondition = prev[item.id] || []
+          console.log('resp.fields.prevCondition', item)
+
+          return {
+            ...prev,
+            [item.id]: [...prevCondition, { conditionsList, displayFieldList, conditionsChoice }]
+          }
+        }, prev)
+      }, {})
+
+      Object.entries(caledDisplayRules).forEach(([fieldKey, rule]) => {
+        const doVisibilityCalc = buildVisibilityCalc.call(this, rule)
+
+        // 监听字段变化
+        self.$watch(fieldKey, () => doVisibilityCalc())
       })
     },
     resetForm() {

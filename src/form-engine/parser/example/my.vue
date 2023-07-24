@@ -18,6 +18,8 @@ import Parser from '../Parser'
 import render from '../../render/render.js'
 import { formData, formValues } from './mock'
 import { formData1 } from './mock1'
+import { formData2 } from './mock2'
+import { formData3 } from './mock3'
 import getIn from 'lodash/get'
 import { getUserInfo, getFormConf } from './api'
 
@@ -68,14 +70,16 @@ export default {
   data() {
     console.log('formValues', formValues)
     return {
-      loading: true,
+      loading: false,
       appId: '1631472558016991234',
       menuId: '1682035748330536960',
       c,
       key2: +new Date(),
       isEdit: true,
       // formConf: { ...formData1.formConf, fields: formData1.fields, formBtns: true },
-      formConf: {},
+      // formConf: { ...formData2.formConf, fields: formData2.fields, formBtns: true },
+      formConf: { ...formData3.formConf, fields: formData3.fields, formBtns: true },
+      // formConf: {},
       formValues,
       test: { a: { b: { c: 1221 } } }
     }
@@ -96,18 +100,16 @@ export default {
     //   this.key2 = +new Date()
     // }, 2000)
     // getUserInfo()
-    this.loading = true
-    getFormConf(this.appId, this.menuId) //
-      .then((resp) => {
-        const { dataListViews } = resp.data
-        const [{ formData }] = dataListViews
-        const formDataCnf = JSON.parse(formData)
-
-        this.formConf = { ...formDataCnf.formConf, fields: formDataCnf.fields, formBtns: true }
-
-        console.log('formDataCnf', this.formConf)
-        this.loading = false
-      })
+    // this.loading = true
+    // getFormConf(this.appId, this.menuId) //
+    //   .then((resp) => {
+    //     const { dataListViews } = resp.data
+    //     const [{ formData }] = dataListViews
+    //     const formDataCnf = JSON.parse(formData)
+    //     this.formConf = { ...formDataCnf.formConf, fields: formDataCnf.fields, formBtns: true }
+    //     console.log('formDataCnf', this.formConf)
+    //     this.loading = false
+    //   })
   },
   methods: {
     handleClick() {

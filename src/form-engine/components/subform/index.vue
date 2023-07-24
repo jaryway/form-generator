@@ -131,9 +131,13 @@ export default {
   name: 'FgSubform',
   props: ['value', 'config', 'children'],
   components: { Render },
+  inject: {
+    buildListeners: {}
+  },
   data() {
     return {
       // dataSource: [{ fieldmiyDhEB1678166867066: 'sdfasdf' }]
+      confs: {}
     }
   },
 
@@ -143,10 +147,12 @@ export default {
     handelChange() {},
     handelAdd() {
       this.dataSource.push({})
+      this.$emit('input', this.dataSource)
     },
     handleDelete(index) {
       console.log('handleDelete')
       this.dataSource.splice(index, 1)
+      this.$emit('input', this.dataSource)
     }
   },
   computed: {
@@ -159,75 +165,91 @@ export default {
         console.log('input.set')
         this.$emit('input')
       }
+    },
+    fields() {
+      // console.log('listeners.focus.fields.get')
+      console.log('listeners.focus.fields.1.get', this.children)
+      return this.children || []
+    },
+    columns() {
+      return (this.children || []).reduce((prev, cur, index) => {
+        return { ...prev, [index]: cur, rows: {} }
+      }, {})
     }
   },
   render(h) {
-    const fields = this.children || []
+    const fields = this.fields // this.children || []
     const self = this
     // console.log('dataSource.render.value', this.dataSource)
 
     const loop = (data) => {
-      return data.map((c1, key) => {
-        // const { children, config, vModel } = item
+      return data.map((c1, index) => {
+        const { config, vModel, typeId, __slot__, rowKey } = c1
         // console.log('scheme.subform.item', item)
-        return (
-          <el-table-column
-            minWidth={160}
-            key={c1.vModel}
-            prop={c1.vModel}
-            label={c1.config.label}
-            scopedSlots={{
-              default: ({ row, $index }) => {
-                let extra = {}
-                if (c1.typeId === 'LINKED_DATA') {
-                  extra = { rowIndex: $index, renderInTable: true, multiple: true }
-                }
+        const key = rowKey + vModel + index
 
-                return h('Render', {
-                  props: { conf: { ...c1, ...extra }, values: row, key: $index },
-                  on: {
-                    input(event) {
-                      self.$set(row, c1.vModel, event)
-                    }
-                  }
-                })
-              }
-            }}
-          />
-        )
+        const scopedSlots = {
+          default: ({ row, $index }) => {
+            let extra = {}
+            if (typeId === 'LINKED_DATA') {
+              extra = { rowIndex: $index, renderInTable: true, multiple: true }
+            }
+
+            const listeners = self.buildListeners(c1, $index, (options) => {
+              console.log('listeners.focus.cb', self.children[index], __slot__)
+
+              self.$set(self.children[index], 'rowKey', Math.random())
+              self.$set(self.children[index].__slot__, 'options', options)
+              // self.children[key].__slot__.options = c1.__slot__.options
+              // console.log('listeners.focus.fields.1.set', self.children)
+              self.$forceUpdate()
+            })
+
+            console.log('listeners.focus', listeners)
+
+            return h('Render', {
+              props: { conf: { ...c1, ...extra }, values: row, key: $index },
+              on: listeners
+              // on: {
+              //   input(event) {
+              //     self.$set(row, c1.vModel, event)
+              //   }
+              // }
+            })
+          }
+        }
+
+        return <el-table-column minWidth={160} key={key} prop={vModel} label={config.label} scopedSlots={scopedSlots} />
       })
+    }
+
+    const scopedSlots = {
+      default: ({ $index }) => {
+        return (
+          <div class='row-head'>
+            <span class='row-num'>{$index + 1}</span>
+            <el-popconfirm
+              confirm-button-text='好的'
+              cancel-button-text='不用了'
+              icon='el-icon-info'
+              icon-color='red'
+              title='确定删除吗？'
+              size='mini'
+              onOnConfirm={() => {
+                this.handleDelete($index)
+              }}
+            >
+              <span slot='reference' class='el-icon-delete icon-trash' />
+            </el-popconfirm>
+          </div>
+        )
+      }
     }
 
     return (
       <div class='fg-subform'>
         <el-table maxHeight={480} size='small' ref='refTable' border data={this.dataSource} row-key='id'>
-          <el-table-column
-            type='index'
-            align='center'
-            fixed='left'
-            scopedSlots={{
-              default: ({ $index }) => {
-                return (
-                  <div class='row-head'>
-                    <span class='row-num'>{$index + 1}</span>
-                    <el-popconfirm
-                      confirm-button-text='好的'
-                      cancel-button-text='不用了'
-                      icon='el-icon-info'
-                      icon-color='red'
-                      title='确定删除吗？'
-                      size='mini'
-                      onOnConfirm={() => {
-                        this.handleDelete($index)
-                      }}
-                    >
-                      <span slot='reference' class='el-icon-delete icon-trash' />
-                    </el-popconfirm>
-                  </div>
-                )
-              }
-            }}
-          />
+          <el-table-column type='index' align='center' fixed='left' scopedSlots={scopedSlots} />
           {loop(fields)}
         </el-table>
         <div style='margin-top:8px'>

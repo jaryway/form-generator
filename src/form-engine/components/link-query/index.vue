@@ -1,6 +1,6 @@
 <template>
   <Multiple v-if="multi" :linkFields="fields" :linkForm="linkForm" :dataSource="data" :allowAdd="allowAdd" />
-  <Single v-else :linkFields="fields" :data="data" />
+  <Single v-else :linkFields="fields" :value="data" />
 </template>
 
 <script>
@@ -15,7 +15,7 @@ import Multiple from './Multiple.vue'
 
 export default {
   name: 'FgLinkQuery',
-  props: ['value', 'linkFields', 'linkForm', 'linkFilter', 'linkFilterRel', 'multi', 'allowAdd'],
+  props: ['value', 'linkFieldValues', 'linkList', 'linkForm', 'linkFilter', 'linkFilterRel', 'dataNum', 'allowAdd'],
 
   components: {
     Single,
@@ -27,73 +27,16 @@ export default {
     return {}
   },
   computed: {
+    multi() {
+      return this.dataNum > 1
+    },
     data() {
-      return this.multi ? this.value || [] : this.value || {}
+      console.log('linkFieldValues.data', this.linkFieldValues)
+      // return this.linkFieldValues
+      return this.multi ? this.linkFieldValues || [] : this.linkFieldValues || {}
     },
     fields() {
-      return [
-        {
-          id: '1650435474451525633',
-          label: '单行文本2',
-          type: 0,
-          foreignId: 0,
-          typeId: 'INPUT',
-          name: 'fieldGTFmdMB1681184052316',
-          visible: 1,
-          childrenFlag: 0,
-          childrenFromDesignerId: null,
-          children: null,
-          vModel: 'fieldGTFmdMB1681184052316',
-          __slot__: null,
-          parentId: 1
-        },
-        {
-          id: '1650435474518634498',
-          label: '成员多选',
-          type: 0,
-          foreignId: 0,
-          typeId: 'MEMBER_CHECK',
-          name: 'fieldzBZmKOB1681805592190',
-          visible: 1,
-          childrenFlag: 0,
-          childrenFromDesignerId: null,
-          children: null,
-          vModel: 'fieldzBZmKOB1681805592190',
-          __slot__: '{"default":"选择成员"}',
-          parentId: 1
-        },
-        {
-          id: '1650435474547994626',
-          label: '提交人',
-          type: 0,
-          foreignId: 0,
-          typeId: 'MEMBER_RADIO',
-          name: 'createBy',
-          visible: 1,
-          childrenFlag: 0,
-          childrenFromDesignerId: null,
-          children: null,
-          vModel: 'createBy',
-          __slot__: null,
-          parentId: 1
-        },
-        {
-          id: '1650435474615103489',
-          label: '创建时间',
-          type: 0,
-          foreignId: 0,
-          typeId: 'DATE',
-          name: 'createTime',
-          visible: 1,
-          childrenFlag: 0,
-          childrenFromDesignerId: null,
-          children: null,
-          vModel: 'createTime',
-          __slot__: null,
-          parentId: 1
-        }
-      ]
-      // return this.linkFields || []
+      return this.linkList || []
     }
   },
 

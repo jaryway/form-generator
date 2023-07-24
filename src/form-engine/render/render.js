@@ -54,7 +54,8 @@ const baseProps = [
   'renderInTable',
   'parentKey',
   'rowIndex',
-  'repeatReminderText'
+  'repeatReminderText',
+  'linkFieldValues'
 ]
 const subformProps = ['children', 'value']
 const ignoreProps = ['notChild']
@@ -126,6 +127,15 @@ export default {
       required: true
     },
     values: { type: [Object] }
+  },
+  watch: {
+    conf: {
+      deep: true,
+      immediate: true,
+      handler(val) {
+        console.log('listeners.focus.watch', val)
+      }
+    }
   },
   mounted() {
     // this.$emit('mounted', this.conf)
