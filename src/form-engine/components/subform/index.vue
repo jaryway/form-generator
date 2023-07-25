@@ -13,7 +13,7 @@ const c1 = {
   linkVModel: 'fieldmiyDhEB1678166867066',
   style: {
     width: '254px',
-    maxWidth: '100%'
+    maxWidth: '100%',
   },
   typeId: 'INPUT',
   placeholder: '请输入工程号',
@@ -22,34 +22,34 @@ const c1 = {
     typeOption: [
       {
         label: '无',
-        value: 'text'
+        value: 'text',
       },
       {
         label: '手机号码',
-        value: 'phoneNumber'
+        value: 'phoneNumber',
       },
       {
         label: '电话号码',
-        value: 'tel'
+        value: 'tel',
       },
       {
         label: '邮政编码',
-        value: 'zipCode'
+        value: 'zipCode',
       },
       {
         label: '身份证号码',
-        value: 'idNumber'
+        value: 'idNumber',
       },
       {
         label: '邮箱',
-        value: 'email'
-      }
+        value: 'email',
+      },
     ],
     format: 'text',
     label: '工程号',
     defaultValueSource: {
       id: '',
-      type: 0
+      type: 0,
     },
     required: true,
     showLabel: true,
@@ -60,9 +60,9 @@ const c1 = {
     changeTag: true,
     tag: 'el-input',
     defaultValueType: 0,
-    span: 6
+    span: 6,
   },
-  vModel: 'fieldKMhNSFB167843875651801'
+  vModel: 'fieldKMhNSFB167843875651801',
 }
 const c2 = {
   visibility: true,
@@ -75,7 +75,7 @@ const c2 = {
   readonly: false,
   style: {
     width: '254px',
-    maxWidth: '100%'
+    maxWidth: '100%',
   },
   typeId: 'INPUT',
   placeholder: '请输入技术采购单号',
@@ -84,34 +84,34 @@ const c2 = {
     typeOption: [
       {
         label: '无',
-        value: 'text'
+        value: 'text',
       },
       {
         label: '手机号码',
-        value: 'phoneNumber'
+        value: 'phoneNumber',
       },
       {
         label: '电话号码',
-        value: 'tel'
+        value: 'tel',
       },
       {
         label: '邮政编码',
-        value: 'zipCode'
+        value: 'zipCode',
       },
       {
         label: '身份证号码',
-        value: 'idNumber'
+        value: 'idNumber',
       },
       {
         label: '邮箱',
-        value: 'email'
-      }
+        value: 'email',
+      },
     ],
     format: 'text',
     label: '技术采购单号',
     defaultValueSource: {
       id: '',
-      type: 0
+      type: 0,
     },
     required: false,
     showLabel: true,
@@ -122,9 +122,9 @@ const c2 = {
     changeTag: true,
     tag: 'el-input',
     defaultValueType: 0,
-    span: 6
+    span: 6,
   },
-  vModel: 'fieldgAgOSFB1678438901921'
+  vModel: 'fieldgAgOSFB1678438901921',
 }
 export default {
   model: { event: 'input', prop: 'value' },
@@ -132,12 +132,18 @@ export default {
   props: ['value', 'config', 'children'],
   components: { Render },
   inject: {
-    buildListeners: {}
+    buildListeners: {},
   },
   data() {
     return {
+      tableKey: 'tableKey',
+      hasBindListeners: false,
+      // fields: this.children || [],
+      colConfs: {},
+      title: '',
+      keys: {},
       // dataSource: [{ fieldmiyDhEB1678166867066: 'sdfasdf' }]
-      confs: {}
+      confs: {},
     }
   },
 
@@ -153,18 +159,18 @@ export default {
       console.log('handleDelete')
       this.dataSource.splice(index, 1)
       this.$emit('input', this.dataSource)
-    }
+    },
   },
   computed: {
     dataSource: {
       get() {
-        console.log('input.get')
+        console.log('formConf.get', this.value)
         return this.value || []
       },
       set(val) {
         console.log('input.set')
         this.$emit('input')
-      }
+      },
     },
     fields() {
       // console.log('listeners.focus.fields.get')
@@ -175,12 +181,12 @@ export default {
       return (this.children || []).reduce((prev, cur, index) => {
         return { ...prev, [index]: cur, rows: {} }
       }, {})
-    }
+    },
   },
   render(h) {
     const fields = this.fields // this.children || []
     const self = this
-    // console.log('dataSource.render.value', this.dataSource)
+    console.log('dataSource.render.value', this.$props)
 
     const loop = (data) => {
       return data.map((c1, index) => {
@@ -209,14 +215,14 @@ export default {
 
             return h('Render', {
               props: { conf: { ...c1, ...extra }, values: row, key: $index },
-              on: listeners
+              on: listeners,
               // on: {
               //   input(event) {
               //     self.$set(row, c1.vModel, event)
               //   }
               // }
             })
-          }
+          },
         }
 
         return <el-table-column minWidth={160} key={key} prop={vModel} label={config.label} scopedSlots={scopedSlots} />
@@ -243,7 +249,7 @@ export default {
             </el-popconfirm>
           </div>
         )
-      }
+      },
     }
 
     return (
@@ -259,7 +265,7 @@ export default {
         </div>
       </div>
     )
-  }
+  },
 }
 </script>
 

@@ -1,12 +1,6 @@
 <template>
   <el-select v-model="model" v-bind="$attrs" v-on="$listeners">
-    <el-option
-      v-for="(item, key) in options"
-      :key="key"
-      :label="item.label"
-      :value="item.label"
-      :disabled="item.disabled"
-    />
+    <el-option v-for="(item, key) in options" :key="key" :label="item.label" :value="item.label" :disabled="item.disabled" />
   </el-select>
 </template>
 
@@ -40,13 +34,18 @@ export default {
       },
       set(value) {
         this.$emit('input', value)
-      }
+      },
     },
     options() {
       return this.__slot__.options || []
-    }
+    },
   },
   created() {
+    // delete this.$listeners['focus']
+    // this.$listeners.focus = this.handleFocus
+    // () => {
+    //   console.log('listeners.focus.creaded')
+    // }
     delete this.$attrs['dataLink']
   },
   mounted() {
@@ -94,7 +93,7 @@ export default {
     //   500,
     //   { leading: true }
     // )
-  }
+  },
 }
 </script>
 

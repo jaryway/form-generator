@@ -1,15 +1,9 @@
+<!-- eslint-disable spaced-comment -->
 <!-- eslint-disable no-unreachable -->
 <template>
   <div class="test-form">
     <el-button @click="handleClick">handleClick</el-button>
-    <Parser
-      v-if="!loading"
-      :form-conf="formConf"
-      :values="formValues"
-      @submit="sumbitForm1"
-      :appId="appId"
-      :menu="menuId"
-    />
+    <Parser v-if="!loading" :form-conf="formConf" :values="formValues" @submit="sumbitForm1" :appId="appId" :menu="menuId" />
   </div>
 </template>
 
@@ -44,7 +38,7 @@ const c = {
     label: '实际送货日期',
     defaultValueSource: {
       id: '',
-      type: 0
+      type: 0,
     },
     required: true,
     showLabel: true,
@@ -56,15 +50,15 @@ const c = {
     changeTag: true,
     tag: 'el-date-picker',
     defaultValueType: 0,
-    span: 6
+    span: 6,
   },
-  vModel: 'fieldKknDhEB1678166837506'
+  vModel: 'fieldKknDhEB1678166837506',
 }
 
 export default {
   components: {
     Parser,
-    render
+    render,
   },
   props: {},
   data() {
@@ -75,7 +69,7 @@ export default {
       menuId: '1682035748330536960',
       c,
       key2: +new Date(),
-      isEdit: true,
+      isEdit: false,
       // formConf: { ...formData1.formConf, fields: formData1.fields, formBtns: true },
       // formConf: { ...formData2.formConf, fields: formData2.fields, formBtns: true },
       formConf: { ...formData3.formConf, fields: formData3.fields, formBtns: true },
@@ -148,8 +142,8 @@ export default {
     sumbitForm2(data) {
       console.log('sumbitForm2提交数据：', data)
     },
-    handleChange() {}
-  }
+    handleChange() {},
+  },
 }
 </script>
 

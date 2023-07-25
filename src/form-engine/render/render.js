@@ -18,8 +18,8 @@ import { deepClone } from '@/utils/index'
 function vModel(dataObject, defaultValue) {
   console.log('dataObject.vModel', defaultValue)
   dataObject.props.value = defaultValue
-  dataObject.on.input = (val) => {
-    this.$emit('input', val)
+  dataObject.on.input = (val, rowIndex, rowPropName) => {
+    this.$emit('input', val, rowIndex, rowPropName)
   }
   // dataObject.on.blur = (val) => {
   //   this.$emit('blur', val)
@@ -38,25 +38,7 @@ function emitEvents(confClone) {
   })
 }
 
-const baseProps = [
-  'config',
-  '__slot__',
-  'linkedShowField',
-  'linkList',
-  'filterCond',
-  'linkedFillRules',
-  'typeId',
-  'typeName',
-  'editable',
-  'visibility',
-  'tableList',
-  'description',
-  'renderInTable',
-  'parentKey',
-  'rowIndex',
-  'repeatReminderText',
-  'linkFieldValues'
-]
+const baseProps = ['config', '__slot__', 'linkedShowField', 'linkList', 'filterCond', 'linkedFillRules', 'typeId', 'typeName', 'editable', 'visibility', 'tableList', 'description', 'renderInTable', 'parentKey', 'rowIndex', 'repeatReminderText', 'linkFieldValues']
 const subformProps = ['children', 'value']
 const ignoreProps = ['notChild']
 
@@ -74,11 +56,7 @@ function buildDataObject(confClone, dataObject) {
     } else if ((confClone.typeId === 'CHILD_FORM' && subformProps.includes(key)) || baseProps.includes(key)) {
       dataObject.props[key] = val
     } else if (dataObject[key] !== undefined) {
-      if (
-        dataObject[key] === null ||
-        dataObject[key] instanceof RegExp ||
-        ['boolean', 'string', 'number', 'function'].includes(typeof dataObject[key])
-      ) {
+      if (dataObject[key] === null || dataObject[key] instanceof RegExp || ['boolean', 'string', 'number', 'function'].includes(typeof dataObject[key])) {
         dataObject[key] = val
       } else if (Array.isArray(dataObject[key])) {
         dataObject[key] = [...dataObject[key], ...val]
@@ -116,7 +94,7 @@ function makeDataObject(key) {
     slot: null,
     key,
     ref: null,
-    refInFor: true
+    refInFor: true,
   }
 }
 
@@ -124,29 +102,28 @@ export default {
   props: {
     conf: {
       type: Object,
-      required: true
+      required: true,
     },
-    values: { type: [Object] }
+    values: { type: [Object] },
   },
-  watch: {
-    conf: {
-      deep: true,
-      immediate: true,
-      handler(val) {
-        console.log('listeners.focus.watch', val)
-      }
-    }
-  },
+
   mounted() {
     // this.$emit('mounted', this.conf)
     // console.log('render.mounted', this.conf)
+  },
+  watch: {
+    'conf.__slot__': {
+      handler(val) {
+        console.log('listeners.focus.select.watch', val)
+      },
+    },
   },
   render(h) {
     const dataObject = makeDataObject(this.key)
     const confClone = deepClone(this.conf)
     const children = this.$slots.default || []
     dataObject.on = this.$listeners
-    // console.log('scheme.render...', this.values)
+    console.log('listeners.focus.select.render...', this.conf)
 
     // console.log('__slot__', children)
     // 如果slots文件夹存在与当前tag同名的文件，则执行文件中的代码
@@ -205,5 +182,5 @@ export default {
     }
 
     return h(this.conf.config.tag, dataObject, children)
-  }
+  },
 }

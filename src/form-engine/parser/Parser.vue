@@ -1,3 +1,4 @@
+<!-- eslint-disable no-unreachable -->
 <script>
 import { deepClone } from '@/utils/index'
 import render from '../render/render.js'
@@ -5,6 +6,7 @@ import { filterLinkData } from './example/mock'
 import getIn from 'lodash/get'
 import throttle from 'lodash/throttle'
 import { filterLink, listField } from './example/api'
+import { calcCondition } from './utils/condition-helper'
 
 const ruleTrigger = {
   'el-input': 'blur',
@@ -153,6 +155,10 @@ const buildVisibilityCalc = function (rule) {
       .forEach((m) => {
         m.visibility = result
       })
+
+    // displayFieldList
+
+    console.log('buildVisibilityCalc', result)
   }
 }
 
@@ -294,6 +300,7 @@ function buildListeners(scheme, rowIndex, cb) {
 }
 
 export default {
+  name: 'Parse',
   components: { render },
   props: ['formConf', 'values', 'appId', 'menuId'],
 
@@ -336,7 +343,8 @@ export default {
       [this.formConf.formModel]: {},
       [this.formConf.formRules]: {}
     }
-    // this.initFormData(data.formConfCopy.fields, data[this.formConf.formModel])
+    const formConfCopy = deepClone(this.formConf)
+    const initialValues = this.initFormData(data.formConfCopy.fields, data[this.formConf.formModel])
     this.buildRules(data.formConfCopy.fields, data[this.formConf.formRules])
 
     return data
@@ -351,6 +359,7 @@ export default {
   mounted() {
     console.log('test.mounted')
     this.buildWatch(this.formConfCopy.fields)
+    this.buildDisplayRulesWatch(this.formConfCopy.fieldDisplayRules)
   },
   watch: {
     values: {
@@ -360,13 +369,27 @@ export default {
       }
     }
   },
+  // watch: {
+  //   values9: {
+  //     immediate: true,
+  //     handler(val) {
+  //       this[this.formConf.formModel] = val
+  //     },
+  //   },
+  // },
   methods: {
     initFormData(componentList, formData) {
-      componentList.forEach((cur) => {
+      return componentList.reduce((prev, cur) => {
+        console.log('formConf.initFormData', componentList, formData)
         const config = cur.config
-        if (cur.vModel) formData[cur.vModel] = config.defaultValue
-        if (config.children) this.initFormData(config.children, formData)
-      })
+        if (cur.vModel) {
+          // formData[] = config.defaultValue
+          return { ...prev, [cur.vModel]: config.defaultValue }
+        }
+        if (config.children) {
+          return { ...prev, ...this.initFormData(config.children) }
+        }
+      }, {})
     },
     buildRules(componentList, rules) {
       componentList.forEach((cur) => {
