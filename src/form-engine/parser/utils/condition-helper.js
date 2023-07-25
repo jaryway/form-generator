@@ -1,4 +1,4 @@
-import { EQ, NE, ALL, NIN, LK, ULK, EP, NEP, GT, GTE, LT, LTE, RG, IN_MANY, IN_ONE, ALL_ADDR, NIN_ADDR } from '../constants'
+import { EQ, NE, ALL, NIN, LK, ULK, EP, NEP, GT, GTE, LT, LTE, RG, IN_MANY, IN_ONE, ALL_ADDRESS, NIN_ADDRESS } from '../constants'
 
 export const getLabel = (op) => {
   switch (op) {
@@ -32,9 +32,9 @@ export const getLabel = (op) => {
       return '包含任意一个'
     case IN_ONE:
       return '等于任意一个'
-    case ALL_ADDR:
+    case ALL_ADDRESS:
       return '属于'
-    case NIN_ADDR:
+    case NIN_ADDRESS:
       return '不属于'
     // case FM:
     //   return '动态筛选'
@@ -66,8 +66,8 @@ export const getTypeIds = (op) => {
       return ['CHECKBOX', 'SELECT-MULTIPLE', 'MEMBER_CHECK', 'DEPT_CHECK']
     case IN_ONE:
       return ['INPUT', 'RADIO', 'SELECT', 'SERIALNUMBER_INPUT', 'MEMBER_RADIO', 'DEPT_RADIO']
-    case ALL_ADDR:
-    case NIN_ADDR:
+    case ALL_ADDRESS:
+    case NIN_ADDRESS:
       return ['PROVINCE_CITY', 'INPUT_MAP']
 
     case EP:
@@ -82,36 +82,36 @@ export const getTypeIds = (op) => {
 
 export const getOperators = (typeId) => {
   switch (typeId) {
-    case 'text':
-    case 'radiogroup':
-    case 'combo':
+    case 'INPUT':
+    case 'RADIO':
+    case 'SELECT':
       return [EQ, NE, IN_MANY, IN_ONE, NIN, LK, ULK, EP, NEP]
-    case 'number':
+    case 'NUMBER_INPUT':
       return [EQ, NE, GT, GTE, LT, LTE, EP, NEP, RG]
-    case 'textarea':
+    case 'TEXTAREA':
       return [LK, ULK, EP, NEP]
-    case 'datetime':
+    case 'DATE':
       return [EQ, NE, GTE, LTE, RG, EP, NEP]
-    case 'checkboxgroup':
-    case 'combocheck':
-    case 'usergroup':
-    case 'deptgroup':
+    case 'CHECKBOX':
+    case 'SELECT-MULTIPLE':
+    case 'MEMBER_CHECK':
+    case 'DEPT_CHECK':
       return [IN_MANY, IN_ONE, ALL, EQ, EP, NEP]
-    case 'user':
-    case 'dept':
-    case 'account_pool':
-    case 'leads_pool':
-    case 'sale_stage':
+    case 'MEMBER_RADIO':
+    case 'DEPT_RADIO':
+      // case 'account_pool':
+      // case 'leads_pool':
+      // case 'sale_stage':
       return [EQ, NE, IN_MANY, IN_ONE, NIN, EP, NEP]
-    case 'upload':
-    case 'image':
-    case 'signature':
-      return [EP, NEP]
-    case 'phone':
-      return [LK, EP, NEP]
-    case 'location':
-    case 'address':
-      return [ALL, NIN, EP, NEP]
+    // case 'upload':
+    // case 'image':
+    // case 'signature':
+    //   return [EP, NEP]
+    // case 'phone':
+    //   return [LK, EP, NEP]
+    case 'INPUT_MAP':
+    case 'PROVINCE_CITY':
+      return [ALL_ADDRESS, NIN_ADDRESS, EP, NEP]
     default:
       return []
   }
@@ -120,6 +120,10 @@ export const getOperators = (typeId) => {
 export const calcCondition = (op, lhs, rhs) => {
   switch (op) {
     case EQ:
+      if (Array.isArray(lhs)) {
+        if (lhs.length !== rhs.length) return false
+        return lhs.every((m, i) => m === rhs[i]) // 位置和值都相等
+      }
       return lhs === rhs
     case NE:
       return lhs !== rhs
@@ -127,9 +131,11 @@ export const calcCondition = (op, lhs, rhs) => {
       return rhs.every((m) => lhs.includes(m))
     case NIN: // '不等于任意一个'
       return lhs.every((m) => !rhs.includes(m))
-    case LK: // '字符串包含'
+    case LK:
+      if (!lhs.length) return false
       return lhs.includes(rhs)
     case ULK: // '不包含'
+      if (!lhs.length) return false
       return !lhs.includes(rhs)
     case EP: // '为空'
       return [undefined, null, ''].includes(rhs)
@@ -142,16 +148,16 @@ export const calcCondition = (op, lhs, rhs) => {
     case LT: // '小于'
       return lhs < rhs
     case LTE: // '小于等于'
-      return lhs < rhs
+      return lhs <= rhs
     case RG: // '选择范围'
       return lhs >= rhs[0] && lhs <= rhs[1]
     case IN_MANY: // '包含任意一个' 数组
       return lhs.length > 0 && lhs.some((m) => rhs.includes(m))
     case IN_ONE: // '等于任意一个' lhs string rhs=string[]
       return rhs.length > 0 && rhs.includes(lhs)
-    case ALL_ADDR: // 不属于(地址/定位)
+    case ALL_ADDRESS: // 不属于(地址/定位)
       return true
-    case NIN_ADDR:
+    case NIN_ADDRESS:
       return true
     default:
       return true

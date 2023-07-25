@@ -129,7 +129,8 @@ const buildLinkQuery = function (field) {
 
 const buildVisibilityCalc = (rule) => () => {
   const itemCalculator = (item) => {
-    const value = this.fields.find((m) => m.vModel === item.id)
+    const field = this.formConfCopy.fields.find((m) => m.vModel === item.id)
+    const value = '' // this.formConfCopy.fields.find((m) => m.vModel === item.id)
     const condValue = item.value
     // return calcCondition(condition, value, condValue)
     return true
