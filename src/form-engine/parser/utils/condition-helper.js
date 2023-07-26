@@ -1,4 +1,22 @@
-import { EQ, NE, ALL, NIN, LK, ULK, EP, NEP, GT, GTE, LT, LTE, RG, IN_MANY, IN_ONE, ALL_ADDRESS, NIN_ADDRESS } from '../constants'
+import {
+  EQ,
+  NE,
+  ALL,
+  NIN,
+  LK,
+  ULK,
+  EP,
+  NEP,
+  GT,
+  GTE,
+  LT,
+  LTE,
+  RG,
+  IN_MANY,
+  IN_ONE,
+  ALL_ADDRESS,
+  NIN_ADDRESS
+} from '../constants'
 
 export const getLabel = (op) => {
   switch (op) {
@@ -44,7 +62,20 @@ export const getLabel = (op) => {
 export const getTypeIds = (op) => {
   switch (op) {
     case EQ:
-      return ['INPUT', 'NUMBER_INPUT', 'DATE', 'RADIO', 'CHECKBOX', 'SELECT', 'SELECT-MULTIPLE', 'SERIALNUMBER_INPUT', 'MEMBER_RADIO', 'MEMBER_CHECK', 'DEPT_RADIO', 'DEPT_CHECK']
+      return [
+        'INPUT',
+        'NUMBER_INPUT',
+        'DATE',
+        'RADIO',
+        'CHECKBOX',
+        'SELECT',
+        'SELECT-MULTIPLE',
+        'SERIALNUMBER_INPUT',
+        'MEMBER_RADIO',
+        'MEMBER_CHECK',
+        'DEPT_RADIO',
+        'DEPT_CHECK'
+      ]
     case NE:
       return ['INPUT', 'NUMBER_INPUT', 'DATE', 'RADIO', 'SELECT', 'SERIALNUMBER_INPUT', 'MEMBER_RADIO', 'DEPT_RADIO']
     case ALL:
@@ -131,12 +162,17 @@ export const calcCondition = (op, lhs, rhs) => {
       return rhs.every((m) => lhs.includes(m))
     case NIN: // '不等于任意一个'
       return lhs.every((m) => !rhs.includes(m))
-    case LK:
-      if (!lhs.length) return false
-      return lhs.includes(rhs)
-    case ULK: // '不包含'
-      if (!lhs.length) return false
-      return !lhs.includes(rhs)
+    case LK: {
+      if (!lhs) return false
+      const v = Array.isArray(rhs) ? rhs[0] : rhs
+      return lhs.includes(v)
+    }
+    case ULK: {
+      // 不包含
+      if (!lhs) return false
+      const v = Array.isArray(rhs) ? rhs[0] : rhs
+      return !lhs.includes(v)
+    }
     case EP: // '为空'
       return [undefined, null, ''].includes(rhs)
     case NEP: // '不为空'
@@ -162,6 +198,7 @@ export const calcCondition = (op, lhs, rhs) => {
     default:
       return true
     // case FM:
+
     //   return '动态筛选'
   }
 }

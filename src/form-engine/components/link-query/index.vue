@@ -23,7 +23,6 @@ export default {
   },
 
   data() {
-    console.log('fg-link-query')
     return {}
   },
   computed: {
@@ -31,8 +30,7 @@ export default {
       return this.dataNum > 1
     },
     data() {
-      console.log('linkFieldValues.data', this.linkFieldValues)
-      // return this.linkFieldValues
+        // return this.linkFieldValues
       return this.multi ? this.linkFieldValues || [] : this.linkFieldValues || {}
     },
     fields() {

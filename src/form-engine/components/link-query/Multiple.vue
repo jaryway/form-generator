@@ -12,7 +12,7 @@ export default {
   inject: {
     handleAddLinkFormData: {
       default: (linkFormId) => {
-        console.log('handleAddLinkFormData-default', linkFormId)
+        // console.log('handleAddLinkFormData-default', linkFormId)
       }
     }
   },

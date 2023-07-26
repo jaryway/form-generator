@@ -2,7 +2,7 @@
 <script>
 import { deepClone } from '@/utils/index'
 import render from '../render/render.js'
-import { filterLinkData } from './example/mock'
+// import { filterLinkData } from './example/mock'
 import getIn from 'lodash/get'
 import throttle from 'lodash/throttle'
 import { filterLink, listField } from './example/api'
@@ -21,144 +21,126 @@ const ruleTrigger = {
 }
 
 const layouts = {
-  colFormItem(h, scheme) {
-    console.log('dataSource.Parse.4')
+  colFormItem(h, scheme, key) {
     const config = scheme.config
     const listeners = buildListeners.call(this, scheme)
     const { formConfCopy } = this
     const model = this[formConfCopy.formModel]
 
-    if (scheme.typeId === 'CHILD_FORM') {
-      console.log('scheme.colFormItem', scheme.typeId, model, scheme.vModel)
-    }
+    if (!scheme.visibility) return null
 
     let labelWidth = config.labelWidth ? `${config.labelWidth}px` : null
     if (config.showLabel === false) labelWidth = '0'
-    // console.log('dataSource.Parse.5')
+
     return (
-      <el-col span={config.span}>
+      <el-col span={config.span} key={key}>
         <el-form-item label-width={labelWidth} prop={scheme.vModel} label={config.showLabel ? config.label : ''}>
           <render conf={scheme} on={listeners} values={model} />
         </el-form-item>
       </el-col>
     )
   },
-  rowFormItem(h, scheme) {
-    // console.log('dataSource.Parse.3')
+  rowFormItem(h, scheme, key) {
     if (scheme.typeId === 'CHILD_FORM') {
       return layouts.colFormItem.call(this, h, scheme)
     }
     let child = renderChildren.apply(this, arguments)
     if (scheme.type === 'flex') {
       child = (
-        <el-row type={scheme.type} justify={scheme.justify} align={scheme.align}>
+        <el-row type={scheme.type} justify={scheme.justify} align={scheme.align} key={key}>
           {child}
         </el-row>
       )
     }
     return (
-      <el-col span={scheme.span}>
+      <el-col span={scheme.span} key={key}>
         <el-row gutter={scheme.gutter || 8}>{child}</el-row>
       </el-col>
     )
   }
 }
 
-const buildLinkQuery = function (field) {
-  return () => {
-    const self = this
-    const model = self[self.formConfCopy.formModel]
-    const { filterCond, config, dataNum, typeId, fieldIdx } = field
-    const cond = filterCond.map((m) => {
-      // type：0 表示自定义 | 1 当前表单
-      // condition 运算符
-      let value = ''
-      const { type, condition, value2, value: fieldId } = m
-      if (type === 0) {
-        value = getIn(model, value2)
-      } else {
-        value = value2
-      }
+const Patterns = {
+  phoneNumber: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/,
+  tel: /^0\d{2,3}-\d{7,8}|\(?0\d{2,3}[)-]?\d{7,8}|\(?0\d{2,3}[)-]*\d{7,8}$/,
+  zipCode: /^\d{6}$/,
+  idNumber:
+    /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/
+}
 
-      if (Array.isArray(value)) {
-        if (['MEMBER_RADIO', 'MEMBER_CHECK', 'DEPT_RADIO', 'DEPT_CHECK'].includes(typeId)) {
-          return value.map((j) => j.id)
-        }
-      } else {
-        value = value === undefined || value === null ? [] : [value]
-      }
-
-      return { fieldId, typeId, condition, value }
-    })
-
-    const loopFieldList = (list) => {
-      return (list || []).reduce((prev, cur) => {
-        if (cur.children) return [...prev, cur.vModel, ...loopFieldList(cur.children)]
-        return [...prev, cur.vModel]
-      }, [])
-    }
-
-    // 监听字段变化，构建查询参数，发起查询请求
-    const requestParams = {
-      appId: this.appId, //
-      formDesignerId: config.dbTable,
-      fieldList: loopFieldList(config.linkList),
-      multi: dataNum > 1 ? 1 : 0,
-      filter: { rel: 0, cond }
-    }
-
-    const hasEmpty = cond.some((m) => m.value.length < 1 && m.condition < 16)
-    if (hasEmpty) return
-
-    return filterLink(requestParams)
-      .then((resp) => resp.data)
-      .then((resp) => {
-        const { list, pageNum, pageSize, total } = resp || {}
-
-        if (dataNum > 1) {
-          // this.$set(this.fields[fieldIdx], 'datalist', list)
-          self.$set(field, 'linkFieldValues', list || [])
-          this.$set(field, 'linkData', { pageNum, pageSize, total, ...requestParams })
-        } else {
-          //
-          self.$set(field, 'linkFieldValues', list?.[0] || {})
-        }
-      })
+const buildFormatValidatorRule = (format) => {
+  switch (format) {
+    case 'phoneNumber':
+      return { pattern: Patterns.phoneNumber, message: '手机号码格式错误', trigger: 'change' }
+    case 'tel':
+      return { pattern: Patterns.tel, message: '电话号码格式错误', trigger: 'change' }
+    case 'zipCode':
+      return { pattern: Patterns.zipCode, message: '邮政号码格式错误', trigger: 'change' }
+    case 'idNumber':
+      return { pattern: Patterns.idNumber, message: '身份证号码格式错误', trigger: 'change' }
+    case 'email':
+      return { type: 'email', message: '邮箱格式错误', trigger: 'change' }
+    case 1:
+      return { type: 'number', message: '格式错误', transform: (v) => Number(v), trigger: 'change' }
+    case 'text':
+    default:
+      break
   }
 }
 
-const buildVisibilityCalc = function (rule) {
-  return () => {
-    const self = this
-    const { fields } = self.formConfCopy
-
-    // const fields = self.filter((m) => (displayFieldList || []).includes(m.vModel))
-    const itemCalculator = (item) => {
-      const value = fields.find((m) => m.vModel === item.id)
-      const condValue = item.value
-      // return calcCondition(condition, value, condValue)
-      return true
-    }
-    const { conditionsList, displayFieldList, conditionsChoice } = rule
-    let result
-
-    if (conditionsChoice === 1) {
-      // 满足所有条件
-      result = (conditionsList || []).every(itemCalculator)
+async function buildLinkQuery(field) {
+  const self = this
+  const model = self[self.formConfCopy.formModel]
+  const { filterCond, config, dataNum, typeId, fieldIdx } = field
+  const cond = filterCond.map((m) => {
+    // type：0 表示自定义 | 1 当前表单
+    // condition 运算符
+    let value = ''
+    const { type, condition, value2, value: fieldId } = m
+    if (type === 0) {
+      value = getIn(model, value2)
     } else {
-      // 满足任一条件
-      result = (conditionsList || []).some(itemCalculator)
+      value = value2
     }
 
-    fields
-      .filter((m) => (displayFieldList || []).includes(m.vModel))
-      .forEach((m) => {
-        m.visibility = result
-      })
+    if (Array.isArray(value)) {
+      if (['MEMBER_RADIO', 'MEMBER_CHECK', 'DEPT_RADIO', 'DEPT_CHECK'].includes(typeId)) {
+        return value.map((j) => j.id)
+      }
+    } else {
+      value = value === undefined || value === null ? [] : [value]
+    }
 
-    // displayFieldList
+    return { fieldId, typeId, condition, value }
+  })
 
-    console.log('buildVisibilityCalc', result)
+  const loopFieldList = (list) => {
+    return (list || []).reduce((prev, cur) => {
+      if (cur.children) return [...prev, cur.vModel, ...loopFieldList(cur.children)]
+      return [...prev, cur.vModel]
+    }, [])
+  }
+
+  // 监听字段变化，构建查询参数，发起查询请求
+  const requestParams = {
+    appId: this.appId, //
+    formDesignerId: config.dbTable,
+    fieldList: loopFieldList(config.linkList),
+    multi: dataNum > 1 ? 1 : 0,
+    filter: { rel: 0, cond }
+  }
+
+  const hasEmpty = cond.some((m) => m.value.length < 1 && m.condition < 16)
+  if (hasEmpty) return
+
+  const resp = await filterLink(requestParams)
+  const { list, pageNum, pageSize, total } = resp.data || {}
+  if (dataNum > 1) {
+    // this.$set(this.fields[fieldIdx], 'datalist', list)
+    self.$set(field, 'linkFieldValues', list || [])
+    this.$set(field, 'linkData', { pageNum, pageSize, total, ...requestParams })
+  } else {
+    self.$set(field, 'linkFieldValues', list?.[0] || {})
   }
 }
 
@@ -199,12 +181,12 @@ function formBtns(h) {
 }
 
 function renderFormItem(h, elementList) {
-  return elementList.map((scheme) => {
+  return elementList.map((scheme, key) => {
     const config = scheme.config
     const layout = layouts[config.layout]
 
     if (layout) {
-      return layout.call(this, h, scheme)
+      return layout.call(this, h, scheme, key)
     }
     throw new Error(`没有与${config.layout}匹配的layout`)
   })
@@ -244,8 +226,6 @@ function buildListeners(scheme, rowIndex, cb) {
 
   listeners.focus = throttle(
     function (event) {
-      console.log('listeners.focus', event, scheme)
-
       if (['SELECT', 'SELECT-MULTIPLE'].includes(scheme.typeId)) {
         if (scheme.optionsModel === 0) return
 
@@ -261,12 +241,8 @@ function buildListeners(scheme, rowIndex, cb) {
             if (type !== 0) {
               // 当前表单字段的值
               value = []
-              // const curFormField = this.fieldsMap[curFormFieldId]
-              // if (curFormField) {
-              //   const { defaultValue } = curFormField.config
-              const fieldValue = getIn(model, curFormFieldId)
+              const fieldValue = model[curFormFieldId] // getIn(model, curFormFieldId)
               value = Array.isArray(fieldValue) ? fieldValue : [fieldValue]
-              // }
             }
 
             return { value, fieldId: field, typeId, condition, hasEmpty: condition < 16 ? 0 : 1 }
@@ -280,12 +256,9 @@ function buildListeners(scheme, rowIndex, cb) {
           requestParams = { appId, formDesignerId, fieldId }
         }
 
-        // self.$set(scheme.__slot__, 'options', [{ label: Math.random(), value: Math.random() }])
-
         listField(requestParams)
           .then((resp) => resp.data) //
           .then((resp) => {
-            console.log('this.listField', resp)
             const options = (resp.data.list || []).map((m) => ({ label: m, value: m }))
             self.$set(scheme.__slot__, 'options', options)
             cb?.(options)
@@ -311,14 +284,9 @@ export default {
         const data = { appId: this.appId, ...params }
         const resp = await filterLink(data)
         return resp
-
-        // const resp = await Promise.resolve(filterLinkData)
-        // const { list, headList, pageNum, pageSize, total } = resp.data
-        // return { list, headList, pageNum, pageSize, total }
       },
       updateFormModel: (key, value, prevKeys, mode) => {
         let model = this[this.formConfCopy.formModel]
-        // console.log('updateFormModel', key, value, prevKeys, mode)
         if (prevKeys && prevKeys.filter(Boolean).length) {
           model = getIn(model, prevKeys.join('.'))
         }
@@ -338,16 +306,16 @@ export default {
     }
   },
   data() {
-    const data = {
-      formConfCopy: deepClone(this.formConf),
-      [this.formConf.formModel]: {},
-      [this.formConf.formRules]: {}
-    }
-    const formConfCopy = deepClone(this.formConf)
-    const initialValues = this.initFormData(data.formConfCopy.fields, data[this.formConf.formModel])
-    this.buildRules(data.formConfCopy.fields, data[this.formConf.formRules])
+    const { values, formConf } = this
+    const formConfCopy = deepClone(formConf)
+    const rules = this.buildValidatorRules(formConfCopy.fields)
+    const initialValues = values || this.initFormData(formConfCopy.fields)
 
-    return data
+    return {
+      formConfCopy,
+      [this.formConf.formModel]: initialValues,
+      [this.formConf.formRules]: rules
+    }
   },
   computed: {
     // fieldsMap() {
@@ -357,33 +325,16 @@ export default {
     // }
   },
   mounted() {
-    console.log('test.mounted')
-    this.buildWatch(this.formConfCopy.fields)
-    this.buildDisplayRulesWatch(this.formConfCopy.fieldDisplayRules)
+    const { formConfCopy } = this
+    const { fields, fieldDisplayRules } = formConfCopy
+    this.buildLinkQueryWatch(fields)
+    this.buildDisplayRulesWatch(fieldDisplayRules)
   },
-  watch: {
-    values: {
-      immediate: true,
-      handler(val) {
-        this[this.formConf.formModel] = val
-      }
-    }
-  },
-  // watch: {
-  //   values9: {
-  //     immediate: true,
-  //     handler(val) {
-  //       this[this.formConf.formModel] = val
-  //     },
-  //   },
-  // },
   methods: {
-    initFormData(componentList, formData) {
-      return componentList.reduce((prev, cur) => {
-        console.log('formConf.initFormData', componentList, formData)
+    initFormData(fields) {
+      return fields.reduce((prev, cur) => {
         const config = cur.config
         if (cur.vModel) {
-          // formData[] = config.defaultValue
           return { ...prev, [cur.vModel]: config.defaultValue }
         }
         if (config.children) {
@@ -391,45 +342,57 @@ export default {
         }
       }, {})
     },
-    buildRules(componentList, rules) {
-      componentList.forEach((cur) => {
-        const config = cur.config
-        if (Array.isArray(config.regList)) {
-          if (config.required) {
-            const required = { required: config.required, message: cur.placeholder }
-            if (Array.isArray(config.defaultValue)) {
-              required.type = 'array'
-              required.message = `请至少选择一个${config.label}`
-            }
-            required.message === undefined && (required.message = `${config.label}不能为空`)
-            config.regList.push(required)
-          }
-          rules[cur.vModel] = config.regList.map((item) => {
-            item.pattern && (item.pattern = eval(item.pattern))
-            item.trigger = ruleTrigger && ruleTrigger[config.tag]
-            return item
+    buildValidatorRules(fields) {
+      return fields.reduce((prev, field) => {
+        const rules = []
+        const { config, typeId, max, min } = field
+        const { required, format } = config
+
+        if (format) {
+          const r = buildFormatValidatorRule(format)
+          r && rules.push(r)
+        }
+
+        if (required) {
+          rules.push({
+            required,
+            message: typeId === 'CHILD_FORM' ? '请至少添加一项' : `${config.label}不能为空`,
+            type: typeId === 'CHILD_FORM' ? 'array' : undefined,
+            trigger: 'change'
           })
         }
-        if (config.children) this.buildRules(config.children, rules)
-      })
+
+        if ((max !== undefined || min !== undefined) && typeId === 'NUMBER_INPUT') {
+          rules.push({ type: 'number', min, max, trigger: 'change' })
+        }
+
+        if (typeId === 'CHILD_FORM') {
+          const r = {
+            type: 'array',
+            len: required ? 1 : undefined,
+            // options: { first: true }
+            trigger: 'change',
+            defaultField: { type: 'object', fields: this.buildValidatorRules(field.children) }
+          }
+
+          rules.push(r)
+        }
+        return { ...prev, [field.vModel]: rules }
+      }, {})
     },
-    buildWatch(componentList) {
+    buildLinkQueryWatch(componentList) {
       const self = this
       componentList.forEach((field) => {
         if (field.typeId === 'QUERY_CHECK') {
           const { filterCond /* config, dataNum, typeId, fieldIdx */ } = field
-          const doLinkQuery = buildLinkQuery.call(self, field)
-          // console.log('buildWatch', filterCond)
+          const doLinkQuery = buildLinkQuery.bind(self, field)
           filterCond.forEach((item) => {
             // type: 0 表示自定义 | 1 当前表单
             if (item.type === 0) {
-              console.log('buildWatch.formModel', `${self.formConfCopy.formModel}.${item.value2}`)
               // 监听依赖的字段变化
               self.$watch(
                 `${self.formConfCopy.formModel}.${item.value2}`,
                 () => {
-                  console.log('buildWatch.doLinkQuery')
-                  // self.$set(field, 'linkFieldValues', { name: 'asdfasd' })
                   doLinkQuery()
                 },
                 { immediate: true }
@@ -439,35 +402,50 @@ export default {
         }
 
         if (field.children) {
-          this.buildWatch(field.children)
+          this.buildLinkQueryWatch(field.children)
         }
       })
     },
     // 字段显隐
     buildDisplayRulesWatch(displayRules) {
       const self = this
-      const caledDisplayRules = (displayRules || []).reduce((prev, cur) => {
-        // 字段值发生变化，
-        // 计算条件
-        // 设置显示隐藏
+      const { formConfCopy } = self
+      const { fields, formModel } = formConfCopy
+      const model = self[formModel]
 
-        const { conditionsList, displayFieldList, conditionsChoice } = cur
-        return conditionsList.reduce((prev, item) => {
-          const prevCondition = prev[item.id] || []
-          console.log('resp.fields.prevCondition', item)
+      // conditionsList 条件字段
+      // displayFieldList // 显示字段
 
-          return {
-            ...prev,
-            [item.id]: [...prevCondition, { conditionsList, displayFieldList, conditionsChoice }]
-          }
-        }, prev)
-      }, {})
+      const doVisibilityCalc = ({ conditionsList, displayFieldList, conditionsChoice }) => {
+        // console.log('buildVisibilityCalc.doVisibilityCalc')
+        const itemCalculator = (item) => {
+          const { condition: op, id } = item
+          const fieldValue = getIn(model, id) // 获取字段值
+          // console.log('buildVisibilityCalc.2', op, fieldValue, item.value)
+          return calcCondition(op, fieldValue, item.value)
+        }
 
-      Object.entries(caledDisplayRules).forEach(([fieldKey, rule]) => {
-        const doVisibilityCalc = buildVisibilityCalc.call(self, rule)
+        let result = false
+        if (conditionsChoice === 1) {
+          // 满足所有条件
+          result = (conditionsList || []).every(itemCalculator)
+        } else {
+          // 满足任一条件
+          result = (conditionsList || []).some(itemCalculator)
+        }
 
-        // 监听字段变化
-        self.$watch(fieldKey, () => doVisibilityCalc(), { immediate: true })
+        fields
+          .filter((m) => (displayFieldList || []).includes(m.vModel))
+          .forEach((field) => {
+            field.visibility = result
+          })
+      }
+
+      displayRules.forEach((rule) => {
+        rule.conditionsList.forEach((item) => {
+          // 监听依赖字段变化，依赖字段值发生变化了，需要重新计算可见性
+          self.$watch(`${formModel}.${item.id}`, () => doVisibilityCalc(rule), { immediate: true })
+        })
       })
     },
     resetForm() {

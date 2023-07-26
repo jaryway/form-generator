@@ -61,7 +61,7 @@ export const formData3 = {
           repeatReminderText: '此项内容已存在，不允许重复提交',
           parentKey: 'fieldvGVUngB1689999372531',
           readonly: false,
-          style: { width: '254px', maxWidth: '100%' },
+          style: { maxWidth: '100%' },
           typeId: 'INPUT',
           placeholder: '请输入',
           config: {
@@ -76,7 +76,7 @@ export const formData3 = {
             ],
             format: 'text',
             label: '单行文本',
-            defaultValueSource: { id: '', type: 0 },
+            // defaultValueSource: { id: '', type: 0 },
             required: true,
             showLabel: true,
             renderKey: 'UTDVngB1689999465005',
@@ -146,12 +146,12 @@ export const formData3 = {
         }
       ],
       tableList: [],
-      style: { width: '254px', maxWidth: '100%' },
+      style: { maxWidth: '100%' },
       typeId: 'CHILD_FORM',
       value: [{ fieldUTDVngB1689999465005: '', fieldOebUngB1689999390019: '' }],
       config: {
         label: '子表单',
-        defaultValueSource: { id: '', type: 0 },
+        // defaultValueSource: { id: '', type: 0 },
         showLabel: true,
         renderKey: 'vGVUngB1689999372531',
         layout: 'rowFormItem',
@@ -164,7 +164,7 @@ export const formData3 = {
         defaultValueType: 0,
         span: 24
       },
-      __slot__: { dataList: [] },
+      // __slot__: { dataList: [] },
       vModel: 'fieldvGVUngB1689999372531'
     },
     {
@@ -201,7 +201,7 @@ export const formData3 = {
         defaultValueType: 0,
         span: 24
       },
-      vModel: 'fieldHBzpUgB1689863485115',
+      vModel: 'chanpin',
       repeatReminderText: '此项内容已存在，不允许重复提交'
     },
     {
@@ -253,7 +253,7 @@ export const formData3 = {
         span: 24
       },
       __slot__: { options: [] },
-      vModel: 'fieldXwLPngB1689998644350'
+      vModel: 'gongyins'
     },
     {
       readonly: false,
@@ -289,29 +289,19 @@ export const formData3 = {
         defaultValueType: 0,
         span: 24
       },
-      vModel: 'fieldbgDqUgB1689863498396',
+      vModel: 'guige',
       repeatReminderText: '此项内容已存在，不允许重复提交'
     },
     {
+      readonly: false,
       visibility: true,
       editable: true,
       typeName: '单行文本',
       description: '',
-      limitRepeat: 0,
-      repeatReminderText: '此项内容已存在，不允许重复提交',
-      readonly: false,
       style: { width: '254px', maxWidth: '100%' },
       typeId: 'INPUT',
-      dataLink: {
-        condition: [
-          { condition: '', field: '', typeId: '', type: 0, autoText: '', curFormFieldId: '', curFormTypeId: '' }
-        ],
-        linkVModel: '',
-        linkForm: '',
-        type: 0,
-        subFields: []
-      },
-      placeholder: '请输入供应商',
+      limitRepeat: 0,
+      placeholder: '请输入产品名称',
       config: {
         defaultValue: '',
         typeOption: [
@@ -323,11 +313,11 @@ export const formData3 = {
           { label: '邮箱', value: 'email' }
         ],
         format: 'text',
-        label: '供应商',
+        label: '产品名称01',
         defaultValueSource: { id: '', type: 0 },
-        required: false,
+        required: true,
         showLabel: true,
-        renderKey: 'eyAOVgB1689866865091',
+        renderKey: 'HBzpUgB1689863485115',
         layout: 'colFormItem',
         displayType: true,
         tagIcon: 'input',
@@ -336,7 +326,45 @@ export const formData3 = {
         defaultValueType: 0,
         span: 24
       },
-      vModel: 'fieldeyAOVgB1689866865091'
+      vModel: 'chanpin01',
+      repeatReminderText: '此项内容已存在，不允许重复提交'
+    },
+    {
+      readonly: false,
+      visibility: true,
+      editable: true,
+      typeName: '单行文本',
+      description: '',
+      style: { width: '254px', maxWidth: '100%' },
+      typeId: 'INPUT',
+      limitRepeat: 0,
+      placeholder: '请输入产品名称',
+      config: {
+        defaultValue: '',
+        typeOption: [
+          { label: '无', value: 'text' },
+          { label: '手机号码', value: 'phoneNumber' },
+          { label: '电话号码', value: 'tel' },
+          { label: '邮政编码', value: 'zipCode' },
+          { label: '身份证号码', value: 'idNumber' },
+          { label: '邮箱', value: 'email' }
+        ],
+        format: 'text',
+        label: '产品名称00',
+        defaultValueSource: { id: '', type: 0 },
+        required: true,
+        showLabel: true,
+        // renderKey: 'HBzpUgB1689863485115',
+        layout: 'colFormItem',
+        displayType: true,
+        tagIcon: 'input',
+        changeTag: true,
+        tag: 'el-input',
+        defaultValueType: 0,
+        span: 24
+      },
+      vModel: 'chanpin00',
+      repeatReminderText: '此项内容已存在，不允许重复提交'
     },
     {
       linkList: [
@@ -406,13 +434,13 @@ export const formData3 = {
     disabled: false,
     fieldDisplayRules: [
       {
-        displayFieldList: ['fieldbgDqUgB1689863498396'],
+        displayFieldList: ['guige'],
         conditionsList: [
           {
             condition: 12,
             typeId: 'INPUT',
             condValue: '上衣',
-            id: 'fieldHBzpUgB1689863485115',
+            id: 'chanpin',
             label: '产品名称',
             value: ['上衣'],
             option: []
