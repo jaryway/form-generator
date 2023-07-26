@@ -71,42 +71,9 @@ npm run dev
 npm run build
 ```
 
-## 交流
-
-- QQ 群 976154366【已满】 1137173566【已满】 514953560【3 群】
-
-## 友情链接
-
-- **vue-admin-beautiful** —— [企业级、通用型中后台前端解决方案（基于 vue/cli 4 最新版，同时支持电脑，手机，平板）](https://github.com/chuzhixin/vue-admin-beautiful)
-- **vue-admin-beautiful** —— [在线演示](http://beautiful.panm.cn/vue-admin-beautiful/#/index)
-- **pl-table** —— [完美解决 element 万级表格数据渲染卡顿问题](https://github.com/livelyPeng/pl-table)
-- **[go-admin](https://github.com/go-admin-team/go-admin)**
-
-## PR 鸣谢
-
-- [IWANABETHATGUY](https://github.com/IWANABETHATGUY)
-
-## 捐赠
-
-#### 如果您觉得本项目对您有帮助，可以请作者喝一杯咖啡, 让开源走的更远，感谢支持。
-
-#### 也请您在捐赠后，加下 qq 群：976154366，私聊群主留个赞助链接。
-
-<img src="https://ae01.alicdn.com/kf/H50d81220a202490f961878f42ed1a636i.jpg">
-
 ## 开源协议
 
 [MIT](https://opensource.org/licenses/MIT)
-
-关联查询
-根据条件值进行分组
-key:[condition,condition2]
-
-derict_dep
-direct_dep
-select
-
-model 只是表单值，没有组件之间的依赖关系，我们需要在值发生变化时
 
 ### TODO
 
