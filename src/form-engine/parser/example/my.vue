@@ -3,7 +3,7 @@
 <template>
   <div class="test-form">
     <el-button @click="handleClick">handleClick</el-button>
-    <TestForm />
+    <!-- <TestForm /> -->
     <Parser
       v-if="!loading"
       :form-conf="formConf"

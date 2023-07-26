@@ -22,7 +22,7 @@
     "prettier": "^2.8.7",
     "signature_pad": "^4.1.6",
     "throttle-debounce": "^2.1.0",
-    "vue": "^2.6.14",
+    "vue": "^2.7.14",
     "vuedraggable": "^2.23.2"
   },
   "devDependencies": {
@@ -38,7 +38,10 @@
     "sass": "^1.23.7",
     "sass-loader": "^8.0.0",
     "svg-sprite-loader": "^6.0.11",
-    "vue-template-compiler": "^2.6.14"
+    "vue-template-compiler": "^2.6.14",
+    "@vue/runtime-dom": "latest",
+    "@types/lodash": "^4.14.196",
+    "lodash": "^4.17.21"
   },
   "homepage": "https://jakhuang.github.io/form-generator"
 }
