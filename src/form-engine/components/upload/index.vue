@@ -1,10 +1,10 @@
 <template>
-  <el-upload class="upload-demo" v-bind="$attrs" v-on="$listeners" :file-list="fileList" :action="action" :before-upload="handleBeforeUpload" :on-remove="onRemove" :show-file-list="true" :on-success="onSuccess" :on-error="handleError" :on-progress="onProgress" :http-request="httpRequest" :on-change="onChange" :limit="limit" multiple="">
-    <el-button v-if="!$attrs.drag" size="small" type="primary">点击上传</el-button>
+  <el-upload class="upload-demo" v-bind="$attrs" v-on="$listeners" :file-list="fileList" :action="action" :before-upload="handleBeforeUpload" :on-remove="onRemove" :on-success="onSuccess" :on-error="handleError" :on-progress="onProgress" :http-request="httpRequest" :on-change="onChange" :show-file-list="true" :limit="limit" :multiple="multiple">
+    <i v-if="listType === 'picture-card'" class="el-icon-plus"></i>
     <div v-else>
       <i class="el-icon-picture">{{ desc }}</i>
     </div>
-    <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+    <div v-if="showTip" slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
   </el-upload>
 </template>
 
@@ -17,6 +17,7 @@ export default {
   },
   inject: {
     uploadFile: {},
+    getFileUrl: {},
   },
   computed: {
     desc() {
@@ -39,6 +40,12 @@ export default {
     },
     multiple() {
       return false
+    },
+    showTip() {
+      return this.config.showTip
+    },
+    listType() {
+      return this.config['list-type']
     },
   },
   data() {
@@ -131,5 +138,13 @@ export default {
 <style lang="scss" scoped>
 ::v-deep .el-upload-dragger {
   height: auto;
+}
+::v-deep .el-upload.el-upload--text {
+  /* height: 32px; */
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  width: 360px;
+  text-align: center;
+  cursor: pointer;
 }
 </style>
