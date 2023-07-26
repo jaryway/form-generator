@@ -192,6 +192,10 @@ export default {
       return h('fg-upload', dataObject, children)
     }
 
+    if (this.conf.config.tag === 'sign-pad') {
+      return h('fg-sign-pad', dataObject, children)
+    }
+
     if (this.conf.typeId === 'CHILD_FORM') {
       // console.log('dataSource.Parse.7', dataObject.props.value, this.values)
       return h('fg-subform', dataObject, children)

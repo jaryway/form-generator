@@ -17,21 +17,21 @@ export const mockUpload = {
     fieldDisplayRules: [],
     dataFilterSetting: {
       rel: 0,
-      cond: []
+      cond: [],
     },
-    submitAssociationOperation: []
+    submitAssociationOperation: [],
   },
   fields: [
     {
-      'drag': true,
-      'name': 'file',
-      'style': {
+      drag: true,
+      name: 'file',
+      style: {
         width: '254px',
-        maxWidth: '100%'
+        maxWidth: '100%',
       },
-      'accept': 'image/*',
-      'action': 'http://183.236.225.195:9800/enterprise-api/assist/oss/upload/image',
-      'config': {
+      accept: 'image/*',
+      action: 'http://183.236.225.195:9800/enterprise-api/assist/oss/upload/image',
+      config: {
         tag: 'el-upload',
         span: 24,
         label: '图片',
@@ -47,36 +47,38 @@ export const mockUpload = {
         showDefaultValue: false,
         defaultValue: [
           {
+            id: '1234566',
             name: 'food.jpeg',
-            url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+            url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100',
           },
           {
+            id: 'ddd334',
             name: 'food2.jpeg',
-            url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
-          }
-        ]
+            url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100',
+          },
+        ],
       },
-      'expand': {
+      expand: {
         limit: 0,
         fileSize: 10,
-        sizeUnit: 'MB'
+        sizeUnit: 'MB',
       },
-      'typeId': 'UPLOAD-IMG',
-      'vModel': 'fieldWDErkkB1690360829780',
-      'setting': {
+      typeId: 'UPLOAD-IMG',
+      vModel: 'fieldWDErkkB1690360829780',
+      setting: {
         limit: false,
-        onlyOne: false
+        onlyOne: false,
       },
 
-      'editable': true,
-      'multiple': true,
-      'readonly': false,
-      'typeName': '图片',
+      editable: true,
+      multiple: true,
+      readonly: false,
+      typeName: '图片',
       'list-type': 'picture',
-      'visibility': true,
+      visibility: true,
       'auto-upload': true,
-      'description': '',
-      'show-file-list': false
-    }
-  ]
+      description: '',
+      'show-file-list': false,
+    },
+  ],
 }

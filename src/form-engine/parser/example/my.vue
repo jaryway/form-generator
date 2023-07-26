@@ -23,7 +23,7 @@ import { formData1 } from './mock1'
 import { formData2 } from './mock2'
 import { formData3 } from './mock3'
 import { formData4 } from './mock4'
-import { mockUpload } from './mock.upload'
+// import { mockUpload } from './mock.upload'
 import getIn from 'lodash/get'
 import { getUserInfo, getFormConf } from './api'
 
@@ -143,7 +143,7 @@ export default {
       // formConf: { ...formData1.formConf, fields: formData1.fields, formBtns: true },
       // formConf: { ...formData2.formConf, fields: formData2.fields, formBtns: true },
       // formConf: { ...formData3.formConf, fields: formData3.fields, formBtns: true },
-      formConf: { ...mockUpload.formConf, fields: mockUpload.fields, formBtns: true },
+      formConf: { ...formData4.formConf, fields: formData4.fields, formBtns: true },
       // formConf: {},
       formValues,
       test: { a: { b: { c: 1221 } } },

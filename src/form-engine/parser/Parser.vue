@@ -17,7 +17,7 @@ const ruleTrigger = {
   'el-cascader': 'change',
   'el-time-picker': 'change',
   'el-date-picker': 'change',
-  'el-rate': 'change'
+  'el-rate': 'change',
 }
 
 const layouts = {
@@ -57,15 +57,14 @@ const layouts = {
         <el-row gutter={scheme.gutter || 8}>{child}</el-row>
       </el-col>
     )
-  }
+  },
 }
 
 const Patterns = {
   phoneNumber: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/,
   tel: /^0\d{2,3}-\d{7,8}|\(?0\d{2,3}[)-]?\d{7,8}|\(?0\d{2,3}[)-]*\d{7,8}$/,
   zipCode: /^\d{6}$/,
-  idNumber:
-    /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/
+  idNumber: /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/,
 }
 
 const buildFormatValidatorRule = (format) => {
@@ -127,7 +126,7 @@ async function buildLinkQuery(field) {
     formDesignerId: config.dbTable,
     fieldList: loopFieldList(config.linkList),
     multi: dataNum > 1 ? 1 : 0,
-    filter: { rel: 0, cond }
+    filter: { rel: 0, cond },
   }
 
   const hasEmpty = cond.some((m) => m.value.length < 1 && m.condition < 16)
@@ -313,22 +312,25 @@ export default {
             uploadedFileList: [
               {
                 id: '1684141276815339521',
-                mainUrl:
-                  'http://127.0.0.1:9000/saasenterprise/prodenv/file/20230726/1634027128165412866_1690365544305.jpg',
+                mainUrl: 'http://127.0.0.1:9000/saasenterprise/prodenv/file/20230726/1634027128165412866_1690365544305.jpg',
                 externalUrl1: null,
                 externalUrl2: null,
                 description: null,
                 viewUrl: '/assist/oss/file/view/1631468255705485314/1684141276815339521',
                 originFileName: '01371c565d3a2c32f875964744c3ab.jpg',
                 originFileSize: '95832',
-                originFileExtension: 'jpg'
-              }
-            ]
-          }
+                originFileExtension: 'jpg',
+              },
+            ],
+          },
         }).then((resp) => {
           return resp.data.uploadedFileList[0]
         })
-      }
+      },
+
+      getFileUrl: (id) => {
+        return `https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100&id=${id}`
+      },
     }
   },
   data() {
@@ -342,7 +344,7 @@ export default {
     return {
       formConfCopy,
       [this.formConf.formModel]: initialValues,
-      [this.formConf.formRules]: rules
+      [this.formConf.formRules]: rules,
     }
   },
   computed: {
@@ -376,18 +378,18 @@ export default {
         const { config, typeId, max, min } = field
         const { required, format } = config
 
-        if (format) {
-          const r = buildFormatValidatorRule(format)
-          r && rules.push(r)
-        }
-
         if (required) {
           rules.push({
             required,
             message: typeId === 'CHILD_FORM' ? '请至少添加一项' : `${config.label}不能为空`,
             type: typeId === 'CHILD_FORM' ? 'array' : undefined,
-            trigger: 'change'
+            trigger: 'change',
           })
+        }
+
+        if (format) {
+          const r = buildFormatValidatorRule(format)
+          r && rules.push(r)
         }
 
         if ((max !== undefined || min !== undefined) && typeId === 'NUMBER_INPUT') {
@@ -400,7 +402,7 @@ export default {
             len: required ? 1 : undefined,
             // options: { first: true }
             trigger: 'change',
-            defaultField: { type: 'object', fields: this.buildValidatorRules(field.children) }
+            defaultField: { type: 'object', fields: this.buildValidatorRules(field.children) },
           }
 
           rules.push(r)
@@ -487,10 +489,10 @@ export default {
         this.$emit('submit', this[this.formConf.formModel])
         return true
       })
-    }
+    },
   },
   render(h) {
     return renderFrom.call(this, h)
-  }
+  },
 }
 </script>

@@ -1,21 +1,5 @@
 <template>
-  <el-upload
-    class="upload-demo"
-    v-bind="$attrs"
-    v-on="$listeners"
-    :file-list="fileList"
-    :action="action"
-    :before-upload="handleBeforeUpload"
-    :on-remove="onRemove"
-    :show-file-list="true"
-    :on-success="onSuccess"
-    :on-error="handleError"
-    :on-progress="onProgress"
-    :http-request="httpRequest"
-    :on-change="onChange"
-    :limit="limit"
-    multiple=""
-  >
+  <el-upload class="upload-demo" v-bind="$attrs" v-on="$listeners" :file-list="fileList" :action="action" :before-upload="handleBeforeUpload" :on-remove="onRemove" :show-file-list="true" :on-success="onSuccess" :on-error="handleError" :on-progress="onProgress" :http-request="httpRequest" :on-change="onChange" :limit="limit" multiple="">
     <el-button v-if="!$attrs.drag" size="small" type="primary">点击上传</el-button>
     <div v-else>
       <i class="el-icon-picture">{{ desc }}</i>
@@ -32,7 +16,7 @@ export default {
     console.log('FgUpload.mounted', this)
   },
   inject: {
-    uploadFile: {}
+    uploadFile: {},
   },
   computed: {
     desc() {
@@ -55,12 +39,12 @@ export default {
     },
     multiple() {
       return false
-    }
+    },
   },
   data() {
     return {
       action: `http://183.236.225.195:9800/enterprise-api/assist/oss/upload/image`,
-      fileList: []
+      fileList: [],
     }
   },
 
@@ -68,13 +52,10 @@ export default {
     value: {
       immediate: true,
       handler(val) {
-        const url =
-          'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
-
         // console.log('this.fileList', this.fileList, val)
         // value 只保存 id ,name
-        if (this.fileList.length !== val.length) {
-          this.fileList = val.map((m) => ({ id: m.id, name: m.name, url }))
+        if (this.fileList.length !== (val || []).length) {
+          this.fileList = val.map((m) => ({ id: m.id, name: m.name, url: this.getFileUrl(m.id) }))
         }
 
         // if (this.fileList.length) {
@@ -82,8 +63,8 @@ export default {
         // } else {
         //   this.fileList = val
         // }
-      }
-    }
+      },
+    },
   },
 
   methods: {
@@ -118,8 +99,8 @@ export default {
       this.fileList.push({
         ...params.file,
         name: res.originFileName,
-        id: Math.random(), // res.id,
-        url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+        id: res.id, // res.id,
+        url: this.getFileUrl(res.id),
       })
 
       const changeValue = this.fileList.map((m) => ({ id: m.id, name: m.name }))
@@ -142,8 +123,8 @@ export default {
       const changeValue = fileList.map((m) => ({ id: m.id, name: m.name }))
       this.$emit('input', changeValue)
       // console.log(file, fileList)
-    }
-  }
+    },
+  },
 }
 </script>
 

@@ -30,21 +30,21 @@ export default {
       selfConfig: {
         minWidth: 1,
         maxWidth: 3,
-        penColor: this.color
-      }
+        penColor: this.color,
+      },
     }
   },
   inject: {
-    uploadImage: {
+    uploadFile: {
       default: async () => {
         return Promise.resolve()
-      }
+      },
     },
     getImgUrl: {
       default: (val) => {
         return val
-      }
-    }
+      },
+    },
   },
 
   watch: {
@@ -53,8 +53,8 @@ export default {
         this.signImageUrl = val ? this.getImgUrl(val) : null
         if (!val) this.clear()
       },
-      immediate: true
-    }
+      immediate: true,
+    },
   },
   mounted() {
     this.init()
@@ -102,21 +102,19 @@ export default {
         this.signaturePad.fromData(data)
       }
     },
-    savePng() {
+    async savePng() {
       if (this.signaturePad.isEmpty()) {
         this.$modal.msgError('请先填写签名')
         return
       }
       const data = this.signaturePad.toDataURL('image/png')
       const file = this.dataURLtoFile(data, `${new Date().getTime()}.png`)
-      const param = new FormData() // 创建form对象
-      param.append('file', file) // 通过append向form对象添加数据
+      const params = new FormData() // 创建form对象
+      params.append('file', file) // 通过append向form对象添加数据
 
-      this.uploadImage(param).then((res) => {
-        const id = res.data.uploadedFileList[0].id
-        this.signImageUrl = this.getImgUrl(id)
-        this.$emit('input', id)
-      })
+      const { id } = await this.uploadFile(params)
+      this.signImageUrl = this.getFileUrl(id)
+      this.$emit('input', id)
     },
     reSign() {
       this.signImageUrl = ''
@@ -133,10 +131,10 @@ export default {
         u8arr[n] = bstr.charCodeAt(n)
       }
       return new File([u8arr], filename, {
-        type: 'image/png'
+        type: 'image/png',
       })
-    }
-  }
+    },
+  },
 }
 </script>
 
