@@ -42,7 +42,7 @@ const layouts = {
   },
   rowFormItem(h, scheme, key) {
     if (scheme.typeId === 'CHILD_FORM') {
-      return layouts.colFormItem.call(this, h, scheme)
+      return layouts.colFormItem.call(this, h, scheme, key)
     }
     let child = renderChildren.apply(this, arguments)
     if (scheme.type === 'flex') {
