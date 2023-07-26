@@ -1,0 +1,82 @@
+export const mockUpload = {
+  formConf: {
+    formId: '1684122028680327170',
+    formRef: 'elForm',
+    formModel: 'formData',
+    size: 'mini',
+    labelPosition: 'top',
+    labelWidth: 100,
+    formRules: 'rules',
+    disabled: false,
+    numberOfColumns: 24,
+    description: '',
+    submitButtonState: 0,
+    submitButtonText: '提交',
+    frontEndEvents: [],
+    formSubmissionValidation: [],
+    fieldDisplayRules: [],
+    dataFilterSetting: {
+      rel: 0,
+      cond: []
+    },
+    submitAssociationOperation: []
+  },
+  fields: [
+    {
+      'drag': true,
+      'name': 'file',
+      'style': {
+        width: '254px',
+        maxWidth: '100%'
+      },
+      'accept': 'image/*',
+      'action': 'http://183.236.225.195:9800/enterprise-api/assist/oss/upload/image',
+      'config': {
+        tag: 'el-upload',
+        span: 24,
+        label: '图片',
+        layout: 'colFormItem',
+        showTip: false,
+        tagIcon: 'upload',
+        required: true,
+        changeTag: true,
+        renderKey: 'WDErkkB1690360829780',
+        showLabel: true,
+        displayType: true,
+        showRegList: false,
+        showDefaultValue: false,
+        defaultValue: [
+          {
+            name: 'food.jpeg',
+            url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+          },
+          {
+            name: 'food2.jpeg',
+            url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+          }
+        ]
+      },
+      'expand': {
+        limit: 0,
+        fileSize: 10,
+        sizeUnit: 'MB'
+      },
+      'typeId': 'UPLOAD-IMG',
+      'vModel': 'fieldWDErkkB1690360829780',
+      'setting': {
+        limit: false,
+        onlyOne: false
+      },
+
+      'editable': true,
+      'multiple': true,
+      'readonly': false,
+      'typeName': '图片',
+      'list-type': 'picture',
+      'visibility': true,
+      'auto-upload': true,
+      'description': '',
+      'show-file-list': false
+    }
+  ]
+}

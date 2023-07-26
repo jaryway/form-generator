@@ -147,6 +147,7 @@ async function buildLinkQuery(field) {
 function renderFrom(h) {
   const { formConfCopy } = this
   const model = this[formConfCopy.formModel]
+  console.log('initialValues', model)
   return (
     <el-row gutter={formConfCopy.gutter || 8}>
       <el-form
@@ -156,8 +157,9 @@ function renderFrom(h) {
         label-width={`${formConfCopy.labelWidth}px`}
         ref={formConfCopy.formRef}
         // model不能直接赋值 https://github.com/vuejs/jsx/issues/49#issuecomment-472013664
-        // props={{ model: this[formConfCopy.formModel] }}
-        props={{ model }}
+        // dasdf
+        props={{ model: this[formConfCopy.formModel] }}
+        // props={{ model }}
         rules={this[formConfCopy.formRules]}
       >
         {renderFormItem.call(this, h, formConfCopy.fields)}
@@ -302,6 +304,30 @@ export default {
       appId: this.appId,
       buildListeners: (schame, rowIndex, cb) => {
         return buildListeners.call(this, schame, rowIndex, cb)
+      },
+      uploadFile: (params) => {
+        return Promise.resolve({
+          msg: '操作成功',
+          code: 200,
+          data: {
+            uploadedFileList: [
+              {
+                id: '1684141276815339521',
+                mainUrl:
+                  'http://127.0.0.1:9000/saasenterprise/prodenv/file/20230726/1634027128165412866_1690365544305.jpg',
+                externalUrl1: null,
+                externalUrl2: null,
+                description: null,
+                viewUrl: '/assist/oss/file/view/1631468255705485314/1684141276815339521',
+                originFileName: '01371c565d3a2c32f875964744c3ab.jpg',
+                originFileSize: '95832',
+                originFileExtension: 'jpg'
+              }
+            ]
+          }
+        }).then((resp) => {
+          return resp.data.uploadedFileList[0]
+        })
       }
     }
   },
@@ -310,6 +336,8 @@ export default {
     const formConfCopy = deepClone(formConf)
     const rules = this.buildValidatorRules(formConfCopy.fields)
     const initialValues = values || this.initFormData(formConfCopy.fields)
+
+    console.log('initialValues', initialValues)
 
     return {
       formConfCopy,

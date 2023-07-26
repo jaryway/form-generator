@@ -3,7 +3,7 @@
 <template>
   <div class="test-form">
     <el-button @click="handleClick">handleClick</el-button>
-    <!-- <TestForm /> -->
+    <TestForm />
     <Parser
       v-if="!loading"
       :form-conf="formConf"
@@ -22,6 +22,8 @@ import { formData, formValues } from './mock'
 import { formData1 } from './mock1'
 import { formData2 } from './mock2'
 import { formData3 } from './mock3'
+import { formData4 } from './mock4'
+import { mockUpload } from './mock.upload'
 import getIn from 'lodash/get'
 import { getUserInfo, getFormConf } from './api'
 
@@ -68,7 +70,7 @@ const TestForm = {
     console.log('formValues', formValues)
     return {
       ruleForm: {
-        name: '',
+        name: 'dsfasdf',
         region: '',
         date1: '',
         date2: '',
@@ -77,7 +79,18 @@ const TestForm = {
         resource: '',
         desc: ''
       },
-      rules: undefined
+      rules: {
+        name: [
+          { required: true, message: '请输入活动名称', trigger: 'blur' },
+          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+        ],
+        region: [{ required: true, message: '请选择活动区域', trigger: 'change' }],
+        date1: [{ type: 'date', required: true, message: '请选择日期', trigger: 'change' }],
+        date2: [{ type: 'date', required: true, message: '请选择时间', trigger: 'change' }],
+        type: [{ type: 'array', required: true, message: '请至少选择一个活动性质', trigger: 'change' }],
+        resource: [{ required: true, message: '请选择活动资源', trigger: 'change' }],
+        desc: [{ required: true, message: '请填写活动形式', trigger: 'blur' }]
+      }
     }
   },
   methods: {
@@ -85,20 +98,7 @@ const TestForm = {
       this.ruleForm.name = v
     }
   },
-  mounted() {
-    this.rules = {
-      name: [
-        { required: true, message: '请输入活动名称', trigger: 'blur' },
-        { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
-      ],
-      region: [{ required: true, message: '请选择活动区域', trigger: 'change' }],
-      date1: [{ type: 'date', required: true, message: '请选择日期', trigger: 'change' }],
-      date2: [{ type: 'date', required: true, message: '请选择时间', trigger: 'change' }],
-      type: [{ type: 'array', required: true, message: '请至少选择一个活动性质', trigger: 'change' }],
-      resource: [{ required: true, message: '请选择活动资源', trigger: 'change' }],
-      desc: [{ required: true, message: '请填写活动形式', trigger: 'blur' }]
-    }
-  },
+  mounted() {},
   render() {
     return (
       <div>
@@ -142,7 +142,8 @@ export default {
       isEdit: false,
       // formConf: { ...formData1.formConf, fields: formData1.fields, formBtns: true },
       // formConf: { ...formData2.formConf, fields: formData2.fields, formBtns: true },
-      formConf: { ...formData3.formConf, fields: formData3.fields, formBtns: true },
+      // formConf: { ...formData3.formConf, fields: formData3.fields, formBtns: true },
+      formConf: { ...mockUpload.formConf, fields: mockUpload.fields, formBtns: true },
       // formConf: {},
       formValues,
       test: { a: { b: { c: 1221 } } },

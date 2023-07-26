@@ -146,7 +146,7 @@ export default {
       confs: {}
     }
   },
-
+  created() {},
   mounted() {},
   methods: {
     handleSelect() {},
@@ -182,7 +182,8 @@ export default {
   render(h) {
     const fields = this.fields // this.children || []
     const self = this
-
+    // this.$delete(this.$vnode.data.style, 'width')
+    // console.log('this.$vnode', this)
     const loop = (data) => {
       return data.map((c1, index) => {
         const { config, vModel, typeId, __slot__, rowKey } = c1
@@ -223,7 +224,7 @@ export default {
     const scopedSlots = {
       default: ({ $index }) => {
         return (
-          <div class='row-head'>
+          <div class='row-head' style={{ width: '100%' }}>
             <span class='row-num'>{$index + 1}</span>
             <el-popconfirm
               confirm-button-text='好的'
@@ -243,9 +244,11 @@ export default {
       }
     }
 
+    // return h('div', {}, ['545454'])
+
     return (
-      <div class='fg-subform'>
-        <el-table maxHeight={480} size='small' ref='refTable' border data={this.dataSource} row-key='id'>
+      <div class='fg-subform' style={{ width: '100%' }}>
+        <el-table maxHeight={360} size='small' ref='refTable' border data={this.dataSource} row-key='id'>
           <el-table-column type='index' align='center' fixed='left' scopedSlots={scopedSlots} />
           {loop(fields)}
         </el-table>
@@ -266,7 +269,6 @@ export default {
     .row-num {
       display: block;
     }
-
     .icon-trash {
       display: none;
     }
