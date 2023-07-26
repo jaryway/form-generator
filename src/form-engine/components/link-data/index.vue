@@ -52,7 +52,7 @@ export default {
   },
 
   data() {
-    console.log('fg-link-data', this.linkedShowField)
+    // console.log('fg-link-data', this.linkedShowField)
     return { visible: false, model: {} }
   },
   computed: {
@@ -140,7 +140,7 @@ export default {
 
   methods: {
     handleClick() {
-      console.log('handleClick')
+      // console.log('handleClick')
       this.visible = true
     },
     handleSelect(val) {
