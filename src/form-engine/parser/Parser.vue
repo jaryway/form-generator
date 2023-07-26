@@ -311,7 +311,7 @@ export default {
           data: {
             uploadedFileList: [
               {
-                id: '1684141276815339521',
+                id: Math.random(),
                 mainUrl: 'http://127.0.0.1:9000/saasenterprise/prodenv/file/20230726/1634027128165412866_1690365544305.jpg',
                 externalUrl1: null,
                 externalUrl2: null,

@@ -37,25 +37,7 @@ function emitEvents(confClone) {
   })
 }
 
-const baseProps = [
-  'config',
-  '__slot__',
-  'linkedShowField',
-  'linkList',
-  'filterCond',
-  'linkedFillRules',
-  'typeId',
-  'typeName',
-  'editable',
-  'visibility',
-  'tableList',
-  'description',
-  'renderInTable',
-  'parentKey',
-  'rowIndex',
-  'repeatReminderText',
-  'linkFieldValues'
-]
+const baseProps = ['config', '__slot__', 'linkedShowField', 'linkList', 'filterCond', 'linkedFillRules', 'typeId', 'typeName', 'editable', 'visibility', 'tableList', 'description', 'renderInTable', 'parentKey', 'rowIndex', 'repeatReminderText', 'linkFieldValues']
 const subformProps = ['children', 'value']
 const ignoreProps = ['notChild']
 
@@ -77,11 +59,7 @@ function buildDataObject(confClone, dataObject) {
         delete val['width']
       }
 
-      if (
-        dataObject[key] === null ||
-        dataObject[key] instanceof RegExp ||
-        ['boolean', 'string', 'number', 'function'].includes(typeof dataObject[key])
-      ) {
+      if (dataObject[key] === null || dataObject[key] instanceof RegExp || ['boolean', 'string', 'number', 'function'].includes(typeof dataObject[key])) {
         dataObject[key] = val
       } else if (Array.isArray(dataObject[key])) {
         dataObject[key] = [...dataObject[key], ...val]
@@ -119,7 +97,7 @@ function makeDataObject(key) {
     slot: null,
     key,
     ref: null,
-    refInFor: true
+    refInFor: true,
   }
 }
 
@@ -127,9 +105,9 @@ export default {
   props: {
     conf: {
       type: Object,
-      required: true
+      required: true,
     },
-    values: { type: [Object] }
+    values: { type: [Object] },
   },
 
   mounted() {
@@ -195,7 +173,9 @@ export default {
     if (this.conf.config.tag === 'sign-pad') {
       return h('fg-sign-pad', dataObject, children)
     }
-
+    if (this.conf.config.tag === 'province-city') {
+      return h('fg-address', dataObject, children)
+    }
     if (this.conf.typeId === 'CHILD_FORM') {
       // console.log('dataSource.Parse.7', dataObject.props.value, this.values)
       return h('fg-subform', dataObject, children)
@@ -210,5 +190,5 @@ export default {
     }
 
     return h(this.conf.config.tag, dataObject, children)
-  }
+  },
 }

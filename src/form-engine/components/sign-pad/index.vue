@@ -5,7 +5,7 @@
       <img v-if="signImageUrl" :src="signImageUrl" class="img-box" />
     </div>
     <p class="desc-text" v-if="isEdit && !disabled">请在上面区域完成签名 然后点击确"确认"按钮</p>
-    <div v-if="!signImageUrl">
+    <div v-if="!signImageUrl" style="margin-top: 8px">
       <el-button plain size="mini" type="danger" @click="clear" :disabled="isEdit && disabled">清除</el-button>
       <el-button plain size="mini" type="warning" @click="undo" :disabled="isEdit && disabled">回撤</el-button>
       <el-button size="mini" type="success" @click="savePng" :disabled="isEdit && disabled">确认</el-button>
