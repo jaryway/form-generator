@@ -146,7 +146,7 @@ async function buildLinkQuery(field) {
 function renderFrom(h) {
   const { formConfCopy } = this
   const model = this[formConfCopy.formModel]
-  console.log('initialValues', model)
+  // console.log('initialValues', model)
   return (
     <el-row gutter={formConfCopy.gutter || 8}>
       <el-form
@@ -156,9 +156,8 @@ function renderFrom(h) {
         label-width={`${formConfCopy.labelWidth}px`}
         ref={formConfCopy.formRef}
         // model不能直接赋值 https://github.com/vuejs/jsx/issues/49#issuecomment-472013664
-        // dasdf
-        props={{ model: this[formConfCopy.formModel] }}
-        // props={{ model }}
+        // props={{ model: this[formConfCopy.formModel] }}
+        props={{ model }}
         rules={this[formConfCopy.formRules]}
       >
         {renderFormItem.call(this, h, formConfCopy.fields)}
@@ -276,7 +275,7 @@ function buildListeners(scheme, rowIndex, cb) {
 export default {
   name: 'Parse',
   components: { render },
-  props: ['formConf', 'values', 'appId', 'menuId'],
+  props: ['formConf', 'values', 'appId', 'menuId', 'mode'],
 
   provide() {
     return {
@@ -301,6 +300,7 @@ export default {
       // listField,
       // fieldsMap: this.fieldsMap,
       appId: this.appId,
+      formMode: this.formMode,
       buildListeners: (schame, rowIndex, cb) => {
         return buildListeners.call(this, schame, rowIndex, cb)
       },
@@ -327,7 +327,6 @@ export default {
           return resp.data.uploadedFileList[0]
         })
       },
-
       getFileUrl: (id) => {
         return `https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100&id=${id}`
       },
@@ -345,6 +344,7 @@ export default {
       formConfCopy,
       [this.formConf.formModel]: initialValues,
       [this.formConf.formRules]: rules,
+      formMode: this.mode || 'editable', // readOnly
     }
   },
   computed: {
