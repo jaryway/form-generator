@@ -13,7 +13,15 @@
       </el-select>
     </div>
 
-    <Parser v-if="!loading" :form-conf="formConf" :values="undefined" @submit="sumbitForm1" :appId="appId" :menu="menuId" :mode="formMode" />
+    <Parser
+      v-if="!loading"
+      :form-conf="formConf"
+      :values="undefined"
+      @submit="sumbitForm1"
+      :appId="appId"
+      :menu="menuId"
+      :mode="formMode"
+    />
   </div>
 </template>
 
@@ -25,7 +33,8 @@ import { formData1 } from './mock1'
 import { formData2 } from './mock2'
 import { formData3 } from './mock3'
 import { formData4 } from './mock4'
-// import { mockUpload } from './mock.upload'
+import { mockUpload } from './mock.upload'
+import { mockSubformLinkQuery } from './mock.subform-link-query'
 import getIn from 'lodash/get'
 import { getUserInfo, getFormConf } from './api'
 
@@ -50,7 +59,7 @@ const c = {
     label: '实际送货日期',
     defaultValueSource: {
       id: '',
-      type: 0,
+      type: 0
     },
     required: true,
     showLabel: true,
@@ -62,9 +71,9 @@ const c = {
     changeTag: true,
     tag: 'el-date-picker',
     defaultValueType: 0,
-    span: 6,
+    span: 6
   },
-  vModel: 'fieldKknDhEB1678166837506',
+  vModel: 'fieldKknDhEB1678166837506'
 }
 
 const TestForm = {
@@ -79,32 +88,38 @@ const TestForm = {
         delivery: false,
         type: [],
         resource: '',
-        desc: '',
+        desc: ''
       },
       rules: {
         name: [
           { required: true, message: '请输入活动名称', trigger: 'blur' },
-          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' },
+          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
         ],
         region: [{ required: true, message: '请选择活动区域', trigger: 'change' }],
         date1: [{ type: 'date', required: true, message: '请选择日期', trigger: 'change' }],
         date2: [{ type: 'date', required: true, message: '请选择时间', trigger: 'change' }],
         type: [{ type: 'array', required: true, message: '请至少选择一个活动性质', trigger: 'change' }],
         resource: [{ required: true, message: '请选择活动资源', trigger: 'change' }],
-        desc: [{ required: true, message: '请填写活动形式', trigger: 'blur' }],
-      },
+        desc: [{ required: true, message: '请填写活动形式', trigger: 'blur' }]
+      }
     }
   },
   methods: {
     handleChange(v) {
       this.ruleForm.name = v
-    },
+    }
   },
   mounted() {},
   render() {
     return (
       <div>
-        <el-form props={{ model: this.ruleForm }} rules={this.rules} ref='ruleForm' label-width='100px' class='demo-ruleForm'>
+        <el-form
+          props={{ model: this.ruleForm }}
+          rules={this.rules}
+          ref='ruleForm'
+          label-width='100px'
+          class='demo-ruleForm'
+        >
           <el-form-item label='活动名称' prop='name'>
             <el-input vModel={this.ruleForm.name} />
           </el-form-item>
@@ -117,14 +132,14 @@ const TestForm = {
         </el-form>
       </div>
     )
-  },
+  }
 }
 
 export default {
   components: {
     Parser,
     render,
-    TestForm,
+    TestForm
   },
   props: {},
   data() {
@@ -140,7 +155,7 @@ export default {
       // formConf: { ...formData1.formConf, fields: formData1.fields, formBtns: true },
       // formConf: { ...formData2.formConf, fields: formData2.fields, formBtns: true },
       // formConf: { ...formData3.formConf, fields: formData3.fields, formBtns: true },
-      formConf: { ...formData4.formConf, fields: formData4.fields, formBtns: true },
+      formConf: { ...mockSubformLinkQuery.formConf, fields: mockSubformLinkQuery.fields, formBtns: true },
       // formConf: {},
       formValues,
       test: { a: { b: { c: 1221 } } },
@@ -152,20 +167,20 @@ export default {
         delivery: false,
         type: [],
         resource: '',
-        desc: '',
+        desc: ''
       },
       rules: {
         name: [
           { required: true, message: '请输入活动名称', trigger: 'blur' },
-          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' },
+          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
         ],
         region: [{ required: true, message: '请选择活动区域', trigger: 'change' }],
         date1: [{ type: 'date', required: true, message: '请选择日期', trigger: 'change' }],
         date2: [{ type: 'date', required: true, message: '请选择时间', trigger: 'change' }],
         type: [{ type: 'array', required: true, message: '请至少选择一个活动性质', trigger: 'change' }],
         resource: [{ required: true, message: '请选择活动资源', trigger: 'change' }],
-        desc: [{ required: true, message: '请填写活动形式', trigger: 'blur' }],
-      },
+        desc: [{ required: true, message: '请填写活动形式', trigger: 'blur' }]
+      }
     }
   },
   computed: {},
@@ -232,8 +247,8 @@ export default {
     sumbitForm2(data) {
       console.log('sumbitForm2提交数据：', data)
     },
-    handleChange() {},
-  },
+    handleChange() {}
+  }
 }
 </script>
 

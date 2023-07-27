@@ -129,7 +129,7 @@ const c2 = {
 export default {
   model: { event: 'input', prop: 'value' },
   name: 'FgSubform',
-  props: ['value', 'config', 'children', 'disabled', 'readOnly'],
+  props: ['value', 'config', 'children', 'disabled', 'readOnly', 'linkFieldValues'],
   components: { Render },
   inject: {
     buildListeners: {}
@@ -182,12 +182,43 @@ export default {
   render(h) {
     const fields = this.fields // this.children || []
     const self = this
-    // this.$delete(this.$vnode.data.style, 'width')
-    // console.log('this.$vnode', this)
+
+    console.log('link-query', this, this.linkFieldValues)
+
     const loop = (data) => {
-      return data.map((c1, index) => {
-        const { config, vModel, typeId, __slot__, rowKey } = c1
+      return data.reduce((prev, c1, index) => {
+        const { config, vModel, typeId, rowKey } = c1
         const key = rowKey + vModel + index
+
+        if (typeId === 'QUERY_CHECK') {
+          if (!config.showLabel) {
+            return [...prev, ...loop(c1.linkList)]
+          } else {
+            return [
+              ...prev,
+              <el-table-column key={key} label={config.label} align='center'>
+                {c1.linkList.map((child, idx) => {
+                  return (
+                    <el-table-column
+                      key={key + '_' + idx}
+                      label={child.label}
+                      scopedSlots={{
+                        default: () => {
+                          const text = (this.linkFieldValues || {})[child.vModel]
+                          if (['MEMBER_CHECK', 'MEMBER_RADIO'].includes(child.typeId)) {
+                            return text.map((m) => m.name)
+                          }
+
+                          return text
+                        }
+                      }}
+                    />
+                  )
+                })}
+              </el-table-column>
+            ]
+          }
+        }
 
         const scopedSlots = {
           default: ({ row, $index }) => {
@@ -219,8 +250,11 @@ export default {
           }
         }
 
-        return <el-table-column minWidth={160} key={key} prop={vModel} label={config.label} scopedSlots={scopedSlots} />
-      })
+        return [
+          ...prev,
+          <el-table-column minWidth={160} key={key} prop={vModel} label={config.label} scopedSlots={scopedSlots} />
+        ]
+      }, [])
     }
 
     const scopedSlots = {

@@ -5,6 +5,7 @@ import render from '../render/render.js'
 // import { filterLinkData } from './example/mock'
 import getIn from 'lodash/get'
 import throttle from 'lodash/throttle'
+import debounce from 'lodash/debounce'
 import { filterLink, listField } from './example/api'
 import { calcCondition } from './utils/condition-helper'
 
@@ -100,10 +101,11 @@ const buildFormatValidatorRule = (format) => {
   }
 }
 
-async function buildLinkQuery(field) {
+async function buildLinkQuery(field, parent) {
   const self = this
   const model = self[self.formConfCopy.formModel]
-  const { filterCond, config, dataNum, typeId, fieldIdx } = field
+  const { filterCond, config, dataNum, typeId } = field
+  console.log('link-query.buildLinkQuery', field)
   const cond = filterCond.map((m) => {
     // type：0 表示自定义 | 1 当前表单
     // condition 运算符
@@ -147,12 +149,18 @@ async function buildLinkQuery(field) {
 
   const resp = await filterLink(requestParams)
   const { list, pageNum, pageSize, total } = resp.data || {}
-  if (dataNum > 1) {
+
+  const multiple = dataNum > 1
+
+  const linkFieldValues = multiple ? list || [] : list?.[0] || {}
+
+  if (multiple) {
     // this.$set(this.fields[fieldIdx], 'datalist', list)
-    self.$set(field, 'linkFieldValues', list || [])
-    this.$set(field, 'linkData', { pageNum, pageSize, total, ...requestParams })
+    self.$set(field, 'linkFieldValues', linkFieldValues)
+    self.$set(field, 'linkData', { pageNum, pageSize, total, ...requestParams })
   } else {
-    self.$set(field, 'linkFieldValues', list?.[0] || {})
+    console.log('link-query.buildLinkQuery.set', parent || field, linkFieldValues)
+    self.$set(parent || field, 'linkFieldValues', linkFieldValues)
   }
 }
 
@@ -426,12 +434,20 @@ export default {
         return { ...prev, [field.vModel]: rules }
       }, {})
     },
-    buildLinkQueryWatch(componentList) {
+    buildLinkQueryWatch(fields) {
       const self = this
-      componentList.forEach((field) => {
+
+      console.log('link-query.333', fields, self.formConfCopy)
+
+      fields.forEach((field) => {
         if (field.typeId === 'QUERY_CHECK') {
-          const { filterCond /* config, dataNum, typeId, fieldIdx */ } = field
-          const doLinkQuery = buildLinkQuery.bind(self, field)
+          let parent
+          const { filterCond, parentKey /* config, dataNum, typeId, fieldIdx */ } = field
+          if (parentKey) {
+            parent = self.formConfCopy.fields.find((m) => m.vModel === parentKey)
+          }
+          console.log('link-query.444', fields, field, parent)
+          const doLinkQuery = debounce(buildLinkQuery.bind(self, field, parent), 800, { leading: false })
           filterCond.forEach((item) => {
             // type: 0 表示自定义 | 1 当前表单
             if (item.type === 0) {
