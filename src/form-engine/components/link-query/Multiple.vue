@@ -5,6 +5,7 @@
 </template> -->
 
 <script>
+const memberFields = ['MEMBER_CHECK', 'MEMBER_RADIO', 'DEPT_CHECK', 'DEPT_RADIO']
 export default {
   name: 'FginkedQueryMultple',
   props: ['dataSource', 'linkFields', 'linkForm', 'allowAdd'],
@@ -13,8 +14,8 @@ export default {
     handleAddLinkFormData: {
       default: (linkFormId) => {
         // console.log('handleAddLinkFormData-default', linkFormId)
-      }
-    }
+      },
+    },
   },
 
   data() {
@@ -28,7 +29,7 @@ export default {
       } else {
         this.handleAddLinkFormData(this.linkForm)
       }
-    }
+    },
   },
 
   render(h) {
@@ -41,12 +42,36 @@ export default {
             </el-button>
           </div>
         )}
-        <el-table data={this.dataSource || []}>
+        <el-table data={this.dataSource || []} size='small' border>
           {this.linkFields.map((item, key) => {
             return (
-              <el-table-column prop={item.vModel} label={item.label} key={key}>
+              <el-table-column
+                prop={item.vModel}
+                label={item.label}
+                key={key}
+                scopedSlots={{
+                  default: ({ row }) => {
+                    const v = row[item.vModel]
+                    if (memberFields.includes(item.typeId)) return (v || []).map((m) => m.name)
+                    return v
+                  },
+                }}
+              >
                 {(item.children || []).map((child, childKey) => {
-                  return <el-table-column prop={child.vModel} label={child.label} key={childKey} />
+                  return (
+                    <el-table-column
+                      prop={child.vModel}
+                      label={child.label}
+                      key={childKey}
+                      scopedSlots={{
+                        default: ({ row }) => {
+                          const v = row[child.vModel]
+                          if (memberFields.includes(child.typeId)) return (v || []).map((m) => m.name)
+                          return v
+                        },
+                      }}
+                    />
+                  )
                 })}
               </el-table-column>
             )
@@ -54,7 +79,7 @@ export default {
         </el-table>
       </div>
     )
-  }
+  },
 }
 </script>
 

@@ -156,7 +156,7 @@ export default {
       // formConf: { ...formData1.formConf, fields: formData1.fields, formBtns: true },
       // formConf: { ...formData2.formConf, fields: formData2.fields, formBtns: true },
       // formConf: { ...formData3.formConf, fields: formData3.fields, formBtns: true },
-      formConf: { ...mockSubformLinkData.formConf, fields: mockSubformLinkData.fields, formBtns: true },
+      formConf: { ...mockSubformLinkQuery.formConf, fields: mockSubformLinkQuery.fields, formBtns: true },
       // formConf: {},
       formValues,
       test: { a: { b: { c: 1221 } } },
@@ -213,9 +213,9 @@ export default {
   },
   methods: {
     handleClick() {
-      console.log('handleClick', this.test.a.b.c)
-      this.$set(getIn(this.test, 'a.b'), 'c', '55555')
-      console.log('handleClick', this.test.a.b.c)
+      // console.log('handleClick', this.test.a.b.c)
+      // this.$set(getIn(this.test, 'a.b'), 'c', '55555')
+      // console.log('handleClick', this.test.a.b.c)
     },
     fillFormData(form, data) {
       form.fields.forEach((item) => {

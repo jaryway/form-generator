@@ -152,9 +152,7 @@ async function buildLinkQuery(field, parent) {
 
   const resp = await filterLink(requestParams)
   const { list, pageNum, pageSize, total } = resp.data || {}
-
   const multiple = dataNum > 1
-
   const linkFieldValues = multiple ? list || [] : list?.[0] || {}
 
   if (multiple) {

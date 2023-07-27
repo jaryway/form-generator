@@ -17,15 +17,15 @@ export const mockSubformLinkQuery = {
     fieldDisplayRules: [],
     dataFilterSetting: {
       rel: 0,
-      cond: []
+      cond: [],
     },
-    submitAssociationOperation: []
+    submitAssociationOperation: [],
   },
   fields: [
     {
       style: {
         width: '254px',
-        maxWidth: '100%'
+        maxWidth: '100%',
       },
       config: {
         tag: 'el-input',
@@ -42,36 +42,36 @@ export const mockSubformLinkQuery = {
         typeOption: [
           {
             label: '无',
-            value: 'text'
+            value: 'text',
           },
           {
             label: '手机号码',
-            value: 'phoneNumber'
+            value: 'phoneNumber',
           },
           {
             label: '电话号码',
-            value: 'tel'
+            value: 'tel',
           },
           {
             label: '邮政编码',
-            value: 'zipCode'
+            value: 'zipCode',
           },
           {
             label: '身份证号码',
-            value: 'idNumber'
+            value: 'idNumber',
           },
           {
             label: '邮箱',
-            value: 'email'
-          }
+            value: 'email',
+          },
         ],
         displayType: true,
         defaultValue: '',
         defaultValueType: 0,
         defaultValueSource: {
           id: '',
-          type: 0
-        }
+          type: 0,
+        },
       },
       typeId: 'INPUT',
       vModel: 'fieldbtlytkB1690427709727',
@@ -82,17 +82,17 @@ export const mockSubformLinkQuery = {
       description: '',
       limitRepeat: 0,
       placeholder: '请输入供应商名称',
-      repeatReminderText: '此项内容已存在，不允许重复提交'
+      repeatReminderText: '此项内容已存在，不允许重复提交',
     },
     {
       style: {
         width: '254px',
-        maxWidth: '100%'
+        maxWidth: '100%',
       },
       value: [
         {
-          fieldpDrxtkB1690427582863: ''
-        }
+          fieldpDrxtkB1690427582863: '',
+        },
       ],
       config: {
         tag: 'my-table',
@@ -102,25 +102,25 @@ export const mockSubformLinkQuery = {
         tagIcon: 'input',
         changeTag: true,
         renderKey: 'cGpxtkB1690427578403',
-        showLabel: true,
+        showLabel: false,
         displayType: true,
         showRequired: false,
         defaultValueType: 0,
         showDefaultValue: true,
         defaultValueSource: {
           id: '',
-          type: 0
-        }
+          type: 0,
+        },
       },
       typeId: 'CHILD_FORM',
       vModel: 'fieldcGpxtkB1690427578403',
       __slot__: {
-        dataList: []
+        dataList: [],
       },
       children: [
         {
           style: {
-            maxWidth: '100%'
+            maxWidth: '100%',
           },
           canAdd: true,
           config: {
@@ -132,10 +132,10 @@ export const mockSubformLinkQuery = {
             tagIcon: 'input',
             changeTag: true,
             renderKey: 'pDrxtkB1690427582863',
-            showLabel: true,
+            showLabel: false,
             dbFieldList: ['1682037576894427138', '1682037576898621441', '1682037576898621442'],
             displayType: true,
-            showDefaultValue: false
+            showDefaultValue: false,
           },
           typeId: 'QUERY_CHECK',
           vModel: 'fieldpDrxtkB1690427582863',
@@ -152,7 +152,7 @@ export const mockSubformLinkQuery = {
               disabled: true,
               parentId: 1,
               foreignId: 0,
-              childrenFlag: 0
+              childrenFlag: 0,
             },
             {
               id: '1682037576898621441',
@@ -165,7 +165,7 @@ export const mockSubformLinkQuery = {
               disabled: false,
               parentId: 1,
               foreignId: 0,
-              childrenFlag: 0
+              childrenFlag: 0,
             },
             {
               id: '1682037576898621442',
@@ -178,8 +178,8 @@ export const mockSubformLinkQuery = {
               disabled: false,
               parentId: 1,
               foreignId: 0,
-              childrenFlag: 0
-            }
+              childrenFlag: 0,
+            },
           ],
           typeName: '关联查询',
           parentKey: 'fieldcGpxtkB1690427578403',
@@ -189,14 +189,14 @@ export const mockSubformLinkQuery = {
               value: '1682037576894427138',
               typeId: 'INPUT',
               value2: 'fieldbtlytkB1690427709727',
-              condition: 2,
-              typeDisabled: false
-            }
+              condition: 12,
+              typeDisabled: false,
+            },
           ],
           visibility: true,
           description: '',
-          linkedShowField: []
-        }
+          linkedShowField: [],
+        },
       ],
       editable: true,
       notChild: true,
@@ -205,7 +205,267 @@ export const mockSubformLinkQuery = {
       tableList: [],
       visibility: true,
       description: '',
-      fieldDisplayRules: []
-    }
-  ]
+      fieldDisplayRules: [],
+    },
+    {
+      typeId: 'QUERY_CHECK',
+      typeName: '关联查询',
+      config: {
+        layout: 'colFormItem',
+        label: '关联查询',
+        labelWidth: null,
+        showLabel: true,
+        changeTag: true,
+        tag: 'my-form',
+        tagIcon: 'input',
+        showDefaultValue: false,
+        displayType: true,
+        span: 24,
+        dbTable: '1682037576756015106',
+        renderKey: 'RGAVAlB1690474711371',
+        dbFieldList: ['1682037576894427138', '1682037576898621441', '1682037576898621442', '1682037576902815746', '1682037576907010049', '1682037576907010050'],
+      },
+      style: {
+        maxWidth: '100%',
+      },
+      linkList: [
+        {
+          id: '1682037576894427138',
+          label: '供应名称',
+          type: 0,
+          foreignId: 0,
+          typeId: 'INPUT',
+          name: 'fielddVUtUgB1689863965386',
+          visible: 1,
+          childrenFlag: 0,
+          childrenFromDesignerId: null,
+          children: null,
+          vModel: 'fielddVUtUgB1689863965386',
+          __slot__: null,
+          parentId: 1,
+        },
+        {
+          id: '1682037576898621441',
+          label: '地址',
+          type: 0,
+          foreignId: 0,
+          typeId: 'INPUT',
+          name: 'fieldlXYtUgB1689863976524',
+          visible: 1,
+          childrenFlag: 0,
+          childrenFromDesignerId: null,
+          children: null,
+          vModel: 'fieldlXYtUgB1689863976524',
+          __slot__: null,
+          parentId: 1,
+        },
+        {
+          id: '1682037576898621442',
+          label: '提交人',
+          type: 0,
+          foreignId: 0,
+          typeId: 'MEMBER_RADIO',
+          name: 'createBy',
+          visible: 1,
+          childrenFlag: 0,
+          childrenFromDesignerId: null,
+          children: null,
+          vModel: 'createBy',
+          __slot__: null,
+          parentId: 1,
+        },
+        {
+          id: '1682037576902815746',
+          label: '修改人',
+          type: 0,
+          foreignId: 0,
+          typeId: 'MEMBER_RADIO',
+          name: 'updateBy',
+          visible: 1,
+          childrenFlag: 0,
+          childrenFromDesignerId: null,
+          children: null,
+          vModel: 'updateBy',
+          __slot__: null,
+          parentId: 1,
+        },
+        {
+          id: '1682037576907010049',
+          label: '创建时间',
+          type: 0,
+          foreignId: 0,
+          typeId: 'DATE',
+          name: 'createTime',
+          visible: 1,
+          childrenFlag: 0,
+          childrenFromDesignerId: null,
+          children: null,
+          vModel: 'createTime',
+          __slot__: null,
+          parentId: 1,
+        },
+        {
+          id: '1682037576907010050',
+          label: '修改时间',
+          type: 0,
+          foreignId: 0,
+          typeId: 'DATE',
+          name: 'updateTime',
+          visible: 1,
+          childrenFlag: 0,
+          childrenFromDesignerId: null,
+          children: null,
+          vModel: 'updateTime',
+          __slot__: null,
+          parentId: 1,
+        },
+      ],
+      filterCond: [
+        {
+          value: '1682037576894427138',
+          typeId: 'INPUT',
+          condition: 12,
+          type: 0,
+          value2: 'fieldbtlytkB1690427709727',
+          typeDisabled: false,
+        },
+      ],
+      linkedShowField: [],
+      dataNum: 1,
+      canAdd: true,
+      visibility: true,
+      description: '',
+      vModel: 'fieldRGAVAlB1690474711371',
+    },
+    {
+      typeId: 'QUERY_CHECK',
+      typeName: '关联查询',
+      config: {
+        layout: 'colFormItem',
+        label: '关联查询',
+        labelWidth: null,
+        showLabel: true,
+        changeTag: true,
+        tag: 'my-form',
+        tagIcon: 'input',
+        showDefaultValue: false,
+        displayType: true,
+        span: 24,
+        dbTable: '1682037576756015106',
+        renderKey: 'OLUVAlB1690474766281',
+        dbFieldList: ['1682037576894427138', '1682037576898621441', '1682037576898621442', '1682037576902815746', '1682037576907010049', '1682037576907010050'],
+      },
+      style: {
+        maxWidth: '100%',
+      },
+      linkList: [
+        {
+          id: '1682037576894427138',
+          label: '供应名称',
+          type: 0,
+          foreignId: 0,
+          typeId: 'INPUT',
+          name: 'fielddVUtUgB1689863965386',
+          visible: 1,
+          childrenFlag: 0,
+          childrenFromDesignerId: null,
+          children: null,
+          vModel: 'fielddVUtUgB1689863965386',
+          __slot__: null,
+          parentId: 1,
+        },
+        {
+          id: '1682037576898621441',
+          label: '地址',
+          type: 0,
+          foreignId: 0,
+          typeId: 'INPUT',
+          name: 'fieldlXYtUgB1689863976524',
+          visible: 1,
+          childrenFlag: 0,
+          childrenFromDesignerId: null,
+          children: null,
+          vModel: 'fieldlXYtUgB1689863976524',
+          __slot__: null,
+          parentId: 1,
+        },
+        {
+          id: '1682037576898621442',
+          label: '提交人',
+          type: 0,
+          foreignId: 0,
+          typeId: 'MEMBER_RADIO',
+          name: 'createBy',
+          visible: 1,
+          childrenFlag: 0,
+          childrenFromDesignerId: null,
+          children: null,
+          vModel: 'createBy',
+          __slot__: null,
+          parentId: 1,
+        },
+        {
+          id: '1682037576902815746',
+          label: '修改人',
+          type: 0,
+          foreignId: 0,
+          typeId: 'MEMBER_RADIO',
+          name: 'updateBy',
+          visible: 1,
+          childrenFlag: 0,
+          childrenFromDesignerId: null,
+          children: null,
+          vModel: 'updateBy',
+          __slot__: null,
+          parentId: 1,
+        },
+        {
+          id: '1682037576907010049',
+          label: '创建时间',
+          type: 0,
+          foreignId: 0,
+          typeId: 'DATE',
+          name: 'createTime',
+          visible: 1,
+          childrenFlag: 0,
+          childrenFromDesignerId: null,
+          children: null,
+          vModel: 'createTime',
+          __slot__: null,
+          parentId: 1,
+        },
+        {
+          id: '1682037576907010050',
+          label: '修改时间',
+          type: 0,
+          foreignId: 0,
+          typeId: 'DATE',
+          name: 'updateTime',
+          visible: 1,
+          childrenFlag: 0,
+          childrenFromDesignerId: null,
+          children: null,
+          vModel: 'updateTime',
+          __slot__: null,
+          parentId: 1,
+        },
+      ],
+      filterCond: [
+        {
+          value: '1682037576894427138',
+          typeId: 'INPUT',
+          condition: 12,
+          type: 0,
+          value2: 'fieldbtlytkB1690427709727',
+          typeDisabled: false,
+        },
+      ],
+      linkedShowField: [],
+      dataNum: 2,
+      canAdd: true,
+      visibility: true,
+      description: '',
+      vModel: 'fieldOLUVAlB1690474766281',
+    },
+  ],
 }
