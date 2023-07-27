@@ -71,7 +71,12 @@ function buildDataObject(confClone, dataObject) {
     } else if (key === 'editable') {
       dataObject.attrs['disabled'] = !confClone.editable
     } else if ((confClone.typeId === 'CHILD_FORM' && subformProps.includes(key)) || baseProps.includes(key)) {
-      dataObject.props[key] = val
+      if (key === 'value') {
+        // console.log('xxxxxxxxxxxxx', key)
+        dataObject.props['defaultValue'] = val
+      } else {
+        dataObject.props[key] = val
+      }
     } else if (dataObject[key] !== undefined) {
       if (key === 'style' && confClone.typeId === 'CHILD_FORM') {
         delete val['width']
@@ -159,7 +164,9 @@ export default {
     // 将json表单配置转化为vue render可以识别的 “数据对象（dataObject）”
     buildDataObject.call(this, confClone, dataObject)
 
-    console.log('dataObject', dataObject)
+    if (this.conf.typeId === 'LINKED_DATA') {
+      console.log('dataObject', this, children)
+    }
     if (this.conf.config.tag === 'el-checkbox-group') {
       return h('fg-checkbox-group', dataObject, children)
     }

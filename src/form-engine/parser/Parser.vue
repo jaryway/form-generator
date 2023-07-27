@@ -28,7 +28,7 @@ const layouts = {
     const { formConfCopy, formMode } = this
     const model = this[formConfCopy.formModel]
 
-    console.log('colFormItem', formMode)
+    // console.log('colFormItem', formMode)
 
     if (scheme.visibility === false) return null
 
@@ -101,16 +101,12 @@ const buildFormatValidatorRule = (format) => {
   }
 }
 
-async function buildLinkQuery(field, parent) {
-  const self = this
-  const model = self[self.formConfCopy.formModel]
-  const { filterCond, config, dataNum, typeId } = field
-  console.log('link-query.buildLinkQuery', field)
-  const cond = filterCond.map((m) => {
-    // type：0 表示自定义 | 1 当前表单
+function getFilterCond(filterCond, model) {
+  return filterCond.map((m) => {
+    // type：0=当前表单,1=自定义
     // condition 运算符
     let value = ''
-    const { type, condition, value2, value: fieldId } = m
+    const { type, condition, typeId, value2, value: fieldId } = m
     if (type === 0) {
       value = getIn(model, value2)
     } else {
@@ -127,6 +123,14 @@ async function buildLinkQuery(field, parent) {
 
     return { fieldId, typeId, condition, value }
   })
+}
+
+async function buildLinkQuery(field, parent) {
+  const self = this
+  const model = self[self.formConfCopy.formModel]
+  const { filterCond, config, dataNum } = field
+  // console.log('link-query.buildLinkQuery', field)
+  const cond = getFilterCond(filterCond, model)
 
   const loopFieldList = (list) => {
     return (list || []).reduce((prev, cur) => {
@@ -159,7 +163,7 @@ async function buildLinkQuery(field, parent) {
     self.$set(field, 'linkFieldValues', linkFieldValues)
     self.$set(field, 'linkData', { pageNum, pageSize, total, ...requestParams })
   } else {
-    console.log('link-query.buildLinkQuery.set', parent || field, linkFieldValues)
+    // console.log('link-query.buildLinkQuery.set', parent || field, linkFieldValues)
     self.$set(parent || field, 'linkFieldValues', linkFieldValues)
   }
 }
@@ -219,11 +223,18 @@ function renderChildren(h, scheme) {
   return renderFormItem.call(this, h, config.children)
 }
 
-function setValue(event, config, scheme, rowIndex) {
+function setValue(event, config, scheme, rowIndex, seed = 0) {
+  console.log('setValuesetValue', rowIndex, seed, scheme, event)
   const model = this[this.formConf.formModel]
   const { parentKey, vModel } = scheme
   if (rowIndex !== undefined) {
-    this.$set(model[parentKey][rowIndex], vModel, event)
+    if (seed > 0) {
+      // seed > 0 为插入行
+      console.log('setValuesetValue.splice', rowIndex, seed, scheme, event)
+      model[parentKey].splice(rowIndex + seed, 0, ...event)
+    } else {
+      this.$set(model[parentKey][rowIndex], vModel, event)
+    }
   } else {
     // this.$set(config, 'defaultValue', event)
     this.$set(model, vModel, event)
@@ -243,7 +254,13 @@ function buildListeners(scheme, rowIndex, cb) {
     listeners[key] = (event) => methods[key].call(this, event)
   })
   // 响应 render.js 中的 vModel $emit('input', val)
-  listeners.input = (event) => setValue.call(self, event, config, scheme, rowIndex)
+  listeners.input = (event, seed) => {
+    setValue.call(self, event, config, scheme, rowIndex, seed)
+  }
+
+  listeners['linkdataSeleced'] = (event) => {
+    console.log('linkdataSeleced.0000', event, scheme, cb)
+  }
 
   listeners.focus = throttle(
     function (event) {
@@ -300,11 +317,14 @@ export default {
 
   provide() {
     return {
-      linkDataRequest: async (params) => {
+      linkDataRequest: async ({ filter, ...params }) => {
+        const model = this[this.formConfCopy.formModel]
         // 获取关联数据
-        const data = { appId: this.appId, ...params }
+        // 构建查询条件
+        const cond = getFilterCond(filter, model)
+        const data = { appId: this.appId, ...params, multi: 1, filter: { rel: 0, cond } }
         const resp = await filterLink(data)
-        return resp
+        return resp.data
       },
       updateFormModel: (key, value, prevKeys, mode) => {
         let model = this[this.formConfCopy.formModel]
@@ -364,7 +384,7 @@ export default {
     const rules = this.buildValidatorRules(formConfCopy.fields)
     const initialValues = values || this.initFormData(formConfCopy.fields)
 
-    console.log('initialValues', initialValues)
+    console.log('initialValues', rules)
 
     return {
       formConfCopy,
@@ -401,13 +421,22 @@ export default {
         const rules = []
         const { config, typeId, max, min } = field
         const { required, format } = config
+        // const getType = () => {
+        //   if (typeId === 'CHILD_FORM') return 'array'
+        //   if (typeId === 'LINKED_DATA') return 'object'
+        //   if (typeId === 'CHECK_QUERY') return 'object'
+        // }
 
         if (required) {
           rules.push({
             required,
             message: typeId === 'CHILD_FORM' ? '请至少添加一项' : `${config.label}不能为空`,
-            type: typeId === 'CHILD_FORM' ? 'array' : undefined,
-            trigger: 'change'
+            trigger: 'change',
+            validator(_rule, value, cb) {
+              if (value === undefined || value === null || value === '') return cb(new Error())
+              if (Array.isArray(value) && value.length === 0) return cb(new Error())
+              cb()
+            }
           })
         }
 
@@ -437,7 +466,7 @@ export default {
     buildLinkQueryWatch(fields) {
       const self = this
 
-      console.log('link-query.333', fields, self.formConfCopy)
+      // console.log('link-query.333', fields, self.formConfCopy)
 
       fields.forEach((field) => {
         if (field.typeId === 'QUERY_CHECK') {
@@ -449,7 +478,7 @@ export default {
           console.log('link-query.444', fields, field, parent)
           const doLinkQuery = debounce(buildLinkQuery.bind(self, field, parent), 800, { leading: false })
           filterCond.forEach((item) => {
-            // type: 0 表示自定义 | 1 当前表单
+            // type: 0=当前表单, 1=自定义
             if (item.type === 0) {
               // 监听依赖的字段变化
               self.$watch(
@@ -515,6 +544,7 @@ export default {
       this.$refs[this.formConf.formRef].resetFields()
     },
     submitForm() {
+      console.log('submit', this[this.formConf.formModel])
       this.$refs[this.formConf.formRef].validate((valid) => {
         if (!valid) return false
         // 触发sumit事件

@@ -35,6 +35,7 @@ import { formData3 } from './mock3'
 import { formData4 } from './mock4'
 import { mockUpload } from './mock.upload'
 import { mockSubformLinkQuery } from './mock.subform-link-query'
+import { mockSubformLinkData } from './mock.subform-link-data'
 import getIn from 'lodash/get'
 import { getUserInfo, getFormConf } from './api'
 
@@ -155,7 +156,7 @@ export default {
       // formConf: { ...formData1.formConf, fields: formData1.fields, formBtns: true },
       // formConf: { ...formData2.formConf, fields: formData2.fields, formBtns: true },
       // formConf: { ...formData3.formConf, fields: formData3.fields, formBtns: true },
-      formConf: { ...mockSubformLinkQuery.formConf, fields: mockSubformLinkQuery.fields, formBtns: true },
+      formConf: { ...mockSubformLinkData.formConf, fields: mockSubformLinkData.fields, formBtns: true },
       // formConf: {},
       formValues,
       test: { a: { b: { c: 1221 } } },

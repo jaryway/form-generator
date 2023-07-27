@@ -1,7 +1,7 @@
 <script>
 export default {
   name: 'FgLinkDataPicker',
-  props: ['visible', 'linkFields', 'field', 'multiple'],
+  props: ['visible', 'linkFields', 'filterCond', 'formDesignerId', 'multiple'],
 
   inject: {
     linkDataRequest: {}
@@ -9,7 +9,7 @@ export default {
 
   data() {
     return {
-      fields: [],
+      fields: this.linkFields || [],
       dataSource: [],
       total: 0,
       selection: []
@@ -24,8 +24,9 @@ export default {
       }
 
       const params = {
-        fieldList: [],
-        filter: {},
+        fieldList: ['customTitle'],
+        filter: this.filterCond,
+        formDesignerId: this.formDesignerId,
         pageNum: 1,
         pageSize: 10
       }
@@ -35,7 +36,7 @@ export default {
           console.log('respresprespresp10', resp)
           const { list, headList, total } = resp
           this.dataSource = list || []
-          this.fields = headList
+          this.fields = headList || this.linkFields
           this.total = total
         })
         .catch((ex) => {
@@ -65,6 +66,8 @@ export default {
   },
   render() {
     const fields = this.fields || []
+
+    console.log('xxxxxxxxxxxxx', this.multiple)
 
     const loop = (data) => {
       return data.map((field, key) => {
@@ -96,24 +99,28 @@ export default {
         onOpen={this.handleOpen}
         onClose={this.handleClose}
       >
-        <el-table
-          height={480}
-          size='small'
-          ref='refTable'
-          border
-          data={this.dataSource}
-          row-key='id'
-          onSelect={this.handleSelect}
-        >
-          <el-table-column
-            type='selection'
-            width='40'
-            align='center'
-            fixed='left'
-            class-name={this.multiple ? '' : 'no-select-all'}
-          />
-          {loop(fields)}
-        </el-table>
+        <el-form>
+          <el-form-item>
+            <el-table
+              height={480}
+              size='small'
+              ref='refTable'
+              border
+              data={this.dataSource}
+              row-key='id'
+              onSelect={this.handleSelect}
+            >
+              <el-table-column
+                type='selection'
+                width='40'
+                align='center'
+                fixed='left'
+                class-name={this.multiple ? '' : 'no-select-all'}
+              />
+              {loop(fields)}
+            </el-table>
+          </el-form-item>
+        </el-form>
         <div slot='footer' class='dialog-footer'>
           {(this.total > this.pageSize || true) && (
             <el-pagination style='float:left' background layout='prev, pager, next' total={this.total} />

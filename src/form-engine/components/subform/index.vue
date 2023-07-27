@@ -1,135 +1,11 @@
 <!-- eslint-disable no-unreachable -->
 <script>
 import Render from '../../render/render.js'
-const c1 = {
-  visibility: true,
-  editable: true,
-  typeName: '单行文本',
-  description: '',
-  limitRepeat: false,
-  repeatReminderText: '此项内容已存在，不允许重复提交',
-  parentKey: 'fieldeCtDhEB1678166852263',
-  readonly: false,
-  linkVModel: 'fieldmiyDhEB1678166867066',
-  style: {
-    width: '254px',
-    maxWidth: '100%'
-  },
-  typeId: 'INPUT',
-  placeholder: '请输入工程号',
-  config: {
-    defaultValue: '',
-    typeOption: [
-      {
-        label: '无',
-        value: 'text'
-      },
-      {
-        label: '手机号码',
-        value: 'phoneNumber'
-      },
-      {
-        label: '电话号码',
-        value: 'tel'
-      },
-      {
-        label: '邮政编码',
-        value: 'zipCode'
-      },
-      {
-        label: '身份证号码',
-        value: 'idNumber'
-      },
-      {
-        label: '邮箱',
-        value: 'email'
-      }
-    ],
-    format: 'text',
-    label: '工程号',
-    defaultValueSource: {
-      id: '',
-      type: 0
-    },
-    required: true,
-    showLabel: true,
-    renderKey: 'sQLGSFB1678438134927',
-    layout: 'colFormItem',
-    displayType: true,
-    tagIcon: 'input',
-    changeTag: true,
-    tag: 'el-input',
-    defaultValueType: 0,
-    span: 6
-  },
-  vModel: 'fieldKMhNSFB167843875651801'
-}
-const c2 = {
-  visibility: true,
-  editable: true,
-  typeName: '单行文本',
-  description: '',
-  limitRepeat: false,
-  repeatReminderText: '此项内容已存在，不允许重复提交',
-  parentKey: 'fieldeCtDhEB1678166852263',
-  readonly: false,
-  style: {
-    width: '254px',
-    maxWidth: '100%'
-  },
-  typeId: 'INPUT',
-  placeholder: '请输入技术采购单号',
-  config: {
-    defaultValue: '',
-    typeOption: [
-      {
-        label: '无',
-        value: 'text'
-      },
-      {
-        label: '手机号码',
-        value: 'phoneNumber'
-      },
-      {
-        label: '电话号码',
-        value: 'tel'
-      },
-      {
-        label: '邮政编码',
-        value: 'zipCode'
-      },
-      {
-        label: '身份证号码',
-        value: 'idNumber'
-      },
-      {
-        label: '邮箱',
-        value: 'email'
-      }
-    ],
-    format: 'text',
-    label: '技术采购单号',
-    defaultValueSource: {
-      id: '',
-      type: 0
-    },
-    required: false,
-    showLabel: true,
-    renderKey: 'gAgOSFB1678438901921',
-    layout: 'colFormItem',
-    displayType: true,
-    tagIcon: 'input',
-    changeTag: true,
-    tag: 'el-input',
-    defaultValueType: 0,
-    span: 6
-  },
-  vModel: 'fieldgAgOSFB1678438901921'
-}
+const memberFields = ['MEMBER_CHECK', 'MEMBER_RADIO', 'DEPT_CHECK', 'DEPT_RADIO']
 export default {
   model: { event: 'input', prop: 'value' },
   name: 'FgSubform',
-  props: ['value', 'config', 'children', 'disabled', 'readOnly', 'linkFieldValues'],
+  props: ['value', 'config', 'children', 'disabled', 'readOnly', 'linkFieldValues', 'defaultValue'],
   components: { Render },
   inject: {
     buildListeners: {}
@@ -147,27 +23,35 @@ export default {
     }
   },
   created() {},
-  mounted() {},
+  mounted() {
+    console.log('mounted', this.value)
+  },
   methods: {
     handleSelect() {},
     handelChange() {},
     handelAdd() {
-      this.dataSource.push({})
-      this.$emit('input', this.dataSource)
+      // if (!this.value) this.value.push(this.defaultValue)
+      // console.log('handelAdd', this.dataSource)
+      if (!this.value) {
+        this.$emit('input', this.defaultValue)
+      } else {
+        this.value.push(this.defaultValue?.[0] || {})
+      }
     },
     handleDelete(index) {
       // console.log('handleDelete')
-      this.dataSource.splice(index, 1)
-      this.$emit('input', this.dataSource)
+      this.value.splice(index, 1)
+      // this.$emit('input', this.dataSource)
     }
   },
   computed: {
     dataSource: {
       get() {
+        console.log('setValuesetValue.get', this.value)
         return this.value || []
       },
       set(val) {
-        this.$emit('input')
+        // this.$emit('input', val)
       }
     },
     fields() {
@@ -179,85 +63,141 @@ export default {
       }, {})
     }
   },
+  watch: {
+    value: {
+      immediate: true,
+      deep: true,
+      handler(val) {
+        console.log('setValuesetValue.watch', val)
+      }
+    }
+  },
   render(h) {
     const fields = this.fields // this.children || []
     const self = this
+    console.log('getLinkColValue', this.value)
+    const buildScopedSlots = (schema, index, parentSchema) => {
+      const { typeId, vModel } = schema
+      return {
+        default: ({ row, $index }) => {
+          const isLinkDataFirstCol = parentSchema?.typeId === 'LINKED_DATA' && index === 0
 
-    console.log('link-query', this, this.linkFieldValues)
+          const getLinkColValue = () => {
+            if (parentSchema?.typeId === 'LINKED_DATA') {
+              console.log('getLinkColValue', row)
+              return (row[parentSchema.vModel] || {})[vModel]
+            }
+            return (this.linkFieldValues || {})[vModel]
+          }
+
+          const text = () => {
+            const v = getLinkColValue()
+            if (memberFields.includes(typeId)) return (v || []).map((m) => m.name)
+            return v
+          }
+
+          if (parentSchema && !isLinkDataFirstCol) {
+            // 如果是关联查询和关联数据的字段，只展示数据
+            return text()
+          }
+
+          let extra = {}
+          if (isLinkDataFirstCol) {
+            extra = { rowIndex: $index, renderInTable: true, multiple: true }
+          }
+
+          let listeners = {}
+          if (!this.disabled) {
+            listeners = self.buildListeners(isLinkDataFirstCol ? parentSchema : schema, $index, (options) => {
+              self.$set(self.children[index], 'rowKey', Math.random())
+              self.$set(self.children[index].__slot__, 'options', options)
+            })
+
+            if (isLinkDataFirstCol) {
+              listeners['linkdataSeleced'] = (val) => {
+                if (!val || val.length === 0) return
+                const [cur, ...rest] = val
+                const [defaultRowValue] = self.defaultValue || []
+                const changedRowValues = rest.map((m) => ({ ...defaultRowValue, [parentSchema.vModel]: m }))
+                listeners.input(cur) // 更新当前行
+                listeners.input(changedRowValues, 1) // 如果选了多条，在当前行后一行插入
+              }
+            }
+          }
+
+          console.log('isLinkDataFirstCol', isLinkDataFirstCol, isLinkDataFirstCol && text())
+
+          return h(
+            'Render',
+            {
+              props: {
+                conf: {
+                  ...(isLinkDataFirstCol ? parentSchema : schema),
+                  ...extra,
+                  readOnly: this.readOnly,
+                  readonly: this.readOnly,
+                  disabled: this.disabled
+                },
+                values: row
+              },
+              on: listeners,
+              key: [parentSchema?.vModel, vModel, $index].filter(Boolean).join('_')
+            },
+            [isLinkDataFirstCol && text()]
+          )
+        }
+      }
+    }
+
+    const buildLinkColumns = (schema) => {
+      const { linkList, linkedShowField, typeId, vModel } = schema
+      const isLinkData = typeId === 'LINKED_DATA'
+      const list = isLinkData ? linkedShowField : linkList
+
+      return list.map((child, childKey) => {
+        console.log('isLinkDataFirstCol'.list, childKey)
+        return (
+          <el-table-column
+            key={vModel + '_' + child.vModel}
+            label={child.label} //
+            scopedSlots={buildScopedSlots(child, childKey, schema)}
+          />
+        )
+      })
+    }
 
     const loop = (data) => {
-      return data.reduce((prev, c1, index) => {
-        const { config, vModel, typeId, rowKey } = c1
+      return data.reduce((prev, schema, index) => {
+        const { config, vModel, typeId, rowKey } = schema
         const key = rowKey + vModel + index
 
-        if (typeId === 'QUERY_CHECK') {
+        if (typeId === 'QUERY_CHECK' || typeId === 'LINKED_DATA') {
           if (!config.showLabel) {
-            return [...prev, ...loop(c1.linkList)]
+            return [...prev, ...buildLinkColumns(schema, index)]
           } else {
             return [
               ...prev,
-              <el-table-column key={key} label={config.label} align='center'>
-                {c1.linkList.map((child, idx) => {
-                  return (
-                    <el-table-column
-                      key={key + '_' + idx}
-                      label={child.label}
-                      scopedSlots={{
-                        default: () => {
-                          const text = (this.linkFieldValues || {})[child.vModel]
-                          if (['MEMBER_CHECK', 'MEMBER_RADIO'].includes(child.typeId)) {
-                            return text.map((m) => m.name)
-                          }
-
-                          return text
-                        }
-                      }}
-                    />
-                  )
-                })}
+              <el-table-column key={vModel} label={config.label} align='center'>
+                {buildLinkColumns(schema, index)}
               </el-table-column>
             ]
           }
         }
 
-        const scopedSlots = {
-          default: ({ row, $index }) => {
-            let extra = {}
-            if (typeId === 'LINKED_DATA') {
-              extra = { rowIndex: $index, renderInTable: true, multiple: true }
-            }
-
-            const listeners = self.buildListeners(c1, $index, (options) => {
-              self.$set(self.children[index], 'rowKey', Math.random())
-              self.$set(self.children[index].__slot__, 'options', options)
-              // self.children[key].__slot__.options = c1.__slot__.options
-              self.$forceUpdate()
-            })
-
-            return h('Render', {
-              props: {
-                conf: { ...c1, ...extra, readOnly: this.readOnly, disabled: this.disabled },
-                values: row,
-                key: $index
-              },
-              on: this.disabled ? {} : listeners
-              // on: {
-              //   input(event) {
-              //     self.$set(row, c1.vModel, event)
-              //   }
-              // }
-            })
-          }
-        }
-
         return [
           ...prev,
-          <el-table-column minWidth={160} key={key} prop={vModel} label={config.label} scopedSlots={scopedSlots} />
+          <el-table-column
+            minWidth={160}
+            key={vModel}
+            prop={vModel}
+            label={config.label}
+            scopedSlots={buildScopedSlots(schema, index)}
+          />
         ]
       }, [])
     }
 
-    const scopedSlots = {
+    const optionScopedSlots = {
       default: ({ $index }) => {
         return (
           <div class='row-head' disabled={this.disabled} style={{ width: '100%' }}>
@@ -282,12 +222,10 @@ export default {
       }
     }
 
-    // return h('div', {}, ['545454'])
-
     return (
       <div class='fg-subform' style={{ width: '100%' }}>
         <el-table maxHeight={360} size='small' ref='refTable' border data={this.dataSource} row-key='id'>
-          <el-table-column type='index' align='center' fixed='left' scopedSlots={scopedSlots} />
+          <el-table-column type='index' align='center' fixed='left' scopedSlots={optionScopedSlots} />
           {loop(fields)}
         </el-table>
         {!this.disabled && (
