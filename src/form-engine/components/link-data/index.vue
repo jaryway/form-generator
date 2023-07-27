@@ -1,20 +1,12 @@
 <template>
   <div class="link-data">
-    <el-button v-if="renderInTable" type="text" icon="el-icon-coin" @click="handleClick" />
+    <el-button v-if="renderInTable" type="text" :disabled="disabled" icon="el-icon-coin" @click="handleClick" />
     <div v-else class="link-data-header">
       <el-button size="mini" :disabled="disabled" @click="handleClick">选择数据</el-button>
     </div>
     <slot></slot>
 
-    <DataPicker
-      :linkFields="fields"
-      :visible.sync="visible"
-      :field="vModel"
-      @select="handleSelect"
-      :multiple="multiple"
-      :filterCond="filterCond"
-      :formDesignerId="formDesignerId"
-    />
+    <DataPicker :linkFields="fields" :visible.sync="visible" :field="vModel" @select="handleSelect" :multiple="multiple" :filterCond="filterCond" :formDesignerId="formDesignerId" />
     <Single v-if="!renderInTable || !multiple" style="margin-top: 8px" :linkFields="fields" :data="model" />
   </div>
 </template>
@@ -35,27 +27,15 @@ export default {
   /**
    * linkFields
    */
-  props: [
-    'value',
-    'config',
-    'vModel',
-    'renderInTable',
-    'parentKey',
-    'rowIndex',
-    'multiple',
-    'linkedShowField',
-    'linkedFillRules',
-    'filterCond',
-    'disabled'
-  ],
+  props: ['value', 'config', 'vModel', 'renderInTable', 'parentKey', 'rowIndex', 'multiple', 'linkedShowField', 'linkedFillRules', 'filterCond', 'disabled'],
 
   components: {
     DataPicker,
-    Single
+    Single,
   },
 
   inject: {
-    updateFormModel: {}
+    updateFormModel: {},
   },
 
   data() {
@@ -68,14 +48,14 @@ export default {
     },
     fields() {
       return this.linkedShowField || []
-    }
+    },
   },
   watch: {
     value: {
       handler(val) {
         this.model = val
-      }
-    }
+      },
+    },
   },
 
   mounted() {},
@@ -86,8 +66,8 @@ export default {
       this.visible = true
     },
     handleSelect(val) {
-      console.log('handleSelect.111')
-      this.$emit('linkdataSeleced', val)
+      // console.log('handleSelect.111')
+      this.$emit('linkDataSelected', val)
 
       val.forEach((m, i) => {
         if (!this.multiple && i === 0) {
@@ -107,8 +87,8 @@ export default {
         //   this.updateFormModel?.(item.depend.field, m[item.vModel], [this.parentKey, this.rowIndex + i])
         // })
       })
-    }
-  }
+    },
+  },
 }
 </script>
 

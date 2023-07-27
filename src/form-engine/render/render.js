@@ -165,7 +165,7 @@ export default {
     buildDataObject.call(this, confClone, dataObject)
 
     if (this.conf.typeId === 'LINKED_DATA') {
-      console.log('dataObject', this, children)
+      // console.log('dataObject', this, children)
     }
     if (this.conf.config.tag === 'el-checkbox-group') {
       return h('fg-checkbox-group', dataObject, children)

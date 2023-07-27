@@ -8,7 +8,7 @@ export default {
   props: ['value', 'config', 'children', 'disabled', 'readOnly', 'linkFieldValues', 'defaultValue'],
   components: { Render },
   inject: {
-    buildListeners: {}
+    buildListeners: {},
   },
   data() {
     return {
@@ -19,12 +19,12 @@ export default {
       title: '',
       keys: {},
       // dataSource: [{ fieldmiyDhEB1678166867066: 'sdfasdf' }]
-      confs: {}
+      confs: {},
     }
   },
   created() {},
   mounted() {
-    console.log('mounted', this.value)
+    // console.log('mounted', this.value)
   },
   methods: {
     handleSelect() {},
@@ -42,17 +42,17 @@ export default {
       // console.log('handleDelete')
       this.value.splice(index, 1)
       // this.$emit('input', this.dataSource)
-    }
+    },
   },
   computed: {
     dataSource: {
       get() {
-        console.log('setValuesetValue.get', this.value)
+        // console.log('setValuesetValue.get', this.value)
         return this.value || []
       },
       set(val) {
         // this.$emit('input', val)
-      }
+      },
     },
     fields() {
       return this.children || []
@@ -61,7 +61,7 @@ export default {
       return (this.children || []).reduce((prev, cur, index) => {
         return { ...prev, [index]: cur, rows: {} }
       }, {})
-    }
+    },
   },
   watch: {
     value: {
@@ -69,13 +69,14 @@ export default {
       deep: true,
       handler(val) {
         console.log('setValuesetValue.watch', val)
-      }
-    }
+      },
+    },
   },
   render(h) {
     const fields = this.fields // this.children || []
     const self = this
-    console.log('getLinkColValue', this.value)
+    const [defaultRowValue] = self.defaultValue || []
+    // console.log('getLinkColValue', this.value)
     const buildScopedSlots = (schema, index, parentSchema) => {
       const { typeId, vModel } = schema
       return {
@@ -83,10 +84,7 @@ export default {
           const isLinkDataFirstCol = parentSchema?.typeId === 'LINKED_DATA' && index === 0
 
           const getLinkColValue = () => {
-            if (parentSchema?.typeId === 'LINKED_DATA') {
-              console.log('getLinkColValue', row)
-              return (row[parentSchema.vModel] || {})[vModel]
-            }
+            if (parentSchema?.typeId === 'LINKED_DATA') return (row[parentSchema.vModel] || {})[vModel]
             return (this.linkFieldValues || {})[vModel]
           }
 
@@ -108,24 +106,11 @@ export default {
 
           let listeners = {}
           if (!this.disabled) {
-            listeners = self.buildListeners(isLinkDataFirstCol ? parentSchema : schema, $index, (options) => {
+            listeners = self.buildListeners(isLinkDataFirstCol ? parentSchema : schema, $index, defaultRowValue, (options) => {
               self.$set(self.children[index], 'rowKey', Math.random())
               self.$set(self.children[index].__slot__, 'options', options)
             })
-
-            if (isLinkDataFirstCol) {
-              listeners['linkdataSeleced'] = (val) => {
-                if (!val || val.length === 0) return
-                const [cur, ...rest] = val
-                const [defaultRowValue] = self.defaultValue || []
-                const changedRowValues = rest.map((m) => ({ ...defaultRowValue, [parentSchema.vModel]: m }))
-                listeners.input(cur) // 更新当前行
-                listeners.input(changedRowValues, 1) // 如果选了多条，在当前行后一行插入
-              }
-            }
           }
-
-          console.log('isLinkDataFirstCol', isLinkDataFirstCol, isLinkDataFirstCol && text())
 
           return h(
             'Render',
@@ -136,16 +121,16 @@ export default {
                   ...extra,
                   readOnly: this.readOnly,
                   readonly: this.readOnly,
-                  disabled: this.disabled
+                  disabled: this.disabled,
                 },
-                values: row
+                values: row,
               },
               on: listeners,
-              key: [parentSchema?.vModel, vModel, $index].filter(Boolean).join('_')
+              key: [parentSchema?.vModel, vModel, $index].filter(Boolean).join('_'),
             },
             [isLinkDataFirstCol && text()]
           )
-        }
+        },
       }
     }
 
@@ -155,7 +140,7 @@ export default {
       const list = isLinkData ? linkedShowField : linkList
 
       return list.map((child, childKey) => {
-        console.log('isLinkDataFirstCol'.list, childKey)
+        // console.log('isLinkDataFirstCol'.list, childKey)
         return (
           <el-table-column
             key={vModel + '_' + child.vModel}
@@ -179,21 +164,12 @@ export default {
               ...prev,
               <el-table-column key={vModel} label={config.label} align='center'>
                 {buildLinkColumns(schema, index)}
-              </el-table-column>
+              </el-table-column>,
             ]
           }
         }
 
-        return [
-          ...prev,
-          <el-table-column
-            minWidth={160}
-            key={vModel}
-            prop={vModel}
-            label={config.label}
-            scopedSlots={buildScopedSlots(schema, index)}
-          />
-        ]
+        return [...prev, <el-table-column minWidth={160} key={vModel} prop={vModel} label={config.label} scopedSlots={buildScopedSlots(schema, index)} />]
       }, [])
     }
 
@@ -219,7 +195,7 @@ export default {
             )}
           </div>
         )
-      }
+      },
     }
 
     return (
@@ -237,7 +213,7 @@ export default {
         )}
       </div>
     )
-  }
+  },
 }
 </script>
 

@@ -33,7 +33,7 @@ export default {
 
       this.linkDataRequest(params) //
         .then((resp) => {
-          console.log('respresprespresp10', resp)
+          // console.log('respresprespresp10', resp)
           const { list, headList, total } = resp
           this.dataSource = list || []
           this.fields = headList || this.linkFields
@@ -67,7 +67,7 @@ export default {
   render() {
     const fields = this.fields || []
 
-    console.log('xxxxxxxxxxxxx', this.multiple)
+    // console.log('xxxxxxxxxxxxx', this.multiple)
 
     const loop = (data) => {
       return data.map((field, key) => {
