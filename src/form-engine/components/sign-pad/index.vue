@@ -58,11 +58,7 @@ export default {
     disabled: {
       handler(val) {
         if (!this.signaturePad) return
-        if (val) {
-          this.signaturePad.off()
-        } else {
-          this.signaturePad.on()
-        }
+        this.signaturePad[val ? 'off' : 'on']()
       },
       immediate: true
     }
