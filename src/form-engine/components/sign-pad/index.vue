@@ -4,13 +4,13 @@
       <canvas class="canvasId" style="border: 2px dashed #f7f7f7" />
       <img v-if="signImageUrl" :src="signImageUrl" class="img-box" />
     </div>
-    <p class="desc-text" v-if="isEdit && !disabled">请在上面区域完成签名 然后点击确"确认"按钮</p>
-    <div v-if="!signImageUrl" style="margin-top: 8px">
-      <el-button plain size="mini" type="danger" @click="clear" :disabled="isEdit && disabled">清除</el-button>
-      <el-button plain size="mini" type="warning" @click="undo" :disabled="isEdit && disabled">回撤</el-button>
-      <el-button size="mini" type="success" @click="savePng" :disabled="isEdit && disabled">确认</el-button>
+    <div class="desc-text" v-if="!disabled">请在上面区域完成签名 然后点击确"确认"按钮</div>
+    <div v-if="!signImageUrl && !disabled">
+      <el-button plain size="mini" type="danger" @click="clear" :disabled="disabled">清除</el-button>
+      <el-button plain size="mini" type="warning" @click="undo" :disabled="disabled">回撤</el-button>
+      <el-button size="mini" type="success" @click="savePng" :disabled="disabled">确认</el-button>
     </div>
-    <div v-if="signImageUrl && isEdit && !disabled">
+    <div v-if="signImageUrl && !disabled">
       <el-button size="mini" type="primary" @click="reSign">重签</el-button>
     </div>
   </div>
@@ -21,7 +21,7 @@ import SignaturePad from 'signature_pad'
 
 export default {
   name: 'FgSignPad',
-  props: ['value', 'config', '__slot__', 'color', 'action', 'isEdit', 'disabled'],
+  props: ['value', 'config', '__slot__', 'color', 'action', 'disabled'],
   data() {
     return {
       signaturePad: null,
@@ -30,31 +30,32 @@ export default {
       selfConfig: {
         minWidth: 1,
         maxWidth: 3,
-        penColor: this.color,
-      },
+        penColor: this.color
+      }
     }
   },
   inject: {
     uploadFile: {
       default: async () => {
         return Promise.resolve()
-      },
+      }
     },
-    getImgUrl: {
-      default: (val) => {
-        return val
-      },
-    },
+    getFileUrl: {
+      default: (id) => {
+        return id
+      }
+    }
   },
 
   watch: {
     value: {
       handler(val) {
-        this.signImageUrl = val ? this.getImgUrl(val) : null
+        console.log('signImageUrl', val)
+        this.signImageUrl = val ? this.getFileUrl(val) : null
         if (!val) this.clear()
       },
-      immediate: true,
-    },
+      immediate: true
+    }
   },
   mounted() {
     this.init()
@@ -131,10 +132,10 @@ export default {
         u8arr[n] = bstr.charCodeAt(n)
       }
       return new File([u8arr], filename, {
-        type: 'image/png',
+        type: 'image/png'
       })
-    },
-  },
+    }
+  }
 }
 </script>
 
@@ -158,5 +159,8 @@ export default {
   right: 0;
   bottom: 0;
   z-index: 1;
+}
+.desc-text {
+  color: #a6a9ad;
 }
 </style>
