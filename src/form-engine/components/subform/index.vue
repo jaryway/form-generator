@@ -129,7 +129,7 @@ const c2 = {
 export default {
   model: { event: 'input', prop: 'value' },
   name: 'FgSubform',
-  props: ['value', 'config', 'children'],
+  props: ['value', 'config', 'children', 'disabled', 'readOnly'],
   components: { Render },
   inject: {
     buildListeners: {}
@@ -156,7 +156,7 @@ export default {
       this.$emit('input', this.dataSource)
     },
     handleDelete(index) {
-      console.log('handleDelete')
+      // console.log('handleDelete')
       this.dataSource.splice(index, 1)
       this.$emit('input', this.dataSource)
     }
@@ -203,11 +203,13 @@ export default {
               self.$forceUpdate()
             })
 
-            // console.log('listeners.focus', listeners)
-
             return h('Render', {
-              props: { conf: { ...c1, ...extra }, values: row, key: $index },
-              on: listeners
+              props: {
+                conf: { ...c1, ...extra, readOnly: this.readOnly, disabled: this.disabled },
+                values: row,
+                key: $index
+              },
+              on: this.disabled ? {} : listeners
               // on: {
               //   input(event) {
               //     self.$set(row, c1.vModel, event)
@@ -224,21 +226,23 @@ export default {
     const scopedSlots = {
       default: ({ $index }) => {
         return (
-          <div class='row-head' style={{ width: '100%' }}>
+          <div class='row-head' disabled={this.disabled} style={{ width: '100%' }}>
             <span class='row-num'>{$index + 1}</span>
-            <el-popconfirm
-              confirm-button-text='好的'
-              cancel-button-text='不用了'
-              icon='el-icon-info'
-              icon-color='red'
-              title='确定删除吗？'
-              size='mini'
-              onOnConfirm={() => {
-                this.handleDelete($index)
-              }}
-            >
-              <span slot='reference' class='el-icon-delete icon-trash' />
-            </el-popconfirm>
+            {!this.disabled && (
+              <el-popconfirm
+                confirm-button-text='好的'
+                cancel-button-text='不用了'
+                icon='el-icon-info'
+                icon-color='red'
+                title='确定删除吗？'
+                size='mini'
+                onOnConfirm={() => {
+                  this.handleDelete($index)
+                }}
+              >
+                <span slot='reference' class='el-icon-delete icon-trash' />
+              </el-popconfirm>
+            )}
           </div>
         )
       }
@@ -252,11 +256,13 @@ export default {
           <el-table-column type='index' align='center' fixed='left' scopedSlots={scopedSlots} />
           {loop(fields)}
         </el-table>
-        <div style='margin-top:8px'>
-          <el-button type='default' onClick={this.handelAdd}>
-            添加
-          </el-button>
-        </div>
+        {!this.disabled && (
+          <div style='margin-top:8px'>
+            <el-button type='default' onClick={this.handelAdd}>
+              添加
+            </el-button>
+          </div>
+        )}
       </div>
     )
   }
@@ -265,7 +271,7 @@ export default {
 
 <style lang="scss" scoped>
 ::v-deep .el-table__body tr {
-  .row-head {
+  .row-head:not([disabled]) {
     .row-num {
       display: block;
     }
@@ -275,7 +281,7 @@ export default {
   }
 
   &:hover {
-    .row-head {
+    .row-head:not([disabled]) {
       .row-num {
         display: none;
       }

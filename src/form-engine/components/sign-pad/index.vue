@@ -50,9 +50,19 @@ export default {
   watch: {
     value: {
       handler(val) {
-        console.log('signImageUrl', val)
         this.signImageUrl = val ? this.getFileUrl(val) : null
         if (!val) this.clear()
+      },
+      immediate: true
+    },
+    disabled: {
+      handler(val) {
+        if (!this.signaturePad) return
+        if (val) {
+          this.signaturePad.off()
+        } else {
+          this.signaturePad.on()
+        }
       },
       immediate: true
     }

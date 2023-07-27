@@ -1,5 +1,21 @@
 <template>
-  <el-upload class="upload-demo" v-bind="$attrs" v-on="$listeners" :file-list="fileList" :action="action" :before-upload="handleBeforeUpload" :on-remove="onRemove" :on-success="onSuccess" :on-error="handleError" :on-progress="onProgress" :http-request="httpRequest" :on-change="onChange" :show-file-list="true" :limit="limit" :multiple="multiple">
+  <el-upload
+    class="upload-demo"
+    v-bind="$attrs"
+    v-on="$listeners"
+    :file-list="fileList"
+    :action="action"
+    :before-upload="handleBeforeUpload"
+    :on-remove="onRemove"
+    :on-success="onSuccess"
+    :on-error="handleError"
+    :on-progress="onProgress"
+    :http-request="httpRequest"
+    :on-change="onChange"
+    :show-file-list="true"
+    :limit="limit"
+    :multiple="multiple"
+  >
     <i v-if="listType === 'picture-card'" class="el-icon-plus"></i>
     <div v-else>
       <i class="el-icon-picture">{{ desc }}</i>
@@ -13,11 +29,11 @@ export default {
   name: 'FgUpload',
   props: ['typeId', 'value', 'config', '__slot__'],
   mounted() {
-    console.log('FgUpload.mounted', this)
+    // console.log('FgUpload.mounted', this)
   },
   inject: {
     uploadFile: {},
-    getFileUrl: {},
+    getFileUrl: {}
   },
   computed: {
     desc() {
@@ -25,7 +41,7 @@ export default {
       const s1 = this.typeId === 'UPLOAD-FILE' ? '张' : '个'
       const { expand } = this.$attrs
 
-      console.log('fg-upload.expand', expand)
+      // console.log('fg-upload.expand', expand)
 
       return `选择或拖拽上传${s}，单${s1}${expand.fileSize || '200'}${expand.sizeUnit || 'kb'}以内`
     },
@@ -46,12 +62,12 @@ export default {
     },
     listType() {
       return this.config['list-type']
-    },
+    }
   },
   data() {
     return {
       action: `http://183.236.225.195:9800/enterprise-api/assist/oss/upload/image`,
-      fileList: [],
+      fileList: []
     }
   },
 
@@ -70,8 +86,8 @@ export default {
         // } else {
         //   this.fileList = val
         // }
-      },
-    },
+      }
+    }
   },
 
   methods: {
@@ -107,7 +123,7 @@ export default {
         ...params.file,
         name: res.originFileName,
         id: res.id, // res.id,
-        url: this.getFileUrl(res.id),
+        url: this.getFileUrl(res.id)
       })
 
       const changeValue = this.fileList.map((m) => ({ id: m.id, name: m.name }))
@@ -130,15 +146,12 @@ export default {
       const changeValue = fileList.map((m) => ({ id: m.id, name: m.name }))
       this.$emit('input', changeValue)
       // console.log(file, fileList)
-    },
-  },
+    }
+  }
 }
 </script>
 
-<style lang="scss" scoped>
-::v-deep .el-upload-dragger {
-  height: auto;
-}
+<style lang="less" scoped>
 ::v-deep .el-upload.el-upload--text {
   /* height: 32px; */
   border: 1px dashed #d9d9d9;
@@ -146,5 +159,20 @@ export default {
   width: 360px;
   text-align: center;
   cursor: pointer;
+}
+::v-deep .el-upload-dragger {
+  height: auto;
+}
+
+::v-deep.upload-demo[disabled] {
+  // border: solid 1px red;
+
+  .el-upload-dragger,
+  .el-upload.el-upload--text {
+    background-color: #f5f7fa;
+    border-color: #e4e7ed;
+    // color: #C0C4CC;
+    cursor: not-allowed;
+  }
 }
 </style>

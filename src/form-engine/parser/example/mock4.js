@@ -237,10 +237,10 @@ export const formData4 = {
         showLabel: true,
         displayType: true,
         showRegList: false,
-        defaultValue: '',
+        defaultValue: '123456',
         showRequired: true,
         showClearable: false,
-        showDefaultValue: false
+        showDefaultValue: false,
       },
       typeId: 'SIGN_PAD',
       vModel: 'fieldQpIrkkB1690360842224',

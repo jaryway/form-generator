@@ -1,7 +1,7 @@
 <template>
   <div class="linkdata">
     <div class="linkdata-header">
-      <el-button size="mini" @click="handleClick">选择数据</el-button>
+      <el-button size="mini" :disabled="disabled" @click="handleClick">选择数据</el-button>
     </div>
     <DataPicker
       :linkFields="fields"
@@ -17,7 +17,7 @@
 <script>
 import DataPicker from './DataPicker.vue'
 import Single from './Single.vue'
-import { deepClone } from '@/utils/index'
+// import { deepClone } from '@/utils/index'
 
 /**
  * 关联数据-选择数据后将选中的数据展示，并根据填充规则，填充其他字段
@@ -39,7 +39,8 @@ export default {
     'rowIndex',
     'multiple',
     'linkedShowField',
-    'linkedFillRules'
+    'linkedFillRules',
+    'disabled'
   ],
 
   components: {
@@ -52,7 +53,7 @@ export default {
   },
 
   data() {
-    // console.log('fg-link-data', this.linkedShowField)
+    console.log('fg-link-data', this)
     return { visible: false, model: {} }
   },
   computed: {

@@ -1,5 +1,5 @@
 <template>
-  <div class="org-tag-input" :class="{ multiple: multiple }" @click="handleClick">
+  <div class="org-tag-input" :class="{ multiple: multiple, disabled }" @click="handleClick">
     <div v-if="selecteds.length < 1" class="text-box">{{ placeholder }}</div>
     <div v-else class="tags">
       <el-tag
@@ -83,7 +83,7 @@ export default {
     }
   },
   data() {
-    console.log('fgFormParser.dept.data', this)
+    // console.log('fgFormParser.dept.data', this)
     return {
       show: false
       // selecteds: [],
@@ -106,9 +106,8 @@ export default {
   methods: {
     handleClick() {
       // console.log('fgFormParser', this.disabled, this.isEdit);
-      if (!this.disabled) {
-        this.show = true
-      }
+      if (this.disabled) return
+      this.show = true
     },
     removeItem(item) {
       this.selecteds = this.selecteds.filter((m) => m.id !== item.id)
@@ -148,6 +147,12 @@ export default {
   min-height: 32px;
   position: relative;
   min-width: 160px;
+  &.disabled {
+    background-color: #f5f7fa;
+    border-color: #e4e7ed;
+    // color: #C0C4CC;
+    cursor: not-allowed;
+  }
 }
 
 // .multiple {

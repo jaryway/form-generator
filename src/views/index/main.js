@@ -21,6 +21,7 @@ import SignPad from '@/form-engine/components/sign-pad/index.vue'
 import Subform from '@/form-engine/components/subform/index.vue'
 import FgTinymce from '@/form-engine/components/tinymce/index.vue'
 import Upload from '@/form-engine/components/upload/index.vue'
+import OrgTagInput from '@/form-engine/components/org-tag-input/index.vue'
 
 Vue.component('tinymce', Tinymce)
 // Vue.component('MyAddress', MyAddress)
@@ -39,6 +40,7 @@ Vue.component('FgSignPad', SignPad)
 Vue.component('FgSubform', Subform)
 Vue.component('FgTinymce', FgTinymce)
 Vue.component('FgUpload', Upload)
+Vue.component('FgOrgTagInput', OrgTagInput)
 
 Vue.config.productionTip = false
 Vue.prototype.$axios = axios
