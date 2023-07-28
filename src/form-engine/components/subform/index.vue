@@ -1,37 +1,21 @@
 <!-- eslint-disable no-unreachable -->
 <script>
-import Render from '../../render/render.js'
+import render from '../../render/render.js'
+import emitter from 'element-ui/lib/mixins/emitter'
 const memberFields = ['MEMBER_CHECK', 'MEMBER_RADIO', 'DEPT_CHECK', 'DEPT_RADIO']
 export default {
   model: { event: 'input', prop: 'value' },
   name: 'FgSubform',
   props: ['value', 'config', 'children', 'disabled', 'readOnly', 'linkFieldValues', 'defaultValue'],
-  components: { Render },
+  components: { render },
   inject: {
-    buildListeners: {},
+    buildListeners: {}
   },
-  data() {
-    return {
-      tableKey: 'tableKey',
-      hasBindListeners: false,
-      // fields: this.children || [],
-      colConfs: {},
-      title: '',
-      keys: {},
-      // dataSource: [{ fieldmiyDhEB1678166867066: 'sdfasdf' }]
-      confs: {},
-    }
-  },
-  created() {},
-  mounted() {
-    // console.log('mounted', this.value)
-  },
+  mixins: [emitter],
   methods: {
     handleSelect() {},
     handelChange() {},
     handelAdd() {
-      // if (!this.value) this.value.push(this.defaultValue)
-      // console.log('handelAdd', this.dataSource)
       if (!this.value) {
         this.$emit('input', this.defaultValue)
       } else {
@@ -39,20 +23,15 @@ export default {
       }
     },
     handleDelete(index) {
-      // console.log('handleDelete')
       this.value.splice(index, 1)
-      // this.$emit('input', this.dataSource)
-    },
+    }
   },
   computed: {
     dataSource: {
       get() {
-        // console.log('setValuesetValue.get', this.value)
         return this.value || []
       },
-      set(val) {
-        // this.$emit('input', val)
-      },
+      set() {}
     },
     fields() {
       return this.children || []
@@ -61,20 +40,12 @@ export default {
       return (this.children || []).reduce((prev, cur, index) => {
         return { ...prev, [index]: cur, rows: {} }
       }, {})
-    },
+    }
   },
-  watch: {
-    value: {
-      immediate: true,
-      deep: true,
-      handler(val) {
-        // console.log('setValuesetValue.watch', val)
-      },
-    },
-  },
+
   render(h) {
-    const fields = this.fields // this.children || []
     const self = this
+    const fields = this.fields
     const [defaultRowValue] = self.defaultValue || []
     // console.log('getLinkColValue', this.value)
     const buildScopedSlots = (schema, index, parentSchema) => {
@@ -99,38 +70,24 @@ export default {
             return text()
           }
 
-          let extra = {}
-          if (isLinkDataFirstCol) {
-            extra = { rowIndex: $index, renderInTable: true, multiple: true }
-          }
+          const actualSchema = isLinkDataFirstCol ? parentSchema : schema
+          const listeners = this.disabled ? {} : self.buildListeners(actualSchema, $index, defaultRowValue)
+          let conf = { ...actualSchema, readOnly: this.readOnly, readonly: this.readOnly, disabled: this.disabled }
 
-          let listeners = {}
-          if (!this.disabled) {
-            listeners = self.buildListeners(isLinkDataFirstCol ? parentSchema : schema, $index, defaultRowValue, (options) => {
-              self.$set(self.children[index], 'rowKey', Math.random())
-              self.$set(self.children[index].__slot__, 'options', options)
-            })
+          if (isLinkDataFirstCol) {
+            conf = { ...conf, renderInTable: true, multiple: true }
           }
 
           return h(
-            'Render',
+            'render',
             {
-              props: {
-                conf: {
-                  ...(isLinkDataFirstCol ? parentSchema : schema),
-                  ...extra,
-                  readOnly: this.readOnly,
-                  readonly: this.readOnly,
-                  disabled: this.disabled,
-                },
-                values: row,
-              },
+              props: { conf, values: row },
               on: listeners,
-              key: [parentSchema?.vModel, vModel, $index].filter(Boolean).join('_'),
+              key: [parentSchema?.vModel, vModel, $index].filter(Boolean).join('_')
             },
             [isLinkDataFirstCol && text()]
           )
-        },
+        }
       }
     }
 
@@ -153,8 +110,7 @@ export default {
 
     const loop = (data) => {
       return data.reduce((prev, schema, index) => {
-        const { config, vModel, typeId, rowKey } = schema
-        const key = rowKey + vModel + index
+        const { config, vModel, typeId } = schema
 
         if (typeId === 'QUERY_CHECK' || typeId === 'LINKED_DATA') {
           if (!config.showLabel) {
@@ -164,12 +120,21 @@ export default {
               ...prev,
               <el-table-column key={vModel} label={config.label} align='center'>
                 {buildLinkColumns(schema, index)}
-              </el-table-column>,
+              </el-table-column>
             ]
           }
         }
 
-        return [...prev, <el-table-column minWidth={160} key={vModel} prop={vModel} label={config.label} scopedSlots={buildScopedSlots(schema, index)} />]
+        return [
+          ...prev,
+          <el-table-column
+            minWidth={160}
+            key={vModel}
+            prop={vModel}
+            label={config.label}
+            scopedSlots={buildScopedSlots(schema, index)}
+          />
+        ]
       }, [])
     }
 
@@ -195,7 +160,7 @@ export default {
             )}
           </div>
         )
-      },
+      }
     }
 
     return (
@@ -213,7 +178,7 @@ export default {
         )}
       </div>
     )
-  },
+  }
 }
 </script>
 

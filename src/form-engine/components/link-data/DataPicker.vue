@@ -9,6 +9,7 @@ export default {
 
   data() {
     return {
+      loading: true,
       fields: this.linkFields || [],
       dataSource: [],
       total: 0,
@@ -31,6 +32,7 @@ export default {
         pageSize: 10
       }
 
+      this.loading = true
       this.linkDataRequest(params) //
         .then((resp) => {
           // console.log('respresprespresp10', resp)
@@ -38,8 +40,10 @@ export default {
           this.dataSource = list || []
           this.fields = headList || this.linkFields
           this.total = total
+          this.loading = false
         })
         .catch((ex) => {
+          this.loading = false
           console.error(ex)
         })
     },
@@ -102,6 +106,7 @@ export default {
         <el-form>
           <el-form-item>
             <el-table
+              vLoading={this.loading}
               height={480}
               size='small'
               ref='refTable'

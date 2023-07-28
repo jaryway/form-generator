@@ -764,7 +764,7 @@ export const mockSubformLinkData1 = {
         {
           value: '1682037576894427138',
           typeId: 'INPUT',
-          condition: 2,
+          condition: 12,
           type: 0,
           value2: 'fielddGlAvkB1690435301255',
           typeDisabled: false,

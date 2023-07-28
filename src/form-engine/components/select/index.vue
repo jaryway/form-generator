@@ -1,5 +1,5 @@
 <template>
-  <el-select v-model="model" v-bind="$attrs" v-on="$listeners">
+  <el-select v-model="model" v-bind="$attrs" v-on="$listeners" :loading="loading" @focus="handleFocus">
     <el-option
       v-for="(item, key) in options"
       :key="key"
@@ -18,13 +18,7 @@ export default {
    * optionsModel 0=自定义，1=关联其他表单，2=数据联动
    *
    */
-  props: ['value', 'config', '__slot__', 'linkValue', 'optionsModel', 'dataLink'],
-
-  inject: {
-    // appId: {},
-    // fieldsMap: {},
-    // listField: {}
-  },
+  props: ['value', 'config', '__slot__'],
 
   data() {
     return {
@@ -42,60 +36,23 @@ export default {
       }
     },
     options() {
+      // console.log('linkdata.computed', this.__slot__.options)
       return this.__slot__.options || []
+    },
+    loading: {
+      get() {
+        return this.__slot__.loading
+      },
+      set(v) {
+        this.__slot__.loading = v
+      }
     }
   },
-  created() {
-    // delete this.$listeners['focus']
-    // this.$listeners.focus = this.handleFocus
-    // () => {
-    //   console.log('listeners.focus.creaded')
-    // }
-    // delete this.$attrs['dataLink']/
-  },
-  mounted() {},
   methods: {
-    // handleFocus9999: debounce(
-    //   function () {
-    //     console.log(this.fieldsMap['fieldeyAOVgB1689866865091'])
-    //     if (this.optionsModel === 0) return
-    //     let requestParams = {}
-    //     // 数据联动
-    //     if (this.optionsModel === 2) {
-    //       const { condition, linkVModel, linkForm } = this.dataLink || {}
-    //       const cond = condition?.map((item) => {
-    //         const { autoText, type, condition, curFormFieldId, field, typeId } = item
-    //         // 联动表单的字段 =... 当前表单的字段
-    //         let value = [autoText]
-    //         if (type !== 0) {
-    //           // 当前表单字段的值
-    //           value = []
-    //           const curFormField = this.fieldsMap[curFormFieldId]
-    //           if (curFormField) {
-    //             const { defaultValue } = curFormField.config
-    //             value = Array.isArray(defaultValue) ? defaultValue : [defaultValue]
-    //           }
-    //         }
-    //         return { value, fieldId: field, typeId, condition, hasEmpty: condition < 16 ? 0 : 1 }
-    //       })
-    //       const [appId, formDesignerId] = linkForm
-    //       requestParams = { appId, formDesignerId, fieldList: [linkVModel], filter: { rel: 0, cond } }
-    //     } else {
-    //       // 关联其他表单
-    //       const [appId, formDesignerId, fieldId] = this.linkValue || []
-    //       requestParams = { appId, formDesignerId, fieldId }
-    //     }
-    //     this.listField(requestParams)
-    //       .then((resp) => resp.data) //
-    //       .then((resp) => {
-    //         console.log('this.listField', resp)
-    //         const options = (resp.data.list || []).map((m) => ({ label: m, value: m }))
-    //         this.options = options
-    //       })
-    //   },
-    //   500,
-    //   { leading: true }
-    // )
+    handleFocus() {
+      this.loading = true
+      console.log('handleFocus')
+    }
   }
 }
 </script>

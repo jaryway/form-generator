@@ -18,7 +18,7 @@ const ruleTrigger = {
   'el-cascader': 'change',
   'el-time-picker': 'change',
   'el-date-picker': 'change',
-  'el-rate': 'change',
+  'el-rate': 'change'
 }
 
 const layouts = {
@@ -70,14 +70,15 @@ const layouts = {
         <el-row gutter={scheme.gutter || 8}>{child}</el-row>
       </el-col>
     )
-  },
+  }
 }
 
 const Patterns = {
   phoneNumber: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/,
   tel: /^0\d{2,3}-\d{7,8}|\(?0\d{2,3}[)-]?\d{7,8}|\(?0\d{2,3}[)-]*\d{7,8}$/,
   zipCode: /^\d{6}$/,
-  idNumber: /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/,
+  idNumber:
+    /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/
 }
 
 const buildFormatValidatorRule = (format) => {
@@ -144,7 +145,7 @@ async function buildLinkQuery(field, parent) {
     formDesignerId: config.dbTable,
     fieldList: loopFieldList(config.linkList),
     multi: dataNum > 1 ? 1 : 0,
-    filter: { rel: 0, cond },
+    filter: { rel: 0, cond }
   }
 
   const hasEmpty = cond.some((m) => m.value.length < 1 && m.condition < 16)
@@ -168,7 +169,7 @@ async function buildLinkQuery(field, parent) {
 function renderFrom(h) {
   const { formConfCopy } = this
   const model = this[formConfCopy.formModel]
-  // console.log('initialValues', model)
+
   return (
     <el-row gutter={formConfCopy.gutter || 8}>
       <el-form
@@ -254,26 +255,29 @@ function buildListeners(scheme, rowIndex, defaultRowValue, cb) {
   }
 
   listeners.linkDataSelected = (event) => {
-    // console.log('linkDataSelected.0000', event, defaultRowValue)
+    // console.log('linkDataSelected.0000', rowIndex, event, scheme, defaultRowValue)
     if (!event || event.length === 0) return
     const { linkedFillRules, vModel, parentKey } = scheme
     const [cur, ...rest] = event
     const changedRowValues = rest.map((m) => ({ ...defaultRowValue, [vModel]: m }))
     listeners.input(cur) // 更新当前行
-    listeners.input(changedRowValues, 1) // 如果选了多条，在当前行后一行插入
+    if (changedRowValues.length > 0) {
+      // 如果选了多条，在当前行后一行插入
+      listeners.input(changedRowValues, 1)
+    }
 
     // 根据填充规则，填充其他字段
     event.forEach((item, i) => {
       linkedFillRules.forEach(({ depend: { field }, ...rule }) => {
         const val = item[rule.vModel]
         const temp = { parentKey, vModel: field }
-        setValue.call(self, val, config, temp, rowIndex + i)
+        setValue.call(self, val, config, temp, rowIndex === undefined ? undefined : rowIndex + i)
       })
     })
   }
 
   listeners.focus = throttle(
-    function (event) {
+    async function () {
       if (['SELECT', 'SELECT-MULTIPLE'].includes(scheme.typeId)) {
         if (scheme.optionsModel === 0) return
 
@@ -304,13 +308,38 @@ function buildListeners(scheme, rowIndex, defaultRowValue, cb) {
           requestParams = { appId, formDesignerId, fieldId }
         }
 
-        listField(requestParams)
-          .then((resp) => resp.data) //
-          .then((resp) => {
-            const options = (resp.data.list || []).map((m) => ({ label: m, value: m }))
-            self.$set(scheme.__slot__, 'options', options)
-            cb?.(options)
-          })
+        // return Promise.resolve({
+        //   data: {
+        //     list: [
+        //       Math.random().toString(16).slice(2),
+        //       Math.random().toString(16).slice(2),
+        //       Math.random().toString(16).slice(2)
+        //     ]
+        //   }
+        // }).then((resp) => {
+        //   console.log('listField', scheme)
+        //   const options = (resp.data.list || []).map((m) => ({ label: m, value: m }))
+        //   self.$set(scheme.__slot__, 'options', options)
+        //   cb?.(options)
+        // })
+
+        const forceUpdateCell = () => {
+          if (rowIndex === undefined) return
+          /* 强制更新单元格内容 */
+          const oldVal = model[scheme.parentKey][rowIndex][scheme.vModel]
+          self.$set(model[scheme.parentKey][rowIndex], scheme.vModel, Math.random())
+          self.$set(model[scheme.parentKey][rowIndex], scheme.vModel, oldVal)
+        }
+
+        self.$set(scheme.__slot__, 'loading', true)
+        forceUpdateCell()
+        const resp = await listField(requestParams)
+        const { list } = resp?.data?.data || {}
+        const options = (list || []).map((m) => ({ label: m, value: m }))
+        self.$set(scheme.__slot__, 'options', options)
+        self.$set(scheme.__slot__, 'loading', false)
+        console.log('sdsdfsdf', list)
+        forceUpdateCell()
       }
     },
     5000,
@@ -364,17 +393,18 @@ export default {
             uploadedFileList: [
               {
                 id: Math.random(),
-                mainUrl: 'http://127.0.0.1:9000/saasenterprise/prodenv/file/20230726/1634027128165412866_1690365544305.jpg',
+                mainUrl:
+                  'http://127.0.0.1:9000/saasenterprise/prodenv/file/20230726/1634027128165412866_1690365544305.jpg',
                 externalUrl1: null,
                 externalUrl2: null,
                 description: null,
                 viewUrl: '/assist/oss/file/view/1631468255705485314/1684141276815339521',
                 originFileName: '01371c565d3a2c32f875964744c3ab.jpg',
                 originFileSize: '95832',
-                originFileExtension: 'jpg',
-              },
-            ],
-          },
+                originFileExtension: 'jpg'
+              }
+            ]
+          }
         }).then((resp) => {
           return resp.data.uploadedFileList[0]
         })
@@ -384,7 +414,7 @@ export default {
       },
       searchUser: async () => {},
       searchWindow: async () => {},
-      selectWindow: async () => {},
+      selectWindow: async () => {}
     }
   },
   data() {
@@ -393,19 +423,18 @@ export default {
     const rules = this.buildValidatorRules(formConfCopy.fields)
     const initialValues = values || this.initFormData(formConfCopy.fields)
 
-    // console.log('initialValues', rules)
+    console.log('initialValues', JSON.stringify(initialValues))
 
     return {
       formConfCopy,
       [this.formConf.formModel]: initialValues,
-      [this.formConf.formRules]: rules,
-      // formMode: this.mode || 'editable' // readOnly
+      [this.formConf.formRules]: rules
     }
   },
   computed: {
     formMode() {
       return this.mode || 'editable'
-    },
+    }
   },
   mounted() {
     const { formConfCopy } = this
@@ -417,7 +446,7 @@ export default {
     initFormData(fields) {
       return fields.reduce((prev, cur) => {
         const config = cur.config
-        if (cur.vModel) {
+        if (cur.vModel && !cur.dataLink) {
           return { ...prev, [cur.vModel]: config.defaultValue }
         }
         if (config.children) {
@@ -440,7 +469,7 @@ export default {
               if (value === undefined || value === null || value === '') return cb(new Error())
               if (Array.isArray(value) && value.length === 0) return cb(new Error())
               cb()
-            },
+            }
           })
         }
 
@@ -459,7 +488,7 @@ export default {
             len: required ? 1 : undefined,
             // options: { first: true }
             trigger: 'change',
-            defaultField: { type: 'object', fields: this.buildValidatorRules(field.children) },
+            defaultField: { type: 'object', fields: this.buildValidatorRules(field.children) }
           }
 
           rules.push(r)
@@ -555,10 +584,10 @@ export default {
         this.$emit('submit', this[this.formConf.formModel])
         return true
       })
-    },
+    }
   },
   render(h) {
     return renderFrom.call(this, h)
-  },
+  }
 }
 </script>

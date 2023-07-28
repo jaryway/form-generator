@@ -3,8 +3,8 @@
 <template>
   <div class="test-form">
     <!-- <el-button @click="handleFormMode"></el-button> -->
-    <!-- <TestForm /> -->
-
+    <TestForm />
+    <!-- <ELSkeleton /> -->
     <div style="margin-bottom: 16px">
       表单模式
       <el-select v-model="formMode" size="small">
@@ -36,8 +36,10 @@ import { formData4 } from './mock4'
 import { mockUpload } from './mock.upload'
 import { mockSubformLinkQuery } from './mock.subform-link-query'
 import { mockSubformLinkData } from './mock.subform-link-data'
+import { mockSubformLinkData1 } from './mock.subform-link-data1'
 import getIn from 'lodash/get'
 import { getUserInfo, getFormConf } from './api'
+import { mockSelectLinkData } from './mock.select-link-data'
 
 const c = {
   // 'clearable': true,
@@ -156,7 +158,7 @@ export default {
       // formConf: { ...formData1.formConf, fields: formData1.fields, formBtns: true },
       // formConf: { ...formData2.formConf, fields: formData2.fields, formBtns: true },
       // formConf: { ...formData3.formConf, fields: formData3.fields, formBtns: true },
-      formConf: { ...mockSubformLinkQuery.formConf, fields: mockSubformLinkQuery.fields, formBtns: true },
+      formConf: { ...mockSelectLinkData.formConf, fields: mockSelectLinkData.fields, formBtns: true },
       // formConf: {},
       formValues,
       test: { a: { b: { c: 1221 } } },
