@@ -51,6 +51,10 @@ export const LTE = 7 // 小于等于
  */
 export const RG = 8 // 选择范围
 /**
+ * 动态筛选
+ */
+export const FM = 9
+/**
  * 包含任意一个
  */
 export const IN_MANY = 0 // 包含任意一个

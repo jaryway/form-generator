@@ -7,7 +7,7 @@ import getIn from 'lodash/get'
 import throttle from 'lodash/throttle'
 import debounce from 'lodash/debounce'
 import { filterLink, listField } from './example/api'
-import { calcCondition } from './utils/condition-helper'
+import { calcCondition } from './utils/condition'
 
 const ruleTrigger = {
   'el-input': 'blur',
@@ -18,7 +18,7 @@ const ruleTrigger = {
   'el-cascader': 'change',
   'el-time-picker': 'change',
   'el-date-picker': 'change',
-  'el-rate': 'change'
+  'el-rate': 'change',
 }
 
 const layouts = {
@@ -70,15 +70,14 @@ const layouts = {
         <el-row gutter={scheme.gutter || 8}>{child}</el-row>
       </el-col>
     )
-  }
+  },
 }
 
 const Patterns = {
   phoneNumber: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/,
   tel: /^0\d{2,3}-\d{7,8}|\(?0\d{2,3}[)-]?\d{7,8}|\(?0\d{2,3}[)-]*\d{7,8}$/,
   zipCode: /^\d{6}$/,
-  idNumber:
-    /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/
+  idNumber: /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/,
 }
 
 const buildFormatValidatorRule = (format) => {
@@ -145,7 +144,7 @@ async function buildLinkQuery(field, parent) {
     formDesignerId: config.dbTable,
     fieldList: loopFieldList(config.linkList),
     multi: dataNum > 1 ? 1 : 0,
-    filter: { rel: 0, cond }
+    filter: { rel: 0, cond },
   }
 
   const hasEmpty = cond.some((m) => m.value.length < 1 && m.condition < 16)
@@ -393,18 +392,17 @@ export default {
             uploadedFileList: [
               {
                 id: Math.random(),
-                mainUrl:
-                  'http://127.0.0.1:9000/saasenterprise/prodenv/file/20230726/1634027128165412866_1690365544305.jpg',
+                mainUrl: 'http://127.0.0.1:9000/saasenterprise/prodenv/file/20230726/1634027128165412866_1690365544305.jpg',
                 externalUrl1: null,
                 externalUrl2: null,
                 description: null,
                 viewUrl: '/assist/oss/file/view/1631468255705485314/1684141276815339521',
                 originFileName: '01371c565d3a2c32f875964744c3ab.jpg',
                 originFileSize: '95832',
-                originFileExtension: 'jpg'
-              }
-            ]
-          }
+                originFileExtension: 'jpg',
+              },
+            ],
+          },
         }).then((resp) => {
           return resp.data.uploadedFileList[0]
         })
@@ -414,7 +412,7 @@ export default {
       },
       searchUser: async () => {},
       searchWindow: async () => {},
-      selectWindow: async () => {}
+      selectWindow: async () => {},
     }
   },
   data() {
@@ -428,13 +426,13 @@ export default {
     return {
       formConfCopy,
       [this.formConf.formModel]: initialValues,
-      [this.formConf.formRules]: rules
+      [this.formConf.formRules]: rules,
     }
   },
   computed: {
     formMode() {
       return this.mode || 'editable'
-    }
+    },
   },
   mounted() {
     const { formConfCopy } = this
@@ -469,7 +467,7 @@ export default {
               if (value === undefined || value === null || value === '') return cb(new Error())
               if (Array.isArray(value) && value.length === 0) return cb(new Error())
               cb()
-            }
+            },
           })
         }
 
@@ -488,7 +486,7 @@ export default {
             len: required ? 1 : undefined,
             // options: { first: true }
             trigger: 'change',
-            defaultField: { type: 'object', fields: this.buildValidatorRules(field.children) }
+            defaultField: { type: 'object', fields: this.buildValidatorRules(field.children) },
           }
 
           rules.push(r)
@@ -584,10 +582,10 @@ export default {
         this.$emit('submit', this[this.formConf.formModel])
         return true
       })
-    }
+    },
   },
   render(h) {
     return renderFrom.call(this, h)
-  }
+  },
 }
 </script>
